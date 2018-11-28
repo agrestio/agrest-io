@@ -1,15 +1,7 @@
-# Build
-/public
-/themes/bootique-theme/static/assets/
-/themes/bootique-theme/layouts/partials/assets.html
-
-# Docs
-/docs/
-/content/docs/
 
 # Dependencies
-/app/node_modules/
-/scripts/node_modules/
+node_modules/
 
 # Idea
 .idea
+*.iml
