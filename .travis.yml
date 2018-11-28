@@ -1,0 +1,19 @@
+language: java
+jdk:
+  - openjdk11
+install:
+  - nvm install 8
+script:
+  - echo 
+branches:
+  only:
+    - master
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
+  target_branch: gh-pages
+cache:
+  - yarn
