@@ -3,6 +3,7 @@ jdk:
   - openjdk11
 install:
   - nvm install 8
+script: false
 branches:
   only:
     - master
