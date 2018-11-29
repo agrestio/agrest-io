@@ -4,7 +4,7 @@ jdk:
 install:
   - nvm install 8
 script:
-  - echo 
+  - npm run sass-build
 branches:
   only:
     - master
