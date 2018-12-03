@@ -17,7 +17,7 @@
 @import "prettyprint";
 
 // SVG
-.inline.svg-icon {
+.inline-svg.icon-svg {
 	height: 1em;
     width: 1em;
     line-height: 1;
@@ -55,7 +55,7 @@
 	}
 
 	h3, .h3 {
-		color: rgba($darkest-blue, .85);
+		color: rgba($headings-color, .85);
 		@extend .mb-2_2;
 		@extend .mb-md-2_3;
 		@extend .mb-lg-h3_bottom;
@@ -108,6 +108,7 @@
 	}
 	
 	.play-btn {
+		visibility: hidden;
 		@extend .btn;
 		@extend .btn-secondary;
 		@extend .d-inline-flex; 					// optionally
@@ -138,14 +139,14 @@
 			width: 2.875rem;
 			height: 2.875rem;
 			border-radius: 50rem;
-			background: #777;
+			background: rgba(#131313, .38);
 			box-shadow: 0 calculateRem(1px) calculateRem(6px) rgba($black, .27);
 			margin-right: $btn-padding-x / 2;
 			@include media-breakpoint-up(md) {
 				margin-right: $btn-padding-x-lg / 2;
 			}
 	
-			.svg-icon {
+			.icon-svg {
 				position: absolute;
 				top: 50%;
 				left: 50%;
@@ -184,23 +185,114 @@
 		}
 	}
 
+	// MODAL
+	.modal {
+		overflow: hidden;
+	}
+
 	.modal-full {
-		margin: 0 auto;
-		max-width: 90%;
+		max-width: 100%; 
 
-		// .modal-content {
-		// 	min-height: 100vh;
-		// }
-
-		.modal-body .close {
+		.close {
 			position: absolute;
-			right: -5%;
-			top: 0rem;
+			width: 2rem;  						// 1.5625rem;
+			height: 2rem;  						// 1.5625rem;
+			right: 1.5rem;
+			top: 1.5rem;
 			left: auto;
-			font-size: 4rem;
-			color: #fff !important;
-			text-shadow: none;
-			opacity: 1;
+			opacity: 1 !important;
+
+			&:before,
+			&:after {
+				content: '';
+				position: absolute;
+				left: 0%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				width: 100%;
+				height: .125rem;
+				background: $white;
+			}
+
+			&:before {
+				transform: rotate(45deg);
+			}
+			
+			&:after {
+				transform: rotate(-45deg);
+			}
+		}
+
+		&.modal-dialog {
+			position: fixed;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			padding: 0;
+		}
+		
+		.modal-content {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border-radius: 0;
+			box-shadow: none;
+		}
+
+		.modal-body {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			top: 4rem;
+			bottom: 4rem;
+			left: 4rem;
+			right: 4rem;
+			
+			@include media-breakpoint-down(xs) {
+				left: 2rem;
+				right: 2rem;
+			}
+
+			@media screen and (max-height: 300px) {
+				left: 4rem;
+				right: 4rem;
+			}
+			
+			// Inside .embed-responsive
+			// .close {
+			// 	position: absolute;
+			// 	right: -2.8rem;
+			// 	top: 0rem;
+			// 	left: auto;
+			// 	font-size: 2em;
+			// 	color: #fff !important;
+			// 	text-shadow: none;
+			// 	opacity: 1;
+			// 	z-index: 1;
+				
+			// 	.button-title {
+			// 		display: none;
+			// 	}
+				
+			// 	// With Title
+			// 	// display: flex;
+			// 	// flex-direction: column;
+			// 	// align-items: center;
+
+			// 	// span:first-child {
+			// 	// 	height: 42px;
+			// 	// }
+				
+			// 	// .button-title {
+			// 	// 	font-size: 14px;
+			// 	// 	text-align: center;
+			// 	// 	font-weight: 500;
+			// 	// 	font-family: "YouTube Noto",Roboto,Arial,Helvetica,sans-serif;
+			// 	// }
+			// }
 		}
 	}
 
@@ -230,7 +322,7 @@
 			left: 0;
 			width: 1.5em;
 			height: .25em;
-			background: $gray-750;
+			background: $action; //$gray-750;
 			@include addAnimation(all, .3s);
 			@extend .rounded-circle-corners;
 		}
@@ -350,6 +442,14 @@
 			}
 		}
 	}
+
+	@include media-breakpoint-down(sm) {
+		.navbar-nav .nav-link {
+			text-transform: uppercase;
+			font-size: 80%;
+			font-weight: 500;
+		}
+	}
 	
 
 // #intro
@@ -368,9 +468,6 @@
 
 
 // #get-started
-// DARK SECTION (DS) COLORS
-$ds-color: $tab-stepper-color;
-$ds-border: #88929b;
 
 .get-started-env {
 	max-width: 63em;
@@ -419,11 +516,11 @@ $ds-border: #88929b;
 		top: -6.2em;
 		left: 0;
 		
-		border: 1px solid $ds-border;
+		border: 1px solid $tab-step-counter-inactive;
 		border-radius: 50rem;
 		line-height: 2.333333em;
 		
-		color: $ds-border;
+		color: $tab-step-counter-inactive;
 		cursor: pointer;
 
 		font-size: 18px;
@@ -434,14 +531,14 @@ $ds-border: #88929b;
 			height: 2.5em;
 			width: 1px;
 			position: absolute;
-			border-right: 1px solid $ds-border;
+			border-right: 1px solid $tab-step-counter-inactive;
 			left: 50%;
 			top: 100%;
 			z-index: 0;
 		}
 	}
 
-	// PRETTYPRINT
+	// prettyprint
 	pre{
 
 		&.prettyprint {
@@ -498,9 +595,10 @@ $ds-border: #88929b;
 	    position: relative;
 	    vertical-align: middle;
 	    display: inline-block;
-
+		
 		@include hover-focus-active {
 			text-decoration: none;
+			
 		}
 	}
 	
@@ -508,11 +606,13 @@ $ds-border: #88929b;
 		li:not(:last-child) {
 			margin-right: 1rem;
 		}
-
+		
 		a {
+			color: $gray-750;
 			opacity: .48;
-	
+			
 			@include hover-focus-active {
+				color: $gray-750;
 				opacity: .65;
 			}
 		}

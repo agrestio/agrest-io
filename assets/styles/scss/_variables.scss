@@ -71,8 +71,9 @@ $colors: map-merge((
   "$darkest-blue":  $darkest-blue
 ), $colors);
 
-$primary:       $darkest-blue;
-$secondary:     $gray-450;
+$primary:       #D95767; //#BF1C31;
+$secondary:     #82797a; //$gray-450;
+$action:        #585253;
 $success:       $green !default;
 $info:          $cyan !default;
 $warning:       $yellow !default;
@@ -166,8 +167,8 @@ $body-color:                $gray-550;
 
 $link-color:                theme-color("primary") !default;
 $link-decoration:           none !default;
-$link-hover-color:          darken($link-color, 15%) !default;
-$link-hover-decoration:     underline !default;
+$link-hover-color:          darken($link-color, 5%);
+$link-hover-decoration:     underline;
 
 // Paragraphs
 //
@@ -274,7 +275,7 @@ $headings-margin-bottom:      $spacer;
 $headings-font-family:        inherit !default;         // 'proxima_novabold', -apple-syste...
 $headings-font-weight:        700;                      // 900
 $headings-line-height:        1.2 !default;
-$headings-color:              $darkest-blue;
+$headings-color:              #493A3C;
 
 $display1-size:               6rem !default;
 $display2-size:               5.5rem !default;
@@ -788,27 +789,27 @@ $badge-pill-border-radius:          10rem !default;
 // Modals
 
 // Padding applied to the modal body
-$modal-inner-padding:               1rem !default;
+$modal-inner-padding:               0; 
 
-$modal-dialog-margin:               .5rem !default;
-$modal-dialog-margin-y-sm-up:       1.75rem !default;
+$modal-dialog-margin:               0;
+$modal-dialog-margin-y-sm-up:       0;
 
 $modal-title-line-height:           $line-height-base !default;
 
-$modal-content-bg:                  $white !default;
+$modal-content-bg:                  transparent;
 $modal-content-border-color:        rgba($black, .2) !default;
-$modal-content-border-width:        $border-width !default;
+$modal-content-border-width:        0; //$border-width;
 $modal-content-border-radius:       $border-radius-lg !default;
 $modal-content-box-shadow-xs:       0 .25rem .5rem rgba($black, .5) !default;
 $modal-content-box-shadow-sm-up:    0 .5rem 1rem rgba($black, .5) !default;
 
 $modal-backdrop-bg:                 $black !default;
-$modal-backdrop-opacity:            .5 !default;
+$modal-backdrop-opacity:            .8;
 $modal-header-border-color:         $gray-200 !default;
 $modal-footer-border-color:         $modal-header-border-color !default;
 $modal-header-border-width:         $modal-content-border-width !default;
 $modal-footer-border-width:         $modal-header-border-width !default;
-$modal-header-padding:              1rem !default;
+$modal-header-padding:              0;
 
 $modal-lg:                          800px !default;
 $modal-md:                          500px !default;

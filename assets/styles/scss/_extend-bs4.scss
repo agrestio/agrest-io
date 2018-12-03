@@ -90,3 +90,18 @@
 		@extend .min-h-100px;
 	}
 
+
+
+//
+// [Extend] Embed responsive
+//
+.by-height {
+	display: inline-block;
+	vertical-align: bottom;
+	width: auto;
+	max-width: 100%;
+   
+	 &:before {
+	   padding-right: calc(70vh * 1.77);
+	 }
+ }
