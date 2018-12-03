@@ -1,11 +1,14 @@
 {
-  "name": "Agrest",
+  "name": "agrest",
   "version": "3.0.0",
   "description": "",
   "main": "index.html",
   "scripts": {
     "sass-dev": "node-sass -w assets/styles/scss -o assets/styles --output-style expanded",
-    "sass-build": "node-sass assets/styles/scss -o assets/styles --output-style compressed"
+    "sass-build": "node-sass assets/styles/scss -o assets/styles --output-style compressed",
+    "uglify-concat-main": "uglifyjs node_modules/jquery/dist/jquery.min.js node_modules/popper.js/dist/umd/popper.min.js node_modules/bootstrap/dist/js/bootstrap.min.js -o assets/scripts/vendor.min.js",
+    "uglify-concat-ie": "uglifyjs node_modules/es6-promise/dist/es6-promise.auto.min.js node_modules/cross-fetch/dist/cross-fetch.js -o assets/scripts/ie-support.min.js",
+    "uglify-concat": "npm run uglify-concat-main && npm run uglify-concat-ie"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +20,7 @@
     "es6-promise": "^4.2.5",
     "jquery": "^3.3.1",
     "node-sass": "^4.9.0",
-    "popper.js": "^1.14.5"
+    "popper.js": "^1.14.5",
+    "uglify-js": "^3.4.9"
   }
 }

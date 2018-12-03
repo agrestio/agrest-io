@@ -6,31 +6,36 @@
 
 
 // VARS
-$tab-bg:              #424854;
-$tab-color:           rgba($white, .5);
-$tab-active-bg:       #3a3f49;
-$tab-active-color:    rgba($white, .8);
-$tab-conent-bg:       $darkest-blue;
-$tab-left-side:       #2B303B;
-$tab-stepper-color:   #424854;
+$tab-bg:                        transparent;
+$tab-color:                     rgba($white, .5);
+$tab-active-bg:                 rgba($black, 0.13);
+$tab-active-color:              rgba($white, .8);
+$tab-conent-bg:                 rgba($black, 0.13);
+$tab-left-side:                 rgba($black, 0.32);
+$tab-step-counter-inactive:     rgba($secondary, .6);
+$tab-base-bg:                   #585253;
+$tab-stepper-color:             #424854;
 
 .code-tabs {
     letter-spacing: normal;
     border-left: 24px solid $tab-left-side;
     border-radius: 0 0 .25em .25em;
-    background-color: $tab-bg;
+    background-color: $tab-base-bg;
 
     > div  {
       display: none;
       padding: 20px 0 10px .25em;
-      background-color: $tab-conent-bg;
-      margin-left: -5px;
+      // margin-left: -5px;
       padding: 2.2222222em;
       border-radius: 0 0 .25em 0;
+      background-color: $tab-conent-bg;
+      // pre and inner childs color
+      * {
+        color: $white;
+      }
       
       @include media-breakpoint-down(md) {
         padding: 1.2222222em;
-        // font-size: .888888em;
         font-size: .777777em;
       }
     }
@@ -44,6 +49,10 @@ $tab-stepper-color:   #424854;
       position: relative;
       margin: 0 0 0 -5px;
       text-align: center;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
 
       .tab-text {
         padding: 10px 17px;
@@ -63,8 +72,8 @@ $tab-stepper-color:   #424854;
 
     > label .tab-text:hover {
       cursor: pointer;
-      color: rgba(255, 255, 255, 0.34);
-      background-color: #404550; // darken($tab-active-bg, .1%);
+      color: rgba(255, 255, 255, 0.4);
+      background-color: darken($tab-base-bg, 2%);
     }
 
     > input[type=radio]:checked + label .tab-text {
@@ -74,11 +83,11 @@ $tab-stepper-color:   #424854;
 
     > input[type=radio]:checked + label {
       .step-counter {
-        color: $tab-stepper-color;
-        border-color: $tab-stepper-color;
+        color: $tab-base-bg;
+        border-color: $tab-base-bg;
         
         &:before {
-          border-color: $tab-stepper-color;
+          border-color: $tab-base-bg;
         }
       }
     }
