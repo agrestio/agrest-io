@@ -30,7 +30,7 @@ $tab-stepper-color:             #424854;
       border-radius: 0 0 .25em 0;
       background-color: $tab-conent-bg;
       // pre and inner childs color
-      * {
+      > * {
         color: $white;
       }
       

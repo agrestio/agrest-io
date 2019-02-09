@@ -1,0 +1,145 @@
+// Docs
+
+// Docs : Layout
+.docs-layout {
+    display: -ms-grid;
+    display: grid;
+    grid-gap: 0;
+    -ms-grid-columns: 100%;
+    grid-template-columns: 100%;
+    -ms-grid-rows: auto 0 auto 0 auto;
+    grid-template-areas: 
+        'docs-cont-h1'
+        'docs-side'
+        'docs-cont';
+}
+
+.docs-sidebar {
+    -ms-grid-row: 3;
+    -ms-grid-column: 1;
+    grid-area: docs-side;
+}
+
+.docs-content-heading {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    grid-area: docs-cont-h1;
+}
+
+.docs-content {
+    -ms-grid-row: 5;
+    -ms-grid-column: 1;
+    grid-area: docs-cont;
+}
+
+@include media-breakpoint-up(lg) {
+    .docs-layout {
+        -ms-grid-columns: 33.33333% 0 66.66667%;
+        grid-template-columns: 33.33333% 66.66667%;
+        -ms-grid-rows: auto 0 auto 0 auto;
+        grid-template-areas: 
+            'docs-side docs-cont-h1'
+            'docs-side docs-cont'
+            'docs-side docs-cont';
+    }
+    .docs-sidebar {
+        -ms-grid-row: 1;
+        -ms-grid-row-span: 5;
+        -ms-grid-column: 1;
+    }
+    .docs-content-heading {
+        -ms-grid-row: 1;
+        -ms-grid-column: 3;
+    }
+    .docs-content {
+        -ms-grid-row: 3;
+        -ms-grid-row-span: 3;
+        -ms-grid-column: 3;
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    .docs-layout {
+        -ms-grid-columns: 25% 0 75%;
+        grid-template-columns: 25% 75%;
+    }
+}
+
+
+// Docs : #toc
+#toc {
+    position: sticky;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: .875rem; //1rem;
+    left: 0;
+    top: 0;
+    @extend .py-2_2;
+
+    .nav {
+        flex-direction: column;
+
+        .nav {
+            margin-left: 1em;
+        }
+    }
+
+    .nav-link {
+        color: $gray-550; //$body-color;
+        line-height: 1.4;
+        padding: 0 0 .75rem .2rem;
+        
+        &.active {
+            color: darken($body-color, 15%);
+            font-weight: 600;
+        }
+    }
+
+    // hide childs of inactive parents
+    @include media-breakpoint-up(lg) {
+        .nav ul {
+            display: none;
+        }
+    }
+    
+    // ul 2nd and others active
+    .active ~ ul {
+        display: block;
+    }
+
+    code {
+        font-size: inherit;
+    }
+}
+
+// Docs : #toctile
+#toctitle {
+    display: none;
+}
+
+// Docs : Content styles
+.docs-content {
+
+    .sect2 {
+        @extend .pb-2_2;
+    }
+
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        color: $headings-color;
+    }
+
+    p,
+    ul, ol,
+    pre {
+        margin-bottom: 1.5rem;
+    }
+
+    table,
+    img {
+        margin-bottom: 2rem;
+    }
+}
+
+
+
