@@ -1,0 +1,23 @@
+<div >
+
+    <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="https://agrest.io/">
+                <img src="{{ "images/logo.svg"| relURL }}" alt="agrest">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="mainmenu">
+                <div class="navbar-right">
+                    {{ partial "main_menu_docs.html" . }}
+                    <ul class="navbar-nav" id="navbar-social-links">
+                        <li class="nav-item"><a href="https://github.com/agrestio/agrest" class="nav-link"><img class="inline-svg icon-svg" src=" {{ "images/fa/fab/github-brands.svg"| relURL }}" alt="GitHub"></a></li>
+                        <li class="nav-item"><a href="https://twitter.com/AgrestProject" class="nav-link"><img class="inline-svg icon-svg" src=" {{ "images/fa/fab/twitter-brands.svg"| relURL }}" alt="Twitter"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- /container -->
+    </nav>
+
+</div>

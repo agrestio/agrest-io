@@ -1,0 +1,25 @@
+<!doctype html>
+<html class="no-js" lang="en-us">
+  {{ partial "head-index.html" . }}
+  <body>
+
+    {{ partial "navbar-docs.html" . }}
+
+    <div class="not-found-page container content docbook">
+      <h1>
+        Page not found
+      </h1>
+      <hr/>
+
+      <article>
+        <h2 class="detail">Oops! That page can’t be found.</h2>
+        <p class="suggestion">It looks like nothing was found at this location. Go back to <a href="{{ .Site.BaseURL }}">agrest.io</a>.
+        </p>
+      </article>
+    </div>
+
+    {{ partial "footer.html" . }}
+
+  </body>
+</html>
+

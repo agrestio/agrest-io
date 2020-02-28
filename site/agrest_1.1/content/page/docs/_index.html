@@ -1,0 +1,2282 @@
+---
+title: "Documentation"
+date: 2020-02-24T12:16:58+03:00
+draft: false
+layout: docs-index
+url: "/docs/"
+---
+
+<!-- Overview -->
+
+<div class="sect1">
+    <h2 id="_i_overview">I. Agrest Overview</h2>
+    <h2 id="what-is-agrest"><a class="anchor" href="#what-is-agrest"></a>1. What is Agrest</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Agrest is a set of tools to build web APIs for your data. You would use it to expose a data store
+                (such as a relational database) as a RESTful web service. To achieve that
+                goal Agrest defines a simple HTTP/JSON-based protocol
+                (described in <a href="#_ii_protocol">Agrest Protocol</a>) and a server-side framework (described in <a href="#_iii_framework">Agrest Framework</a>).
+                The protocol ensures that any client, be it JavaScript, a mobile
+                app or maybe a server-side app, can make sense of any Agrest-enabled service. The
+                framework is written in Java and helps you to build services adhering to the
+                protocol.</p>
+        </div>
+        <div class="paragraph">
+            <p>Agrest is open source and is distributed under the terms of
+                <a href="https://raw.githubusercontent.com/agrestio/agrest/master/LICENSE.txt">Apache 2.0 license</a></p>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="what-agrest-is-not"><a class="anchor" href="#what-agrest-is-not"></a>2. What Agrest is Not</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Agrest is not an automated engine to take your DB online with a single command.
+                You still have to write code for JAX-RS endpoints (however simple and trivial that code might end up being).
+                Having this code around allows you to customize processing, implement security around endpoints, hide certain methods, etc.
+                This is a defensive approach that goes a long way to avoid unintended consequences when opening up your data on the web.</p>
+        </div>
+        <div class="paragraph">
+            <p>Having said that, such an engine can be written on top of Agrest with relative ease.</p>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="supported-data-stores"><a class="anchor" href="#supported-data-stores"></a>3. Supported Data Stores</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Agrest is written on top of <a href="http://cayenne.apache.org">Apache Cayenne ORM</a>
+                and supports any relational data store, such as MySQL or Oracle.
+                Support for alternative data stores can be provided with relative ease. E.g. NoSQL
+                databases, flat files, etc. E.g. we&#8217;ve written POJO and LDAP backends.</p>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="security"><a class="anchor" href="#security"></a>4. Security</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>From the very beginning Agrest was designed with security in mind. It can be easily
+                integrated with common web and enterprise security solutions
+                (OAuth, <a href="http://shiro.apache.org/">Apache Shiro</a>, Spring Security, etc.),
+                giving Java developers a straightforward API to implement custom object and attribute-level access.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Protocol -->
+
+<div class="sect1">
+    <h2 id="_ii_protocol">II. Agrest Protocol</h2>
+    <h2 id="overview"><a class="anchor" href="#overview"></a>1. Overview</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Agrest Protocol is a simple HTTP/JSON-based message protocol. It operates on an object
+                model implicitly shared between a client and a server. It defines the format of JSON
+                documents exchanged between client and server, and a set of control parameters that let the
+                client to control representation of the model returned from the server. E.g. the client may
+                request a range of objects, sorted in a specific order, matching a criteria, with each
+                object including a subset of attributes and related entities. This gives the client exactly
+                what it needs, thus simplifying the code, minimizing the number of trips to the server, and
+                optimizing the size of the response.</p>
+        </div>
+        <div class="paragraph">
+            <p><code>application/json</code> is used in both requests and responses where applicable.
+                Values of some control parameters below are also represented as JSON.</p>
+        </div>
+        <div class="paragraph">
+            <p>All examples below use an imaginary CMS data model that is made of 2 entities: Domain
+                and Article, with a 1..N relationship between them:</p>
+        </div>
+        <div class="imageblock" style="text-align: center">
+            <div class="content">
+                <img src="../../../images/protocol/model.png" alt="model">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="json-documents"><a class="anchor" href="#json-documents"></a>2. JSON Documents</h2>
+    <div class="sectionbody">
+        <div class="sect2">
+            <h3 id="response-simple-document"><a class="anchor" href="#response-simple-document"></a>2.1. Response: Simple Document</h3>
+            <div class="paragraph">
+                <p>This document is used in responses that contain no data, just a boolean status and a
+                    message. On success it might look like this:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+   "success" : true,
+   "message" : "all is good"
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>On failure it might look like this:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 500 Server error
+Content-Type: application/json
+
+{
+   "success" : false,
+   "message" : "Database connection failure"
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="response-collection-document"><a class="anchor" href="#response-collection-document"></a>2.2. Response: Collection Document</h3>
+            <div class="paragraph">
+                <p>A document that passes the data from the server to the client. This is the main
+                    representation of data in Agrest.</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+   "data" : [
+      { "id" : 5, "name": "A" },
+      { "id" : 8, "name": "B" }
+   ],
+   "total" : 2
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p><code>"data"</code> array contains entity objects. Implicit entity model defines what
+                    attributes and relationships (collectively - "properties") each object has. A subset of
+                    properties showing in the collection document is a defined by a combination of
+                    server-side constraints and client request control parameters. Each object in the data
+                    array may contain related objects, those in turn may contain their related objects, with
+                    no limit on the depth of nesting.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>"total"</code> is a number of objects one would see in the collection if there
+                    was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with <code>start / limit</code></a>),
+                    the total may be greater than the number of visible objects in the "data" array.
+                    Otherwise it is equal to the size of "data".</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="request-update-document"><a class="anchor" href="#request-update-document"></a>2.3. Request: Update Document</h3>
+            <div class="paragraph">
+                <p>Update Document is sent from the client to the server to modify an entity collection.
+                    It is a Collection document stripped down to its "data" section. There are two flavors -
+                    a single object and an array of objects:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+                    <pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 5, "name": "X" }</code></pre>
+                </div>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">[
+   { "id" : 5, "name": "X" },
+   { "id" : 8, "name": "Y" }
+]</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="dates-and-times"><a class="anchor" href="#dates-and-times"></a>3. Dates and Times</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>JSON doesn&#8217;t have datatypes for either date or time. Both are represented as strings.
+                Server and client must ensure that date/time strings are in
+                <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> E.g.:</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">2015-04-19T11:08:53Z
+2015-04-10T11:08
+2015-04-19</code></pre>
+            </div>
+        </div>
+        <div class="paragraph">
+            <p>Developers should not assume that the server is in the same time zone as the browser.
+                All timezone-aware expressions should contain time zone offset or "Z" suffix (for "Zulu" time).</p>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="control-parameters"><a class="anchor" href="#control-parameters"></a>4. Control Parameters</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Control parameters, usually passed as URL keys, apply to the Collection Document and let
+                the server to provide a single generic endpoint per entity, while still allowing the client
+                to shape up the response Collection to its liking. These parameters are normally used with
+                GET, however POST/PUT can also return a Collection Document, so many of the parameters are
+                also applicable when modifying the data.</p>
+        </div>
+        <div class="sect2">
+            <h3 id="filtering-collection-with-cayenneexp"><a class="anchor" href="#filtering-collection-with-cayenneexp"></a>4.1. Filtering Collection with <code>cayenneExp</code></h3>
+            <div class="paragraph">
+                <p>A conditional expression that is used to filter the response objects. Expression
+                    String should follow the
+                    <a href="http://cayenne.apache.org/docs/4.0/cayenne-guide/expressions.html">format understood by Cayenne</a>
+                    (hence the name - "cayenneExp"). The root for the property paths is the request entity
+                    (unless "cayenneExp" is used within a relationship "include", in which case the root is that related entity).</p>
+            </div>
+            <div class="paragraph">
+                <p>Example 1: Filtering on a single property.</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code class="language-json" data-lang="json">cayenneExp=vhost='agrest.io'</code></pre>
+            </div>
+            <div class="paragraph">
+                <p>Example 2: Filtering using outer join (the "+" sign is Cayenne notation for outer).</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code class="language-json" data-lang="json">cayenneExp=articles+ = null</code></pre>
+            </div>
+            <div class="paragraph">
+                <p>Example 3: Filtering with parameters using positional bindings.</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code class="language-json" data-lang="json">cayenneExp=["articles.body like $b","%Agrest%"]</code></pre>
+            </div>
+            <div class="paragraph">
+                <p>Example 4: Filtering with parameters using named bindings.</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code class="language-json" data-lang="json">cayenneExp={ "exp" : "articles.body like $b", "params":{"b":"%Agrest%"}}</code></pre>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="ordering-collection-with-sort-dir"><a class="anchor" href="#ordering-collection-with-sort-dir"></a>4.2. Ordering Collection with <code>sort / dir</code></h3>
+            <div class="paragraph">
+                <p>Example 1: Sort on a single property.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>sort=vhost</code></p>
+            </div>
+            <div class="paragraph">
+                <p>Example 2: Sort descending on a property.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>sort=id&amp;dir=DESC</code></p>
+            </div>
+            <div class="paragraph">
+                <p><code>dir</code> can be one of <code>ASC</code> (default), <code>DESC</code>, <code>ASC_CI</code> (for case-insensitive asending ordering), <code>DESC_CI</code> (for case-insensitive descending ordering)</p>
+            </div>
+            <div class="paragraph">
+                <p>Example 3: Same as 2, but sort is a JSON object.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>sort={"property":"vhost","direction":"DESC"}</code></p>
+            </div>
+            <div class="paragraph">
+                <p><code>"direction"</code> takes the same values as <code>dir</code> above - <code>ASC</code> (implied default), <code>DESC</code>, <code>ASC_CI</code>, <code>DESC_CI</code></p>
+            </div>
+            <div class="paragraph">
+                <p>Example 4: Multiple sortings as a single JSON structure.</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code class="language-json" data-lang="json">sort=[{"property":"name"},"property":"vhost","direction":"DESC"}]</code></pre>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="Pagination"><a class="anchor" href="#Pagination"></a>4.3. Pagination with <code>start / limit</code></h3>
+            <div class="paragraph">
+                <p>These two parameters are used together to request from the server a range of objects
+                    for a potentially huge collection. They allow to implement efficient data pagination on the client.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>"start"</code> is an offset within the "data" array. All the objects below this
+                    offset are discarded from the collection. Default "start" is 0.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>"limit"</code> is a maximum number of objects in the collection "data". Default is infinity (no limit).</p>
+            </div>
+            <div class="paragraph">
+                <p>"limit" is applied after "start". So for a collection with a total of 10 objects,
+                    <code>?start=2&amp;limit=5</code> would result in objects 2..6 returned from the server. Returned Collection "total" would still be 10.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="structuring-collection-with-mapby"><a class="anchor" href="#structuring-collection-with-mapby"></a>4.4. Structuring Collection with <code>mapBy</code></h3>
+            <div class="paragraph">
+                <p>Agrest presents the response as an array of entities <a href="#response-collection-document">Response: Collection Document</a>.
+                    E.g. Request of articles returns the following array:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+"data" : [
+    { "title" : "Agrest mapBy",  "body" : "mapBy is used ..", "publishedOn" : "6 July, 2018" },
+    { "title" : "Other Tech News",  "body" : "Java community ..", "publishedOn" : "8 October, 2017" },
+    { "title" : "Introducing Agrest",  "body" : "Agrest is a ..", "publishedOn" : "6 July, 2018" }
+  ],
+  "total":3
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Using <code>mapBy</code> this array can be transformed to a map. One of entity fields is used as the key of required map.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>mapBy=publishedOn</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+"data" : {
+    "8 October, 2017" : [
+        { "title" : "Other Tech News",  "body" : "Java community …", "publishedOn" : "8 October, 2017" }
+    ],
+    "6 July, 2018" : [
+        { "title" : "Agrest mapBy",  "body" : "mapBy is used …", "publishedOn" : "6 July, 2018" },
+        { "title" : "Introducing Agrest",  "body" : "Agrest is a …", "publishedOn" : "6 July, 2018" }
+    ]
+  },
+  "total" : 3
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="shaping-collection-with-include-exclude"><a class="anchor" href="#shaping-collection-with-include-exclude"></a>4.5. Shaping Collection with <code>include / exclude</code></h3>
+            <div class="paragraph">
+                <p>Model entities may have "simple" properties (attributes) and properties that point to
+                    related entities (relationships). By default Collection Document contains entity
+                    representation that includes its "id", all of its attributes, and none of the
+                    relationships. "include" and "exclude" parameters allow the client to request a specific
+                    subset of entity properties, including related entities. Some examples are given below,
+                    showing include/exclude parameters and resulting entity contents.</p>
+            </div>
+            <div class="paragraph">
+                <p>Example 1: Include default properties (all entity attributes) minus "vhost" attribute.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>exclude=vhost</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+                    <pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 2: Exclude all properties, but "id".</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=id</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+                    <pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45 }</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 3: Multiple includes, one of them points to attributes of related entity.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=id&amp;include=articles.title</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+   "id" : 45,
+   "articles" : [
+      { "title" : "Agrest Includes" },
+      { "title" : "Other Tech News" },
+      { "title" : "Introducing Agrest" }
+   ]
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 4: Advanced include. Include specification can itself be a JSON object and
+                    contain <code>"cayenneExp"</code>, <code>"sort"</code>, <code>"start"</code> and <code>"limit"</code> keys shaping up a collection
+                    of related objects for each root object.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include={"path":"articles","cayenneExp":"title like '%Agrest%'","sort":"title"}&amp;include=articles.title</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+   "id" : 45,
+   "articles" : [
+      { "title" : "Introducing Agrest" },
+      { "title" : "Agrest Includes" }
+   ]
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 5: Related objects as a map. Here we&#8217;ll map article bodies by title.</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include={"path":"articles","mapBy":"title"}&amp;include=articles.body</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+   "articles" : {
+      "Introducing Agrest" : { "body" : "Agrest is a .." },
+      "Agrest Includes" : { "body" : "Includes are .." }
+   }
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 6: Include and Exclude parameters have ability to take an array of values:</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=["id","name"]</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+                    <pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 7: The array can contain both the simple include and the advanced include values</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=["id","articles.title",{"path":"articles","cayenneExp":"title like '%Agrest%'"}]</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+   "id" : 45,
+   "articles" : [
+      { "title" : "Introducing Agrest" },
+      { "title" : "Agrest Includes" }
+   ]
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 8: Attributes of a related entity can be presented as an inner array in JSON format:</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=["id","name",{"articles":["title","body"]}]</code></p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+   "id" : 45,
+   "name" : "Agrest Site",
+   "articles" : [
+      { "title" : "Introducing Agrest", "body" : "Agrest is a .." },
+      { "title" : "Agrest Includes", "body" : "Includes are .." }
+   ]
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Example 9: The related entity can be specified as a path value:</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include=["id","name",{"articles.categories":["id","name"]}]</code></p>
+            </div>
+            <div class="paragraph">
+                <p>Example 10: The advanced include can contain the array of include values:</p>
+            </div>
+            <div class="paragraph">
+                <p><code>include={"path":"articles","sort":"title","include":["title",{"categories":["id","name"]}]}</code></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="protocol-extensions"><a class="anchor" href="#protocol-extensions"></a>5. Protocol Extensions</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p><code>Agrest</code> ships with one such optional extension that adapts the framework
+                for the use with Sencha/ExtJS JavaScript client. This extension is described below.</p>
+        </div>
+        <div class="sect2">
+            <h3 id="sencha-adapter"><a class="anchor" href="#sencha-adapter"></a>5.1. Sencha Adapter</h3>
+            <div class="paragraph">
+                <p>Provides a few extensions to the Agrest protocol to better handle certain Sencha features:</p>
+            </div>
+            <div class="ulist">
+                <ul>
+                    <li>
+                        <p>If a to-one relationship property is included in the Collection, the
+                            framework would also generate a companion "synthetic" FK property called
+                            "propertyName_id"</p>
+                    </li>
+                    <li>
+                        <p><code>"filter"</code> key - an alternative to <code>"cayenneExp"</code>.</p>
+                    </li>
+                    <li>
+                        <p><code>"group"</code> / <code>"groupDir"</code> keys that are functionally equivalent to <code>"sort"</code> / <code>"dir"</code>.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Framework -->
+
+<div class="sect1">
+    <h2 id="_iii_framework">III. Agrest Framework</h2>
+    <!--        <h2 id="prerequisites"><a class="anchor" href="#prerequisites"></a>1. Prerequisites</h2>-->
+    <div class="sectionbody">
+        <div class="ulist">
+            <ul>
+                <li>
+                    <p>Java 1.8 or newer</p>
+                </li>
+                <li>
+                    <p>A Java web app project that will serve your REST requests.</p>
+                </li>
+                <li>
+                    <p>A JAX-RS 2.0 container, such as Jersey 2.x.</p>
+                </li>
+                <li>
+                    <p>Cayenne 4.0.M4 or newer. Mapping your database and starting Cayenne
+                        ServerRuntime is outside the scope of this document. Please refer to the
+                        <a href="http://cayenne.apache.org/docs/4.0/cayenne-guide/index.html">corresponding Cayenne docs</a></p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="getting-started"><a class="anchor" href="#getting-started"></a>2. Getting Started</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>To load Agrest in your project, follow these simple steps:</p>
+        </div>
+        <div class="olist arabic">
+            <ol class="arabic">
+                <li>
+                    <p>Declare Agrest dependency. Here is a Maven example. If you are using Gradle or
+                        Ant, you do what needs to be done there to include Agrest dependency.</p>
+                    <div class="listingblock">
+                        <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+   &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+   &lt;artifactId&gt;agrest&lt;/artifactId&gt;
+   &lt;version&gt;3.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <p>Create <code>AgRuntime</code>, and load it in JAX-RS container. Assuming the
+                        container is Jersey, this may look like this:</p>
+                    <div class="listingblock">
+                        <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import javax.ws.rs.ApplicationPath;
+import org.glassfish.jersey.server.ResourceConfig;
+import io.agrest.runtime.AgBuilder;
+
+/**
+ * A Jersey-specific JAX-RS Application class that loads Agrest.
+ */
+@ApplicationPath("/")
+public class JaxRsApplication extends ResourceConfig {
+
+	public JaxRsApplication() {
+
+            ServerRuntime cayenneRuntime = ...
+            AgRuntime agRuntime = AgBuilder.build(cayenneRuntime);
+            super.register(agRuntime);
+
+            // continue with Application setup...
+            ...
+	}
+}</code></pre>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="paragraph">
+            <p>Now you are ready to write Agrest endpoints.</p>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="writing-resource-endpoints"><a class="anchor" href="#writing-resource-endpoints"></a>3. Writing Resource Endpoints</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Let&#8217;s create a resource class called DomainResource, annotated with JAX-RS @Path and
+                @Produces annotations. One extra thing we need for Agrest to work is a an instance of
+                <code>javax.ws.rs.core.Configuration</code>, that can be injected with <code>@Context</code> annotation:</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Configuration;
+import javax.ws.rs.core.Context;
+
+@Path("domain")
+@Produces(MediaType.APPLICATION_JSON)
+public class DomainResource {
+
+    @Context
+    private Configuration config;
+}</code></pre>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="create-entity-with-post"><a class="anchor" href="#create-entity-with-post"></a>3.1. Create Entity with <code>POST</code></h3>
+            <div class="paragraph">
+                <p>Now let&#8217;s implement a <code>POST</code> method in DomainResource class:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.Ag;
+import io.agrest.SimpleResponse;
+
+...
+
+@POST
+public SimpleResponse create(String data) {
+    return Ag.create(Domain.class, config).sync(data);
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Here we&#8217;ve built a very simple "create chain" using Agrest fluent API. It starts with a
+                    static "create" method on Agrest class, taking a type of entity to create (Domain) and
+                    previously injected Configuration. Finally it calls "sync" method to execute the
+                    request. "data" String is expected to be an "Update Document" (see <a href="#request-update-document">Request: Update Document</a>), i.e. a single object or an array of objects.
+                    Now if you compile your app and deploy it in a web container (e.g. Tomcat), you may call
+                    this endpoint to create new Domain objects:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code>curl -i -X POST 'http://example.org/myapp/domain' \
+&gt;          -d '{"vhost":"mysite1.example.org","name":"My Site #1"}'</code></pre>
+                </div>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 201 Created
+Content-Type: application/json
+
+{"success":true}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>In your container log you might see output from Cayenne, actually inserting a newly created object:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">INFO CommonsJdbcEventLogger - INSERT INTO "domain" ("name", "vhost") VALUES (?, ?)
+INFO CommonsJdbcEventLogger - [bind: 1-&gt;name:'My Site #1', 2-&gt;vhost:'mysite1.example.org']
+INFO CommonsJdbcEventLogger - Generated PK: domain.id = 1
+INFO CommonsJdbcEventLogger - === updated 1 row.</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="read-collection-of-entities-with-get"><a class="anchor" href="#read-collection-of-entities-with-get"></a>3.2. Read Collection of Entities with <code>GET</code></h3>
+            <div class="paragraph">
+                <p>You may create more Domain objects, executing <code>POST</code> request above. Now
+                    let&#8217;s write a <code>GET</code> method to search for domains:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.DataResponse;
+import io.agrest.Ag;
+
+...
+
+@GET
+public DataResponse&lt;Domain&gt; getAll(@Context UriInfo uriInfo) {
+    return Ag.select(Domain.class, config).uri(uriInfo).get();
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>The above is a typical "select chain". Now <code>GET</code> can be invoked from the
+                    client like this:</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code>curl -i -X GET 'http://example.org/myapp/domain'</code></pre>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "data" : [
+        { "id" : 1, "name" : "My Site #1", "vhost" : "mysite1.example.org" },
+        { "id" : 2, "name" : "My Site #2", "vhost" : "mysite2.example.org" }
+    ],
+    "total" : 2
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Since select chain above incorporates UriInfo, it will recognize Agrest control
+                    parameters passed from the client (see <a href="#control-parameters">Control Parameters</a>). Let&#8217;s try using "cayenneExp" filter and "include":</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code>curl -i -X GET 'http://example.org/myapp/domain?cayenneExp=vhost="mysite1.example.org"&amp;include=id'</code></pre>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "data" : [
+        { "id" : 1 }
+    ],
+    "total" : 1
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="read-a-single-entity-with-get"><a class="anchor" href="#read-a-single-entity-with-get"></a>3.3. Read a Single Entity with <code>GET</code></h3>
+            <div class="paragraph">
+                <p>A common request is to locate a single instance of an entity by ID. Here is how
+                    this can be done with Agrest:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.DataResponse;
+import io.agrest.Ag;
+
+...
+
+@GET
+@Path("{id}")
+public DataResponse&lt;Domain&gt; getOne(@PathParam("id") int id, @Context UriInfo uriInfo) {
+    return Ag.select(Domain.class, config).byId(id).uri(uriInfo).getOne();
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Here we are binding "id" as a URL path parameter, but also notice that Agrest doesn&#8217;t
+                    mandate any specific place in the URL for ID. This is a decision made by the developer.
+                    Calling this endpoint, we&#8217;ll get an expected result:</p>
+            </div>
+            <div class="paragraph">
+                <pre class="highlight"><code>curl -i -X GET 'http://example.org/myapp/domain/1'</code></pre>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    "data" : [
+        { "id" : 1, "name" : "My Site #1", "vhost" : "mysite1.example.org" }
+    ],
+    "total" : 1
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Even though we expect at most one object to be returned, the response is the same Collection
+                    Document as we&#8217;ve seen before.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="update-entity-with-put"><a class="anchor" href="#update-entity-with-put"></a>3.4. Update Entity with <code>PUT</code></h3>
+            <div class="paragraph">
+                <p>To update the entity we created before <a href="#create-entity-with-post">Create Entity with <code>POST</code></a> we have to implement a <code>PUT</code> method in DomainResource class:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.Ag;
+import io.agrest.SimpleResponse;
+
+...
+
+@PUT
+@Path("{id}")
+public SimpleResponse update(@PathParam("id") int id, String data) {
+    return Ag.update(Domain.class, config).id(id).sync(data);
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>This simple "update chain" is very similar to the <a href="#create-entity-with-post">Create Entity with <code>POST</code></a> and the <a href="#read-a-single-entity-with-get">Read a Single Entity with <code>GET</code></a> chains.
+                    Try to sent a request to this endpoint and get a result as expected</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code>curl -i -X PUT 'http://example.org/myapp/domain/1' \
+&gt;          -d '{"vhost":"mysite2.example.org","name":"My Site #2"}'</code></pre>
+                </div>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{"success":true}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Apart of that, Agrest provides other ways to update entity with <code>PUT</code>. Please, refer to <a href="#idempotency-of-updating-chains">Idempotency of Updating Chains</a> for more information.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="request-chains"><a class="anchor" href="#request-chains"></a>4. Request Chains</h2>
+    <div class="sectionbody">
+        <div class="sect2">
+            <h3 id="available-chains"><a class="anchor" href="#available-chains"></a>4.1. Available Chains</h3>
+            <div class="paragraph">
+                <p>As demonstrated by earlier examples, to process a given request you need to build an
+                    appropriate Agrest "chain". Each chain starts with a call to a static method of Agrest
+                    class, that determines chain type, parameters it can take, and the type of response it
+                    generates. Each chain type naturally maps to a single HTTP method. Although ultimately the
+                    mapping of chains to methods is not enforced by Agrest and is left to the application
+                    developer. The following chains are available:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">// use with @GET
+Ag.select(SomeEntity.class, config)...
+
+// use with @DELETE
+Ag.delete(SomeEntity.class, config)...
+
+// use with @POST
+Ag.create(SomeEntity.class, config)...
+
+// use with @POST
+Ag.createOrUpdate(SomeEntity.class, config)...
+
+// use with @PUT
+Ag.idempotentCreateOrUpdate(SomeEntity.class, config)...
+
+// use with @PUT
+Ag.idempotentFullSync(SomeEntity.class, config)...
+
+// use with @GET for metadata endpoints
+Ag.metadata(SomeEntity.class, config)...</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="strategies-for-object-matching"><a class="anchor" href="#strategies-for-object-matching"></a>4.2. Strategies for Object Matching</h3>
+            <div class="paragraph">
+                <p>Many of the updating chains need to match objects coming as Update Documents (see <a href="#request-update-document">Request: Update Document</a>) against
+                    objects in the database. E.g. "createOrUpdate" needs to know whether a JSON object is new (and needs to be created)
+                    or it already exists (and needs to be updated). By default Agrest would attempt to match each JSON
+                    "id" attribute with a DB record primary key. This is a reasonable and useful strategy. Its
+                    main limitation though - it can&#8217;t be used for entities with ids generated on the server when
+                    combined with idempotent requests (see the next section on idempotency). To work around this
+                    limitation one may use a meaningful unique property that is known to the client at the object
+                    creation time. E.g. our Domain entity has a unique property "vhost".</p>
+            </div>
+            <div class="paragraph">
+                <p>To ensure the chain uses a property other than "id" for matching, a user may should set an
+                    explicit mapper on the chain:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">Ag.idempotentCreateOrUpdate(Domain.class, config)
+  .mapper(ByKeyObjectMapperFactory.byKey(Domain.VHOST))
+  .sync(entityData);</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p><code>ByKeyObjectMapperFactory</code> mapper is provided by Agrest. If something other than mapping by property is needed, a
+                    custom <code>ObjectMapperFactory</code> can be coded by the user.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="idempotency-of-updating-chains"><a class="anchor" href="#idempotency-of-updating-chains"></a>4.3. Idempotency of Updating Chains</h3>
+            <div class="paragraph">
+                <p>It is easy to distinguish updating chains that are idempotent from those that are not
+                    (chain factory method starts with "idempotent" for the former). Both work the same way, except
+                    that "idempotent" ones perform an extra check on the input to ensure that it is repeatable,
+                    i.e. it will be safe to run it multiple times with the same effect as running it once. At the
+                    minimum this means that all the "new" objects have their ids set in the request. This is where
+                    <code>ByKeyObjectMapperFactory</code> discussed above comes in handy. Pretty much all
+                    idempotent chains need to use <code>ByKeyObjectMapperFactory</code> or an equivalent mapper to
+                    match by some unique property of the entity, that is known to the client at the object
+                    creation time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="non-persistent-properties-and-pojos"><a class="anchor" href="#non-persistent-properties-and-pojos"></a>5. Non-Persistent Properties and POJOs</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>Agrest maintains a model of all entities that can be exposed via REST. All persistent
+                entities present in the underlying ORM (usually Cayenne) are automatically added to Agrest
+                model. What if you want to expose additional non-persistent properties of peristent objects or
+                build entire request chains that are not based on persistent entities? There are three
+                annotations to help with it: <code>@AgAttribute</code> or <code>@AgRelationship</code> and <code>@AgId</code>.</p>
+        </div>
+        <div class="paragraph">
+            <p>The first example is a typical Cayenne persistent class that has some transient properties:</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.annotation.AgAttribute;
+
+// a typical Cayenne persistent class
+public class Domain extends _Domain {
+
+  @AgAttribute
+  public String getLowercaseName() {
+    return getName().toLowerCase();
+  }
+}</code></pre>
+            </div>
+        </div>
+        <div class="paragraph">
+            <p>This one was simple. The second example is an entire POJO not known to Cayenne:</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.annotation.AgAttribute;
+import io.agrest.annotation.AgRelationship;
+
+// a POJO not mapped in Cayenne
+public class SomeClass {
+
+  private int id;
+  private String string;
+  private SomeOtherClass related;
+
+  @AgId
+  public int getId() {
+    return id;
+  }
+
+  @AgAttribute
+  public String getString() {
+    return string;
+  }
+
+  @AgRelationship
+  public SomeOtherClass getRelated() {
+    return related;
+  }
+}</code></pre>
+            </div>
+        </div>
+        <div class="paragraph">
+            <p>Creating and annotating a POJO was easy. But Agrest still requires a backend that knows
+                how to select and/or update those POJOs. Such custom "backends" can be configured per request
+                chain using chain listener API. It is up to the caller what strategy the backend would utilize
+                (maybe a REST call, or reading/writing from a NoSQL DB, etc.) :</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">// an object with methods annotated with one of the
+// 'io.agrest.annotation.listener' annotations
+SomeCustomBackend altBackend = new SomeCustomBackend();
+
+Ag.select(SomeClass.class, config).listener(altBackend).uri(urlInfo).get();</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="relationship-resources"><a class="anchor" href="#relationship-resources"></a>6. Relationship Resources</h2>
+    <div class="sectionbody">
+
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="securing-endpoints"><a class="anchor" href="#securing-endpoints"></a>7. Securing Endpoints</h2>
+    <div class="sectionbody">
+
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="customizing-request-processing"><a class="anchor" href="#customizing-request-processing"></a>8. Customizing Request Processing</h2>
+    <div class="sectionbody">
+        <div class="paragraph">
+            <p>To customize request processing chain Agrest provides the <code>stage</code> mechanism.
+                E.g. we have usual get-by-id request chain:</p>
+        </div>
+        <div class="listingblock">
+            <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.DataResponse;
+import io.agrest.Ag;
+
+...
+
+@Context
+private Configuration config;
+
+@GET
+@Path("{id}")
+public DataResponse&lt;Domain&gt; getOne(@PathParam("id") int id, @Context UriInfo uriInfo) {
+    return Ag.select(Domain.class, config)
+             .byId(id)
+             .uri(uriInfo)
+             .getOne();
+}</code></pre>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="stage"><a class="anchor" href="#stage"></a>8.1. stage</h3>
+            <div class="paragraph">
+                <p>Just add <code>stage</code> method to the chain and put two parameters:</p>
+            </div>
+            <div class="ulist">
+                <ul>
+                    <li>
+                        <p>Name of stage after which your custom processing apply.</p>
+                    </li>
+                    <li>
+                        <p>Lambda expression that implements the processing.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="paragraph">
+                <p>The implementation can use provided <code>SelectContext</code> for inspecting and modifying.
+                    Please, pay attention that the context may have different state for different stages.</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">...
+
+@Context
+private Configuration config;
+
+@GET
+@Path("{id}")
+public DataResponse&lt;Domain&gt; getOne(@PathParam("id") int id, @Context UriInfo uriInfo) {
+    return Ag.select(Domain.class, config)
+             .byId(id)
+             .uri(uriInfo)
+             .stage(SelectStage.PARSE_REQUEST, (SelectContext&lt;Domain&gt; c) -&gt; {
+                // TODO: Add a customization with regards of the parse request stage
+             })
+             .getOne();
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>Agrest supports the following stage types:</p>
+            </div>
+            <table class="tableblock frame-all grid-all" style="width: 50%;">
+                <colgroup>
+                    <col style="width: 50%;">
+                    <col style="width: 50%;">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td class="tableblock halign-left valign-top" rowspan="6"><p class="tableblock">SelectStage</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">START</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">PARSE_REQUEST</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">CREATE_ENTITY</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">APPLY_SERVER_PARAMS</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">ASSEMBLE_QUERY</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">FETCH_DATA</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top" rowspan="6"><p class="tableblock">UpdateStage</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">START</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">PARSE_REQUEST</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">CREATE_ENTITY</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">APPLY_SERVER_PARAMS</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">UPDATE_DATA_STORE</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">FILL_RESPONSE</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top" rowspan="2"><p class="tableblock">DeleteStage</p></td>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">START</p></td>
+                </tr>
+                <tr>
+                    <td class="tableblock halign-left valign-top"><p class="tableblock">DELETE_IN_DATA_STORE</p></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="paragraph">
+                <p>Apart of the <code>stage</code> method Agrest provides additional two <code>terminalStage</code> and <code>routingStage</code> methods.
+                    These two could be customised in the same way.</p>
+            </div>
+            <div class="paragraph">
+                <p>Please, pay attention that these stage operations are composable. For each stage all custom processors will be invoked in the order they were registered.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="terminalstage"><a class="anchor" href="#terminalstage"></a>8.2. terminalStage</h3>
+            <div class="paragraph">
+                <p>Registers a consumer to be executed after the specified standard execution stage.
+                    The rest of the standard pipeline following the named stage will be skipped.
+                    This is useful for quick assembly of custom back-ends that reuse the initial stages of Agrest processing,
+                    but query the data store on their own. The consumer can inspect and modify provided context <code>SelectContext</code> or <code>UpdateContext</code>.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="routingstage"><a class="anchor" href="#routingstage"></a>8.3. routingStage</h3>
+            <div class="paragraph">
+                <p>Registers a processor to be executed after the specified standard execution stage.
+                    The processor can inspect and modify provided context <code>SelectContext</code> or <code>UpdateContext</code>.
+                    When finished, processor can either pass control to the next stage by returning
+                    <code>ProcessorOutcome.CONTINUE</code>, or terminate the pipeline by returning <code>ProcessorOutcome.STOP</code>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Workflow  -->
+
+<div class="sect1">
+    <h2 id="_iv_workflow">IV. Agrest Workflow</h2>
+    <h2 id="create-a-simple-agrest-app"><a class="anchor" href="#create-a-simple-agrest-app"></a>1. Create a Simple <code>Agrest</code> App</h2>
+    <div class="sectionbody">
+        <div class="sect2">
+            <h3 id="setting-up-the-environment"><a class="anchor" href="#setting-up-the-environment"></a>1.1. Setting up the environment</h3>
+            <div class="paragraph">
+                <p>In this chapter, we install (or check that you already have installed) a minimally needed set of software to build an Agrest-based application.</p>
+            </div>
+            <div class="sect3">
+                <h4 id="install-java"><a class="anchor" href="#install-java"></a>Install Java</h4>
+                <div class="paragraph">
+                    <p>JDK has to be installed. In this tutorial we use JDK 1.8.</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="install-intellij-idea"><a class="anchor" href="#install-intellij-idea"></a>Install IntelliJ IDEA</h4>
+                <div class="paragraph">
+                    <p>Download and install IntelliJ IDEA Community Edition.
+                        This tutorial is based on version 2016.3, still it should work with any recent IntelliJ IDEA version.</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="the-resulting-application"><a class="anchor" href="#the-resulting-application"></a>The resulting application</h4>
+                <div class="paragraph">
+                    <p>The final application could be downloaded from GitHub:
+                        <a href="https://github.com/agrestio/agrest-bookstore-example">Bookstore app</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="starting-a-project"><a class="anchor" href="#starting-a-project"></a>1.2. Starting a project</h3>
+            <div class="paragraph">
+                <p>In this chapter, we create a new Java project in IntelliJ IDEA
+                    and introduce a simple Bookstore application that will be used as an example.</p>
+            </div>
+            <div class="sect3">
+                <h4 id="define-a-bookstore-domain-model"><a class="anchor" href="#define-a-bookstore-domain-model"></a>Define a <code>Bookstore</code> Domain Model</h4>
+                <div class="paragraph">
+                    <p>The application contains two types of entities: <code>Category</code> and <code>Book</code>.
+                        The relationship between <code>Category</code> and <code>Book</code> entities is <strong>one-to-many</strong>.</p>
+                </div>
+                <div class="imageblock" style="text-align: center">
+                    <div class="content">
+                        <img src="../../../images/workflow/bookstore_er_diagram.png" alt="bookstore er diagram">
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="create-a-new-project-in-intellij-idea"><a class="anchor" href="#create-a-new-project-in-intellij-idea"></a>Create a new Project in IntelliJ IDEA</h4>
+                <div class="paragraph">
+                    <p>In IntelliJ IDEA, select <code>File &gt; New &gt; Project..</code>. Then select <code>Maven</code> and click <code>Next</code>.</p>
+                </div>
+                <div class="paragraph">
+                    <p>In the dialog shown on the screenshot below, fill in the <code>Group Id</code>
+                        and <code>Artifact Id</code> fields and click <code>Next</code>.</p>
+                </div>
+                <div class="imageblock" style="text-align: center">
+                    <div class="content">
+                        <img src="../../../images/workflow/tutorial-idea-project.png" alt="tutorial idea project">
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>During the next step, you will be able to customize the directory for your project.
+                        Click <code>Finish</code> where you are done. Now you should have a new empty project.</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="configure-maven-pom-xml"><a class="anchor" href="#configure-maven-pom-xml"></a>Configure Maven <code>pom.xml</code></h4>
+                <div class="paragraph">
+                    <p>Add the following dependencies:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+    &lt;artifactId&gt;agrest&lt;/artifactId&gt;
+    &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
+    &lt;version&gt;2.27&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.inject&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-hk2&lt;/artifactId&gt;
+    &lt;version&gt;2.27&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+    &lt;artifactId&gt;derby&lt;/artifactId&gt;
+    &lt;version&gt;10.13.1.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>Configure a <code>jetty</code> Maven plugin to start app using <code>mvn jetty:run</code> command</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
+    &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;9.4.12.v20180830&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;scanIntervalSeconds&gt;5&lt;/scanIntervalSeconds&gt;
+        &lt;classesDirectory&gt;${project.basedir}/target/classes&lt;/classesDirectory&gt;
+        &lt;supportedPackagings&gt;&lt;supportedPackaging&gt;jar&lt;/supportedPackaging&gt;&lt;/supportedPackagings&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="implementation"><a class="anchor" href="#implementation"></a>1.3. Implementation</h3>
+            <div class="paragraph">
+                <p>In this chapter, we implement a simple application to demonstrate Agrest features.
+                    The application uses <code>Cayenne</code> as an ORM framework and for further information
+                    regarding a DB mapping please, refer to <a href="http://cayenne.apache.org">Apache Cayenne ORM</a></p>
+            </div>
+            <div class="sect3">
+                <h4 id="configure-cayenne"><a class="anchor" href="#configure-cayenne"></a>Configure <code>Cayenne</code></h4>
+                <div class="paragraph">
+                    <p>In the application&#8217;s <code>resources</code> folder, create a Cayenne project file:</p>
+                </div>
+                <div class="paragraph">
+                    <p><strong>cayenne-project.xml</strong></p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;domain project-version="9"&gt;
+    &lt;map name="datamap"/&gt;
+
+    &lt;node name="datanode"
+          factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
+          schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy"
+    &gt;
+        &lt;map-ref name="datamap"/&gt;
+        &lt;data-source&gt;
+            &lt;driver value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+            &lt;url value="jdbc:derby:memory:testdb;create=true"/&gt;
+            &lt;connectionPool min="1" max="1"/&gt;
+            &lt;login/&gt;
+        &lt;/data-source&gt;
+    &lt;/node&gt;
+&lt;/domain&gt;</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>In the same folder, add a file that contains a basic Cayenne mapping.
+                        The mapping is done based on the ER diagram from the <a href="#starting-a-project">Starting a project</a> charter:</p>
+                </div>
+                <div class="paragraph">
+                    <p><strong>datamap.map.xml</strong></p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;data-map xmlns="http://cayenne.apache.org/schema/9/modelMap"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://cayenne.apache.org/schema/9/modelMap https://cayenne.apache.org/schema/9/modelMap.xsd"
+          project-version="9"&gt;
+    &lt;property name="defaultPackage" value="org.example.agrest.persistent"/&gt;
+    &lt;db-entity name="BOOK"&gt;
+        &lt;db-attribute name="AUTHOR" type="VARCHAR" length="128"/&gt;
+        &lt;db-attribute name="CATEGORY_ID" type="INTEGER"/&gt;
+        &lt;db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/&gt;
+        &lt;db-attribute name="TITLE" type="VARCHAR" isMandatory="true" length="128"/&gt;
+    &lt;/db-entity&gt;
+    &lt;db-entity name="CATEGORY"&gt;
+        &lt;db-attribute name="DESCRIPTION" type="NCLOB"/&gt;
+        &lt;db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true"/&gt;
+        &lt;db-attribute name="NAME" type="VARCHAR" isMandatory="true" length="128"/&gt;
+    &lt;/db-entity&gt;
+    &lt;obj-entity name="Book" className="org.example.agrest.persistent.Book" dbEntityName="BOOK"&gt;
+        &lt;obj-attribute name="author" type="java.lang.String" db-attribute-path="AUTHOR"/&gt;
+        &lt;obj-attribute name="title" type="java.lang.String" db-attribute-path="TITLE"/&gt;
+    &lt;/obj-entity&gt;
+    &lt;obj-entity name="Category" className="org.example.agrest.persistent.Category" dbEntityName="CATEGORY"&gt;
+        &lt;obj-attribute name="description" type="java.lang.String" db-attribute-path="DESCRIPTION"/&gt;
+        &lt;obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/&gt;
+    &lt;/obj-entity&gt;
+    &lt;db-relationship name="category" source="BOOK" target="CATEGORY" toMany="false"&gt;
+        &lt;db-attribute-pair source="CATEGORY_ID" target="ID"/&gt;
+    &lt;/db-relationship&gt;
+    &lt;db-relationship name="books" source="CATEGORY" target="BOOK" toMany="true"&gt;
+        &lt;db-attribute-pair source="ID" target="CATEGORY_ID"/&gt;
+    &lt;/db-relationship&gt;
+    &lt;obj-relationship name="category" source="Book" target="Category" deleteRule="Nullify" db-relationship-path="category"/&gt;
+    &lt;obj-relationship name="books" source="Category" target="Book" deleteRule="Deny" db-relationship-path="books"/&gt;
+&lt;/data-map&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="define-domain-models"><a class="anchor" href="#define-domain-models"></a>Define domain models</h4>
+                <div class="paragraph">
+                    <p>Create two classes to present data objects in package <code>org.example.agrest.persistent</code>:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class Category extends CayenneDataObject {
+
+    public static final String ID_PK_COLUMN = "ID";
+
+    public static final Property&lt;String&gt; DESCRIPTION = Property.create("description", String.class);
+    public static final Property&lt;String&gt; NAME = Property.create("name", String.class);
+    public static final Property&lt;List&lt;Book&gt;&gt; BOOKS = Property.create("books", List.class);
+}</code></pre>
+                    </div>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class Book extends CayenneDataObject {
+
+    public static final String ID_PK_COLUMN = "ID";
+
+    public static final Property&lt;String&gt; AUTHOR = Property.create("author", String.class);
+    public static final Property&lt;String&gt; TITLE = Property.create("title", String.class);
+    public static final Property&lt;Category&gt; CATEGORY = Property.create("category", Category.class);
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="implement-agrest-application-classes"><a class="anchor" href="#implement-agrest-application-classes"></a>Implement <code>Agrest</code> application classes</h4>
+                <div class="paragraph">
+                    <p>Create an application and a resource class in package <code>org.example.agrest</code>:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">@ApplicationPath("/api/*")
+public class BookstoreApplication extends ResourceConfig {
+
+    public BookstoreApplication() {
+
+        ServerRuntime cayenneRuntime
+                = ServerRuntime.builder()
+                               .addConfig("cayenne-project.xml")
+                               .build();
+
+        AgRuntime agRuntime = AgBuilder.build(cayenneRuntime);
+        super.register(agRuntime);
+
+        packages("org.example.agrest");
+    }
+}</code></pre>
+                    </div>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">@Path("category")
+@Produces(MediaType.APPLICATION_JSON)
+public class CategoryResource {
+
+    @Context
+    private Configuration config;
+
+    @POST
+    public SimpleResponse create(String data) {
+        return Ag.create(Category.class, config).sync(data);
+    }
+
+    @GET
+    public DataResponse&lt;Category&gt; getAll(@Context UriInfo uriInfo) {
+        return Ag.select(Category.class, config).uri(uriInfo).get();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="configure-web-xml"><a class="anchor" href="#configure-web-xml"></a>Configure <code>web.xml</code></h4>
+                <div class="paragraph">
+                    <p>Provide a servlet configuration and a mapping based on the application class that you already created.</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         metadata-complete="false"
+         version="3.1"&gt;
+
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;BookstoreApp&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;javax.ws.rs.Application&lt;/param-name&gt;
+            &lt;param-value&gt;org.example.agrest.BookstoreApplication&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/servlet&gt;
+
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;BookstoreApp&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/api/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+
+&lt;/web-app&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="running-the-application"><a class="anchor" href="#running-the-application"></a>1.4. Running the Application</h3>
+            <div class="paragraph">
+                <p>In this chapter, we run and test our application.
+                    After you have completed the above steps, the structure of your project will look like this:</p>
+            </div>
+            <div class="imageblock" style="text-align: center">
+                <div class="content">
+                    <img src="../../../images/workflow/bookstore_ide_prjct.png" alt="bookstore ide prjct">
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="building-and-running"><a class="anchor" href="#building-and-running"></a>Building and running</h4>
+                <div class="paragraph">
+                    <p>To build the application, use the <code>mvn clean install</code> command.</p>
+                </div>
+                <div class="paragraph">
+                    <p>To run a jetty server with our application, use the mvn jetty:run command.</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="configure-intellij-idea-maven-plugin"><a class="anchor" href="#configure-intellij-idea-maven-plugin"></a>Configure IntelliJ IDEA Maven plugin</h4>
+                <div class="paragraph">
+                    <p>To run the application using IDE, add a new <code>Maven</code> configuration on a menu path <code>Run &#8594; Edit Configurations&#8230;&#8203;</code>.
+                        Then set a <code>Name:</code> (e.g. <strong>Bookstore</strong>) and a <code>Command line:</code> in <strong>jetty:run</strong></p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="testing"><a class="anchor" href="#testing"></a>Testing</h4>
+                <div class="paragraph">
+                    <p>After running the application, you can call this endpoint to get a list of categories:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre class="highlight"><code>curl -i -X GET 'http://localhost:8080/api/category'</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>And get the following response:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Date: Wed, 03 Oct 2018 10:14:51 GMT
+Content-Type: application/json
+Content-Length: 21
+Server: Jetty(9.3.14.v20161028)
+
+{"data":[],"total":0}</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>As you may see, the list is empty. So, use the 'POST' command to add some categories:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre class="highlight"><code>curl -i -X POST 'http://localhost:8080/api/category'  -d '{"id":"1","name":"Science Fiction"}'</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>Repeat the command, if necessary:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre class="highlight"><code>curl -i -X POST 'http://localhost:8080/api/category' -d '{"id":"2","name":"Horror"}'</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>The response will be:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 201 Created
+Date: Wed, 03 Oct 2018 10:42:17 GMT
+Content-Type: application/json
+Content-Length: 16
+Server: Jetty(9.3.14.v20161028)
+
+{"success":true}</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>Now make the 'GET' request again and you will receive the following:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+Date: Wed, 03 Oct 2018 10:44:44 GMT
+Content-Type: application/json
+Content-Length: 117
+Server: Jetty(9.3.14.v20161028)
+
+{"data":[{"id":1,"description":null,"name":"Science Fiction"},{"id":2,"description":null,"name":"Horror"}],"total":2}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="design-first-approach"><a class="anchor" href="#design-first-approach"></a>2. Design-First Approach</h2>
+    <div class="sectionbody">
+        <div class="sect2">
+            <h3 id="introduction"><a class="anchor" href="#introduction"></a>2.1. Introduction</h3>
+            <div class="paragraph">
+                <p>The API Design-First (or API-First) approach prescribes writing your API definition first as a contract before writing any code.
+                    This approach is more modern than the traditional Code-First approach.
+                    If main consumers of your API are third parties, partners or customers, the Design-First approach is the best choice.
+                    It allows you to provide good design for mission-critical APIs.</p>
+            </div>
+            <div class="ulist">
+                <ul>
+                    <li>
+                        <p>The contract that represents API specification is the best point for discussion. It can be visualized by using such tools as Swagger UI.</p>
+                    </li>
+                    <li>
+                        <p>Based on API specification, you can even run a mock service. This way, developers and stakeholders will be able to preview and discuss the suggested design.</p>
+                    </li>
+                    <li>
+                        <p>You can fix most high-level design issues before writing any code.</p>
+                    </li>
+                    <li>
+                        <p>The final contract that is approved by all players tends to lead do better API.</p>
+                    </li>
+                    <li>
+                        <p>API documentation and appropriated tests could be generated from the contract. This means you can have the application ready sooner.</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="paragraph">
+                <p>In the beginning of developing an API, it is very important to understand the difference between Design-First, Code-First and DB-First approaches.
+                    And to help with it there are listed three principles you have to follow to reach all benefits of API Design-First approach:</p>
+            </div>
+            <div class="olist arabic">
+                <ol class="arabic">
+                    <li>
+                        <p>The API is the first user interface of the application</p>
+                    </li>
+                    <li>
+                        <p>The API comes first, than the implementation</p>
+                    </li>
+                    <li>
+                        <p>The API is self-descriptive</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="setting-up-the-environment-2"><a class="anchor" href="#setting-up-the-environment-2"></a>2.2. Setting up the environment</h3>
+            <div class="paragraph">
+                <p>In this chapter, we check that you already have installed an Agrest-based application that can be used to demonstrate the Design-First approach.</p>
+            </div>
+            <div class="sect3">
+                <h4 id="prerequisites"><a class="anchor" href="#prerequisites"></a>Prerequisites</h4>
+                <div class="paragraph">
+                    <p>Set up and build an application example from previous chapter <a href="#create-a-simple-agrest-app">Create a Simple <code>Agrest</code> App</a>.
+                        You can either follow a step-by-step process to create an application from scratch or get a ready-made application from
+                        GitHub <a href="https://github.com/agrestio/agrest-bookstore-example">Bookstore app</a></p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="prepare-the-bookstore-application"><a class="anchor" href="#prepare-the-bookstore-application"></a>Prepare the Bookstore application</h4>
+                <div class="paragraph">
+                    <p>As we described above, the Design-First approach means the API specification comes first, and the code comes second.</p>
+                </div>
+                <div class="paragraph">
+                    <p>So, we have to remove from the application classes that defined API resources.
+                        In our case it is <code>CategoryResource.java</code> we have created manually.
+                        Later all our API resources will be generated from <code>.yaml</code> definition automatically according to
+                        the Design-First approach.</p>
+                </div>
+                <div class="paragraph">
+                    <p>Then update the <code>pom.xml</code>.</p>
+                </div>
+                <div class="paragraph">
+                    <p>Add the <code>openapi-generator-maven-plugin</code> plugin and appropriate settings.
+                        For more details, please refer tothe next section <a href="#configure-and-run-api-generation">Configure and run API generation</a></p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
+    &lt;groupId&gt;org.openapitools&lt;/groupId&gt;
+    &lt;artifactId&gt;openapi-generator-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0.2&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;generate&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;inputSpec&gt;${project.basedir}/src/main/resources/bookstore-api.yaml&lt;/inputSpec&gt;
+                &lt;generatorName&gt;io.swagger.codegen.languages.AgServerCodegen&lt;/generatorName&gt;
+                &lt;output&gt;${project.basedir}&lt;/output&gt;
+                &lt;apiPackage&gt;org.example.agrest&lt;/apiPackage&gt;
+                &lt;modelPackage&gt;org.example.agrest.persistent&lt;/modelPackage&gt;
+                &lt;invokerPackage&gt;org.example.agrest&lt;/invokerPackage&gt;
+                &lt;generateModels&gt;false&lt;/generateModels&gt;
+                &lt;skipOverwrite&gt;false&lt;/skipOverwrite&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
+            &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
+            &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/plugin&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="the-resulting-application-2"><a class="anchor" href="#the-resulting-application-2"></a>The resulting application</h4>
+                <div class="paragraph">
+                    <p>The final application that implements Design-First approach is available on GitHub at:
+                        <a href="https://github.com/agrestio/agrest-openapi-designfirst-bookstore-example">Bookstore Design-first app</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="defining-the-api"><a class="anchor" href="#defining-the-api"></a>2.3. Defining the API</h3>
+            <div class="paragraph">
+                <p>Agrest provides the <code>AgServerCodegen</code> class and a set of custom Mustache templates to generate an API implementation
+                    based on <code>OpenAPI 3.0</code> specification.</p>
+            </div>
+            <div class="paragraph">
+                <p>The top-down workflow for creating the API is as follows:</p>
+            </div>
+            <div class="sect3">
+                <h4 id="1-start-with-domain-models"><a class="anchor" href="#1-start-with-domain-models"></a>1. Start with domain models</h4>
+                <div class="paragraph">
+                    <p>Create a <code>bookstore-api.yaml</code> file to define your API and put it in the <code>src/main/java/resources</code> folder.
+                        Add general information regarding your API:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">openapi: 3.0.0
+servers:
+  - url: 'http://127.0.0.1/v1'
+info:
+  title: Agrest-based API of Bookstore
+  description: An API for interacting with the Bookstore backend server
+  version: v1</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>Then add definition of your models.
+                        If you want to create an updated API (e.g. POST, PUT) of your model, you have to define a 'requestBodies' element
+                        in addition to a 'schemas' element.</p>
+                </div>
+                <div class="paragraph">
+                    <p>Please make sure that you can either specify existing Java-DB mapping classes
+                        (based on <code>CayenneDataObject</code> e.g. our <code>Category</code> and <code>Book</code>) or generate simple POJO models  by Maven plugin.</p>
+                </div>
+                <div class="paragraph">
+                    <p>For further information, please refer to <a href="#configure-and-run-api-generation">Configure and run API generation</a> section.</p>
+                </div>
+                <div class="paragraph">
+                    <p>But in either case you have to define models in the <code>.yaml</code> file:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">tags:
+  - name: Category
+    description: |
+      This model represents a Category type and is used to retrieve, create and update a book Category information.
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+       id:
+         type: string
+         description: Unique ID of Category
+         example: 1
+       name:
+         type: string
+         description: Book Category name
+         example: Science Fiction
+       description:
+         type: string
+         description: Description of Category
+         example: Science fiction (often shortened to Sci-Fi or SF) is a genre of speculative fiction.
+
+  requestBodies:
+    Category:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Category'
+      description: Category object that needs to be created or updated
+      required: true</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="2-attach-agrest-protocol-definition"><a class="anchor" href="#2-attach-agrest-protocol-definition"></a>2. Attach Agrest protocol definition</h4>
+                <div class="paragraph">
+                    <p>The Agrest protocol file <a href="#protocol">protocol.yaml</a> contains definition of all <a href="#control-parameters">Control Parameters</a>.
+                        Just place this <code>protocol.yaml</code> in the catalog were your main <code>bookstore-api.yaml</code> file is located (e.g. 'src/main/java/resources').</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="3-define-resources"><a class="anchor" href="#3-define-resources"></a>3. Define resources</h4>
+                <div class="paragraph">
+                    <p>Add REST API resource definition to your <code>bookstore-api.yaml</code> file.
+                        Make sure that Agrest protocol parameters are defined as references.</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">paths:
+  /category:
+    get:
+      summary: Get list of all Book Categories
+      operationId: getAll
+      tags:
+        - Category
+      parameters:
+        - $ref: '../resources/protocol.yaml#/components/queryParams/Limit'
+        - $ref: '../resources/protocol.yaml#/components/queryParams/Start'
+      responses:
+        '200':
+          description: Success response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        default:
+          description: Unexpected error
+    post:
+      tags:
+        - Category
+      summary: Create a new Book Category
+      operationId: create
+      requestBody:
+        $ref: "#/components/requestBodies/Category"
+      responses:
+        default:
+          description: successful operation
+
+  /category/{id}:
+    get:
+      description: Returns a particular Book Category
+      operationId: getOne
+      tags:
+        - Category
+      parameters:
+        - name: id
+          in: path
+          description: ID of Category to fetch
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success responce
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: Unexpected error</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="4-run-build-time-api-generation"><a class="anchor" href="#4-run-build-time-api-generation"></a>4. Run build-time API generation</h4>
+                <div class="paragraph">
+                    <p>To generate an Agrest-based API, a special Maven plugin is used.
+                        This plugin should be configured in accordance with your <code>.yaml</code> files location
+                        <a href="#inputSpec">&lt;inputSpec&gt;</a>, packages <a href="#apiPackage">&lt;apiPackage&gt;</a>, output catalog <a href="#output">&lt;output&gt;</a>, etc.</p>
+                </div>
+                <div class="paragraph">
+                    <p><code>mvn clean install</code> runs generation of the API.</p>
+                </div>
+                <div class="paragraph">
+                    <p>For more details, please refer to the <a href="#configure-and-run-api-generation">Configure and run API generation</a> section</p>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="validate-the-api-implementation"><a class="anchor" href="#validate-the-api-implementation"></a>2.4. Validate the API implementation</h3>
+            <div class="paragraph">
+                <p>After it has been successfully generated, <code>CategoryResource.java</code> could be found in the output catalog.
+                    This class has a ready-to-use implementation (not a stub) of all methods defined in the <code>.yaml</code> file.</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">@Path("/")
+public class CategoryResource {
+
+    @Context
+    private Configuration config;
+
+    @POST
+    @Path("/v1/category")
+    @Consumes({ "application/json" })
+    public DataResponse&lt;Category&gt; create(String category) {
+        AgRequest agRequest = Ag.request(config)
+                .build();
+
+        return Ag.create(Category.class, config)
+                 .request(agRequest)
+                 .syncAndSelect(category);
+    }
+
+    @GET
+    @Path("/v1/category")
+    @Produces({ "application/json" })
+    public DataResponse&lt;Category&gt; getAll(@QueryParam("limit") Integer limit, @QueryParam("start") Integer start) {
+        AgRequest agRequest = Ag.request(config)
+                .limit(limit)
+                .start(start)
+                .build();
+
+        return Ag.select(Category.class, config)
+                 .request(agRequest)
+                 .get();
+    }
+
+    @GET
+    @Path("/v1/category/{id}")
+    @Produces({ "application/json" })
+        public DataResponse&lt;Category&gt; getOne(@PathParam("id") Integer id) {
+        AgRequest agRequest = Ag.request(config)
+                .build();
+
+        return Ag.select(Category.class, config)
+                 .byId(id)
+                 .request(agRequest)
+                 .get();
+    }
+}</code></pre>
+                </div>
+            </div>
+            <div class="paragraph">
+                <p>If you configure Maven plugin to generate models <a href="#generateModels">&lt;generateModels&gt;</a>, the POJO <code>Category.java</code> will be generated.</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class Category   {
+
+    private Integer id = null;
+    private String name = null;
+    private String description = null;
+
+...
+    /**
+     * Unique ID of Category
+     * @return id
+     **/
+    @AgAttribute
+    @ApiModelProperty(example = "1", value = "Unique ID of Category")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+...
+    /**
+     * Book Category name
+     * @return name
+     **/
+    @AgAttribute
+    @ApiModelProperty(example = "Science Fiction", value = "Book Category name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="configure-and-run-api-generation"><a class="anchor" href="#configure-and-run-api-generation"></a>2.5. Configure and run API generation</h3>
+            <div class="paragraph">
+                <p>There is an example of the Maven plugin configuration:</p>
+            </div>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;plugin&gt;
+    &lt;groupId&gt;org.openapitools&lt;/groupId&gt;
+    &lt;artifactId&gt;openapi-generator-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;3.0.2&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;generate&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;inputSpec&gt;${project.basedir}/src/main/resources/bookstore-api.yaml&lt;/inputSpec&gt;
+                &lt;generatorName&gt;io.swagger.codegen.languages.AgServerCodegen&lt;/generatorName&gt;
+                &lt;output&gt;${project.basedir}&lt;/output&gt;
+                &lt;apiPackage&gt;org.example.agrest&lt;/apiPackage&gt;
+                &lt;modelPackage&gt;org.example.agrest.persistente&lt;/modelPackage&gt;
+                &lt;invokerPackage&gt;org.example.agrest&lt;/invokerPackage&gt;
+                &lt;generateModels&gt;false&lt;/generateModels&gt;
+                &lt;skipOverwrite&gt;false&lt;/skipOverwrite&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
+            &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
+            &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/plugin&gt;</code></pre>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="inputSpec"><a class="anchor" href="#inputSpec"></a>&lt;inputSpec&gt;</h5>
+                <div class="paragraph">
+                    <p>Points to your API definition in <code>.yaml</code> or <code>.json</code> formats.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="generatorName"><a class="anchor" href="#generatorName"></a>&lt;generatorName&gt;</h5>
+                <div class="paragraph">
+                    <p>Sets the Agrest custom code generator.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="output"><a class="anchor" href="#output"></a>&lt;output&gt;</h5>
+                <div class="paragraph">
+                    <p>Sets the output catalog for all generated items.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="apiPackage"><a class="anchor" href="#apiPackage"></a>&lt;apiPackage&gt;</h5>
+                <div class="paragraph">
+                    <p>Contains full package name of resource implementation classes to be generated.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="modelPackage"><a class="anchor" href="#modelPackage"></a>&lt;modelPackage&gt;</h5>
+                <div class="paragraph">
+                    <p>Contains full package name of model classes.
+                        If <a href="#generateModels">&lt;generateModels&gt;</a> is set to <code>true</code>, the POJO stubs of models will be generated.
+                        Otherwise, existing model classes from this package will be used.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="generateModels"><a class="anchor" href="#generateModels"></a>&lt;generateModels&gt;</h5>
+                <div class="paragraph">
+                    <p>Generates POJO of models or uses existing ones.</p>
+                </div>
+            </div>
+            <div class="sect4">
+                <h5 id="skipOverwrite"><a class="anchor" href="#skipOverwrite"></a>&lt;skipOverwrite&gt;</h5>
+                <div class="paragraph">
+                    <p>If it is set to <code>false</code>, all generated files will be overwritten each time during <code>mvn clean install</code>.
+                        So, if you are planning to customize the generated API implementation, this parameter should be set to <code>true</code>.</p>
+                </div>
+            </div>
+            <div class="sect3">
+                <h4 id="run-the-application"><a class="anchor" href="#run-the-application"></a>Run the Application</h4>
+                <div class="paragraph">
+                    <p>As we mentioned in the chapter <a href="#building-and-running">Building and running</a> the Application is run by command <code>mvn jetty:run</code>.
+                        After the Jetty server starts, the following <code>curl</code> commands can be used for the API testing:</p>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre class="highlight"><code>curl -i -X GET 'http://localhost:8080/api/v1/category'</code></pre>
+                    </div>
+                </div>
+                <div class="listingblock">
+                    <div class="content">
+                        <pre class="highlight"><code>curl -i -X POST -H 'Content-Type: application/json' 'http://localhost:8080/api/v1/category'  -d '{"id":"1","name":"Science Fiction"}'</code></pre>
+                    </div>
+                </div>
+                <div class="paragraph">
+                    <p>Please, pay attention that the <code>POST</code> command has to contain the <code>Content-Type</code> parameter according to the annotation
+                        of the 'create' method of the <code>CategoryResource</code> class.</p>
+                </div>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="more-examples-with-integration-tests"><a class="anchor" href="#more-examples-with-integration-tests"></a>2.6. More examples with integration tests</h3>
+            <div class="paragraph">
+                <p>Agrest has more <a href="https://github.com/agrestio/agrest/tree/master/agrest-openapi-designfirst-test">Examples</a>
+                    of Design-First approach implementation that are provided as separate module with set of tests.
+                    To run it use <code>mvn clean install</code> command.
+                    The API description (contract) is defined in file <code>src/test/java/resources/api.yaml</code>.</p>
+            </div>
+            <div class="paragraph">
+                <p>All generated APIs will be located on <code>src/test/java</code> together with corresponding integration tests.</p>
+            </div>
+            <div class="paragraph">
+                <p>During the build time the API implementation is generated by Maven plugin and then this implementation is checked by integration tests.
+                    We use testing fixtures from <a href="https://github.com/agrestio/agrest/tree/master/agrest">agrest</a> module as models.</p>
+            </div>
+        </div>
+        <div class="sect2">
+            <h3 id="protocol"><a class="anchor" href="#protocol"></a>2.7. protocol.yaml</h3>
+            <div class="listingblock">
+                <div class="content">
+<pre class="highlight"><code class="language-yaml" data-lang="yaml">components:
+  queryParams:
+
+    CayenneExp:
+      name: cayenneExp
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: object
+        properties:
+          exp:
+            type: string
+            description: A conditional expression that is used to filter the response objects
+            example: articles.body like $b
+          params:
+            type: object
+            additionalProperties:
+              type: string
+      description: cayenneExp query
+      required: false
+
+    Dir:
+      name: dir
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+      description: sorting direction
+      required: false
+
+    Excludes:
+      name: exclude
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/queryParams/Exclude'
+      description: list of excludes
+      required: false
+
+    Exclude:
+      name: exclude
+      in: query
+      schema:
+        type: object
+        properties:
+          path:
+            type: string
+          excludes:
+            type: array
+            items:
+              $ref: '#/components/queryParams/Exclude'
+      description: An exclude parameter
+      required: false
+
+    Includes:
+      name: include
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/queryParams/Include'
+      description: list of includes
+      required: false
+
+    Include:
+      name: include
+      in: query
+      schema:
+        type: object
+        properties:
+          value:
+            type: string
+          cayenneExp:
+            $ref: '#/components/queryParams/CayenneExp'
+          sort:
+            $ref: '#/components/queryParams/Sort'
+          mapBy:
+            $ref: '#/components/queryParams/MapBy'
+          path:
+            type: string
+          start:
+            $ref: '#/components/queryParams/Start'
+          limit:
+            $ref: '#/components/queryParams/Limit'
+          includes:
+            type: array
+            items:
+              $ref: '#/components/queryParams/Include'
+      description: An include parameter
+      required: false
+
+    Limit:
+      name: limit
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: object
+        properties:
+          value:
+            type: integer
+            format: int32
+            description:
+      description: limit query param. Used for pagination.
+      required: false
+
+    Start:
+      name: start
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: object
+        properties:
+          value:
+            type: integer
+            format: int32
+            description:
+      description: start query param. Used for pagination.
+      required: false
+
+    MapBy:
+      name: mapBy
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: object
+        properties:
+          path:
+            type: string
+            description:
+      description:
+      required: false
+
+    Sort:
+      name: sort
+      in: query
+      style: form
+      explode: false
+      schema:
+        type: object
+        properties:
+          property:
+            type: string
+            description:
+          direction:
+            type: object
+            $ref: '#/components/queryParams/Dir'
+          sorts:
+            type: array
+            items:
+              $ref: '#/components/queryParams/Sort'
+      description: sort
+      required: false</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sect1">
+    <h2 id="code-first-approach"><a class="anchor" href="#code-first-approach"></a>3. Code-First Approach</h2>
+    <div class="sectionbody">
+        <div class="sect2">
+            <h3 id="introduction-2"><a class="anchor" href="#introduction-2"></a>3.1. Introduction</h3>
+            <div class="paragraph">
+                <p>The Code-First approach is useful mainly in Domain Driven Design. In the Code-First approach, you focus on the domain
+                    of your application and start creating classes for your domain entity rather than creating your database (DB-First) or creating your API (Design-First) first.
+                    And only after you can create domain classes, a DB structure and an appropriate API specification will be created.</p>
+            </div>
+            <div class="paragraph">
+                <p>With regards to creating API specification, it means that the specification can be automatically generated from the class sources.
+                    This generation has to use a classes meta information that can be provided using annotations, for example.</p>
+            </div>
+            <div class="paragraph">
+                <p>Agrest provides the following annotations:</p>
+            </div>
+            <div class="paragraph">
+                <p><code>@AgAttribute</code></p>
+            </div>
+            <div class="paragraph">
+                <p><code>@AgId</code></p>
+            </div>
+            <div class="paragraph">
+                <p><code>@AgRelationship</code></p>
+            </div>
+            <div class="paragraph">
+                <p><code>@AgResource</code></p>
+            </div>
+            <div class="paragraph">
+                <p>If you specify your models and resources using these annotations, the Agrest Maven plugin will generate
+                    an API specification in the openapi v.3.0 format.</p>
+            </div>
+        </div>
+    </div>
+</div>
