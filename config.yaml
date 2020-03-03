@@ -1,0 +1,15 @@
+baseURL: "https://agrest.io/"
+languageCode: "en-us"
+title: "Agrest"
+
+permalinks:
+  page: ":filename/"
+
+menu:
+  main:
+    - name: "Documentation"
+      url: "/docs/"
+      weight: 1
+    - name: "Forum"
+      url: "https://groups.google.com/forum/?#!forum/agrest-user"
+      weight: 2
