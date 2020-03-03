@@ -1,0 +1,153 @@
+.documentation-page {
+
+  .toc {
+    display: block !important; // overwrite docbook style
+
+    #toctitle {
+	    display: none;
+    }
+
+    .sectlevel2 {
+        padding-left: 10px;
+        font-size: $small-font-size;
+
+    }
+  }
+
+  #cd-docs-nav {
+  		position: sticky;
+  		overflow-y: auto;
+  		overflow-x: hidden;
+  		left: 0;
+  		@include media-breakpoint-up(lg) {
+
+  		}
+
+  		// 0 level links
+  		.cd-toc-link {
+  			display: inline-block;
+  	        padding: .5rem 2rem .5rem 3.5rem;
+      		line-height: 1.5;
+
+  			&.active {
+  				padding-bottom: 0;
+  			}
+
+  		}
+
+  	    // Active states
+  	    .nav-link {
+
+  		    &.active {
+  		    	position: relative;
+
+  		    	&:before {
+  					content: '';
+  					position: absolute;
+  					z-index: -1;
+
+  					top: -.2em;
+  					right: -20.4em; // 8.4em
+  					bottom: -.2em;
+  					left: -.4em;
+  		    	}
+
+  		    	// sublevels
+  		    	+ .nav .nav-link.active:before {
+  		    		left: -0.4em - 1.587em;
+  		    	}
+  		    }
+  	    }
+
+  		// #toc migrated(moved) from <artice>
+  		#toctitle {
+  			display: none;
+  		}
+
+  		#toc {
+
+  			// added nav
+  			.nav {
+  				display: block;
+  			}
+
+  			// ul 1st level
+  			.sectlevel1 {
+  				padding: 0 2rem 0 3.75rem;
+  				margin-bottom: 0;
+  			}
+
+  			// ul 2nd and others init
+  			@include media-breakpoint-up(lg) {
+  				.nav ul {
+  					display: none;
+  				}
+  			}
+
+  			// ul 2nd and others active
+  			.active + ul {
+  				display: block;
+  			}
+
+  			li {
+  				padding-left: 0;
+
+  				&:not(:last-child) a {
+  					margin-top: .5em;
+  					margin-bottom: 0; // .5em;
+  				}
+
+  				// instead of .5em; above
+  				a {
+  					margin-top: .5em;
+  				}
+  			}
+
+  		}
+  }
+
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+    margin-bottom: 30px;
+
+    thead {
+      background-color: #e0e0e0;
+      color: #000;
+      text-align: left;
+      vertical-align: bottom;
+    }
+
+    caption {
+      color: #000;
+      font: italic 85%/1 arial, sans-serif;
+      padding: 1em 0;
+      text-align: center;
+    }
+
+    td, th {
+      border-left: 1px solid #cbcbcb;
+      font-size: inherit;
+      margin: 0;
+      overflow: visible;
+      padding: 0.5em 1em;
+    }
+
+    td:first-child, th:first-child {
+      border-left-width: 0;
+    }
+
+    td {
+      border-bottom: 1px solid #cbcbcb;
+      background-color: transparent;
+    }
+
+    tbody > tr:last-child > td {
+      border-bottom-width: 0;
+    }
+  }
+}
+
