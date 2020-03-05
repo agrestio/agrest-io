@@ -10,7 +10,6 @@
     .sectlevel2 {
         padding-left: 10px;
         font-size: $small-font-size;
-
     }
   }
 
@@ -19,20 +18,16 @@
   		overflow-y: auto;
   		overflow-x: hidden;
   		left: 0;
-  		@include media-breakpoint-up(lg) {
-
-  		}
 
   		// 0 level links
   		.cd-toc-link {
   			display: inline-block;
-  	        padding: .5rem 2rem .5rem 3.5rem;
+  	        padding: .5rem 2rem .5rem .5rem;
       		line-height: 1.5;
 
   			&.active {
   				padding-bottom: 0;
   			}
-
   		}
 
   	    // Active states
@@ -45,7 +40,6 @@
   					content: '';
   					position: absolute;
   					z-index: -1;
-
   					top: -.2em;
   					right: -20.4em; // 8.4em
   					bottom: -.2em;
@@ -73,7 +67,7 @@
 
   			// ul 1st level
   			.sectlevel1 {
-  				padding: 0 2rem 0 3.75rem;
+  				padding: 0 2rem 0 .75rem;
   				margin-bottom: 0;
   			}
 
@@ -102,7 +96,6 @@
   					margin-top: .5em;
   				}
   			}
-
   		}
   }
 
@@ -151,3 +144,101 @@
   }
 }
 
+.docbook {
+  // NAV PADDING
+  padding-bottom: 5%;
+
+  @include media-breakpoint-up(lg) {
+    padding-bottom: map-get($spacers, 5);
+  }
+
+  .toc {
+      display: none;
+  }
+
+  .docs-nav {
+    @include media-breakpoint-up(lg) {
+        position: sticky;
+        max-height: calc(100vh - .5rem);
+    }
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    left: 0;
+    top: .5rem;
+
+    .nav {
+        li {
+            a {
+                padding: 5px 10px;
+                text-decoration: none;
+                border-radius: .3rem;
+
+                @include hover-focus-active {
+                    background-color: rgba(0, 0, 0, .05);
+                }
+            }
+        }
+    }
+
+    .nav-link {
+        &.active {
+            background-color: rgba(0, 0, 0, .05);
+        }
+    }
+  }
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+        text-decoration: none;
+    }
+
+    &.anchorjs-link {
+        text-decoration: none;
+    }
+  }
+
+  h1 {
+      text-align: center;
+  }
+
+  h1.title,
+  .h1.title,
+  > h1,
+  > .h1 {
+    margin-top: map-get($spacers, 6);
+    margin-bottom: map-get($spacers, 3);
+  }
+
+  h3.title {
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 10px;
+    margin-top: 15px;
+  }
+
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    > a[name] {
+        display: block;
+    }
+  }
+
+  h2 {
+    ont-size:1.7rem;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+  }
+}

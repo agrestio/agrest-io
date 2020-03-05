@@ -4,16 +4,16 @@ const sass = require("sass");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const autoprefixer = require("autoprefixer")({
-  browsers: ["> 1%", "last 2 versions", "Firefox ESR"],
-  remove: false
+    overrideBrowserslist: ["> 1%", "last 2 versions", "Firefox ESR"],
+    remove: false
 });
 
 module.exports = function (options = {}) {
   // Settings
   // --env.NODE_ENV root --env.SOURCE_MAP source-map ...
+  mode = 'production';
   const NODE_ENV = options.NODE_ENV || "development"; // "production"
   const SOURCE_MAP = options.SOURCE_MAP || "eval-source-map"; // "source-map"
-
   console.log(`
 Build started with following configuration:
 ===========================================
@@ -24,7 +24,14 @@ Build started with following configuration:
   const publicPath = "/assets/";
   const limit = 1024;
 
+
   return {
+      performance: {
+        maxEntrypointSize: 400000,
+        maxAssetSize: 400000
+      },
+
+
       entry: {
         app: [
             path.resolve(__dirname, "scripts", "main.js")
@@ -92,16 +99,8 @@ Build started with following configuration:
                 publicPath,
                 name: "/images/[name].[ext]?[hash]"
             }
-        }, {
-            test: /\.svg$/,
-            loader: "url-loader",
-            options: {
-                limit,
-                mimetype: "image/svg+xml",
-                publicPath,
-                name: "fonts/[name].[ext]?[hash]"
-            }
-        }]
+        }
+        ]
       },
       plugins: createListOfPlugins({NODE_ENV})
   };
@@ -110,11 +109,6 @@ Build started with following configuration:
 function createListOfPlugins({NODE_ENV}) {
   return [
     new ExtractTextPlugin("app.css?[hash]"),
-    new webpack.DefinePlugin({
-        "process.env": {
-            "NODE_ENV": JSON.stringify(NODE_ENV)
-        }
-    }),
     new webpack.ProvidePlugin({
         $: "jquery",
         jQuery: "jquery",

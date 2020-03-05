@@ -3,9 +3,6 @@
         <a class="navbar-brand" href="{{ .Site.BaseURL }}">
             <img src="{{ "images/logo.svg" | relURL }}" alt="agrest">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="navbar-collapse collapse" id="mainmenu">
             <div class="navbar-right">
                 {{ partial "main_menu.html" . }}

@@ -20,7 +20,6 @@
 	.max-w-560px { max-width: 35rem !important; } 													// = 560px
 	.max-w-750px { max-width: 46.875rem !important; } 													// = 750px
 
-
 //
 // [Extend] Spacing utilities
 //
@@ -32,76 +31,40 @@
 //
 // [Extend] Border-radius
 //
-	.rounded-circle-corners {
-		border-radius: 50rem;
-	}
-
+.rounded-circle-corners {
+    border-radius: 50rem;
+}
 
 //
 // [Extend] Buttons
 //
-	.btn-secondary-shadow {
-		box-shadow: 0 1px 6px rgba(#2D8A8A, .2), 0 5px 9px rgba($secondary, .23);
+.btn-secondary-shadow {
+    box-shadow: 0 1px 6px rgba(#2D8A8A, .2), 0 5px 9px rgba($secondary, .23);
+}
+
+.flex-col-v-centered {
+    flex-direction: column;
+	justify-content: center;
+	display: flex;
+
+	img {
+		@extend .align-self-start;
+		@extend .align-self-md-center;
+		@extend .mt-2_3;
+		@extend .mt-md-0;
 	}
-
-
-//
-// [Extend] Grid
-//
-	.flex-col-v-centered {
-		flex-direction: column;
-		justify-content: center;
-		display: flex;
-
-		img {
-			@extend .align-self-start;
-			@extend .align-self-md-center;
-
-			@extend .mt-2_3;
-			@extend .mt-md-0;
-		}
-	}
-
-	.hor-gutter-lg-80 {
-		@include media-breakpoint-up(lg) {
-			padding-left: 40px;
-			padding-right: 40px;
-
-			.row {
-				&:not([class*='ml']),
-				&:not([class*='mr']) {
-					margin-left: -40px;
-					margin-right: -40px;
-				}
-
-				> [class*='col-'] {
-					padding-left: 40px;
-					padding-right: 40px;
-				}
-			}
-		}
-	}
-
-
-//
-// [Extend] Forms
-//
-	textarea {
-		@extend .min-h-100px;
-	}
-
-
+}
 
 //
 // [Extend] Embed responsive
 //
 .by-height {
-	display: inline-block;
-	vertical-align: bottom;
-	width: auto;
-	max-width: 100%;
+   	display: inline-block;
+   	vertical-align: bottom;
+   	width: auto;
+   	max-width: 100%;
 
-	 &:before {
-	   padding-right: calc(70vh * 1.77);
-	 }
- }
+    &:before {
+       padding-right: calc(70vh * 1.77);
+    }
+}

@@ -4,27 +4,37 @@ $site-max-h: 914px;
 $tw-color: #1DA1F2;
 $i: "../images/"; // PATH VAR
 
-// MIXINS
 @import "mixins/animation";
-
-// FONTS
-// using only system fonts here
-
-// Importing & Theming Bootstrap 4
 @import "functions";
-@import "~bootstrap/scss/functions";
 @import "variables";
-@import ".~bootstrap/scss/bootstrap";
+
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/code";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/dropdown";
+@import "../node_modules/bootstrap/scss/button-group";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/media";
+@import "../node_modules/bootstrap/scss/list-group";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/tooltip";
+@import "../node_modules/bootstrap/scss/popover";
+@import "../node_modules/bootstrap/scss/utilities";
+
+@import '~highlight.js/styles/agate.css';
 @import "extend-bs4";
-@import "helpers";
-
 @import "tabs";
-
-@import "~bootstrap/scss/images";
-
-@import '../node_modules/highlight.js/styles/agate.css';
-
-@import 'scroll/docbook', 'scroll/docs';
+@import 'scroll/docs';
 
 // SVG
 .inline-svg.icon-svg {
@@ -134,13 +144,6 @@ $i: "../images/"; // PATH VAR
 		.lead {
 			font-size: $font-size-base * .88888;
 		}
-	}
-
-
-	a,
-	.btn,
-	button {
-		@include addAnimation(all, .3s);
 	}
 
 	button:focus {
@@ -380,46 +383,6 @@ $i: "../images/"; // PATH VAR
 		@extend .mr-md-0;
 	}
 
-	.navbar-toggler-icon {
-		background-image: none !important;
-		position: relative;
-
-		&:before,
-		&:after {
-			content: '';
-			position: absolute;
-			left: 0;
-			width: 1.5em;
-			height: .25em;
-			background: $action; //$gray-750;
-			@include addAnimation(all, .3s);
-			@extend .rounded-circle-corners;
-		}
-
-		&:before {
-			top: .375em;
-			transform-origin: bottom left;
-		}
-
-		&:after {
-			bottom: .375em;
-			transform-origin: top left;
-		}
-
-		@at-root {
-
-			.navbar-toggler[aria-expanded="true"] &:before{
-				transform: rotate(45deg);
-				top: (.375em / 6);
-
-			}
-			.navbar-toggler[aria-expanded="true"] &:after{
-				transform: rotate(-45deg);
-				bottom: (.375em / 6);
-			}
-		}
-	}
-
 	.navbar-collapse {
 		@extend .justify-content-md-end;
 
@@ -526,7 +489,6 @@ $i: "../images/"; // PATH VAR
 
 
 // #get-started
-
 .get-started-env {
 	max-width: 63em;
 	width: 100%;
