@@ -11,8 +11,10 @@ install:
 script:
   # build main site assets: js, css, etc.
   - cd ./app && npm run build
-  # run service scripts: load medium content, fetch github stars and build docs
-  - cd ../ && hugo
+  # download docs
+  - cd ../ && bash build-asciidocs.sh docs
+  # run hugo
+  - hugo
 branches:
   only:
     - agrest_1.1
