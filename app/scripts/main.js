@@ -1,5 +1,5 @@
-//import 'bootstrap/js/dist/collapse';
 //import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/modal.js';
 import 'bootstrap/js/dist/scrollspy';
 import '../styles/main.scss';
@@ -25,9 +25,10 @@ function initHljs() {
 //  DOCUMENT READY
 //---------------------------------------------------------------------------
 
+initHljs();
+
 $(document).ready(function() {
 
-    initHljs();
     initYouTubeJSApi();
 
     // Navbar-overlay-blur
@@ -43,8 +44,6 @@ $(document).ready(function() {
         // if need to exclude specific DOM els use `ev.target`
         $('.navbar-collapse').collapse('hide');
     });
-
-    $('#toc').addClass('toc-side');
 
 	// Current year in footer
 	var currentYear = new Date().getFullYear();
