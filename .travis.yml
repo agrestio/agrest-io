@@ -11,8 +11,8 @@ install:
 script:
   # build main site assets: js, css, etc.
   - cd ./app && npm run build
-  # download docs
-  - cd ../ && bash build-asciidocs.sh docs
+  # build docs
+  # - cd ../ && bash build-asciidocs.sh docs
   # run hugo
   - hugo
 branches:
@@ -26,5 +26,5 @@ branches:
 #    branch: agrest_1.1
 #  local_dir: public
 #  target_branch: gh-pages
-cache:
-  - npm
+#cache:
+#  - npm

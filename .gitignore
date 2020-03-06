@@ -5,3 +5,9 @@ node_modules/
 # Idea
 .idea
 *.iml
+
+# Generated content
+resources/
+target/
+static/assets/
+layouts/partials/assets.html

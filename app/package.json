@@ -1,6 +1,8 @@
 {
-  "name": "agrest_1.1",
+  "name": "agrest.io",
+  "description": "agrest.io js and styles components",
   "version": "1.0.0",
+  "repository": "https://github.com/agrestio/agrest-io",
   "main": "main.js",
   "license": "Apache-2.0",
   "devDependencies": {

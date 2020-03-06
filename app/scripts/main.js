@@ -1,16 +1,17 @@
-//import 'bootstrap/js/dist/dropdown';
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/modal.js';
 import 'bootstrap/js/dist/scrollspy';
-import '../styles/main.scss';
-import { initYouTubeJSApi } from '../js/youTubeJSApi.js';
 
-var hljs = require('highlight.js/lib/highlight.js');
-var xml  = require('highlight.js/lib/languages/xml.js');
-var java = require('highlight.js/lib/languages/java');
-var json = require('highlight.js/lib/languages/json');
-var bash = require('highlight.js/lib/languages/bash');
-var yaml = require('highlight.js/lib/languages/yaml');
+import '../styles/main.scss';
+import { initYouTubeJSApi } from './youtube.js';
+
+// Highlight.js
+import hljs from 'highlight.js/lib/highlight.js';
+import xml  from 'highlight.js/lib/languages/xml';
+import java from 'highlight.js/lib/languages/java';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+import yaml from 'highlight.js/lib/languages/yaml';
 
 function initHljs() {
       hljs.registerLanguage('xml', xml);
@@ -21,16 +22,7 @@ function initHljs() {
       hljs.initHighlightingOnLoad();
 }
 
-//---------------------------------------------------------------------------
-//  DOCUMENT READY
-//---------------------------------------------------------------------------
-
-initHljs();
-
-$(document).ready(function() {
-
-    initYouTubeJSApi();
-
+function initMainMenuBlur() {
     // Navbar-overlay-blur
     $('#mainmenu').on('show.bs.collapse', function () {
         $('html').addClass('navbar-collapse-shown');
@@ -44,9 +36,17 @@ $(document).ready(function() {
         // if need to exclude specific DOM els use `ev.target`
         $('.navbar-collapse').collapse('hide');
     });
+}
 
-	// Current year in footer
-	var currentYear = new Date().getFullYear();
-	$('.current-year').text(currentYear);
+//---------------------------------------------------------------------------
+//  DOCUMENT READY
+//---------------------------------------------------------------------------
 
-}); //end $(document).ready()
+initHljs();
+
+$(document).ready(function() {
+    initYouTubeJSApi();
+    initMainMenuBlur();
+	// Current year in the footer
+	$('.current-year').text(new Date().getFullYear());
+});

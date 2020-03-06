@@ -10,7 +10,6 @@
 2. Run Node.js to generate JS/CSS:
 
         % cd ./app
-        % npm run prebuild
         % npm run build
         
 3. Run bush to generate docs:

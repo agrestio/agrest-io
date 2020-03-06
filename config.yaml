@@ -1,6 +1,6 @@
 baseURL: "https://agrest.io/"
 languageCode: "en-us"
-title: "Agrest"
+title: "Agrest - Model-Driven REST Data Services"
 
 permalinks:
   page: ":filename/"

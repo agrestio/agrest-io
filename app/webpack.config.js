@@ -24,14 +24,11 @@ Build started with following configuration:
   const publicPath = "/assets/";
   const limit = 1024;
 
-
   return {
       performance: {
         maxEntrypointSize: 400000,
         maxAssetSize: 400000
       },
-
-
       entry: {
         app: [
             path.resolve(__dirname, "scripts", "main.js")
@@ -102,24 +99,20 @@ Build started with following configuration:
         }
         ]
       },
-      plugins: createListOfPlugins({NODE_ENV})
+      plugins: [
+          new ExtractTextPlugin("app.css?[hash]"),
+          new webpack.ProvidePlugin({
+              $: "jquery",
+              jQuery: "jquery",
+              "window.jQuery": "jquery",
+              Popper: ['popper.js', 'default'],
+              Util: "exports-loader?Util!bootstrap/js/dist/util"
+          }),
+          new HtmlWebpackPlugin({
+              filename: "../../layouts/partials/assets.html",
+              template: "assets.ejs",
+              inject: false
+          })
+      ]
   };
-}
-
-function createListOfPlugins({NODE_ENV}) {
-  return [
-    new ExtractTextPlugin("app.css?[hash]"),
-    new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-        "window.jQuery": "jquery",
-        Popper: ['popper.js', 'default'],
-        Util: "exports-loader?Util!bootstrap/js/dist/util"
-    }),
-    new HtmlWebpackPlugin({
-        filename: "../../layouts/partials/assets.html",
-        template: "assets.ejs",
-        inject: false
-    })
-  ];
-}
+};
