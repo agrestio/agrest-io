@@ -26,6 +26,7 @@ branches:
 #    branch: master
 #  local_dir: public
 #  target_branch: gh-pages
-#cache:
-#  - npm
-#  - ./app/node-modules
+cache:
+  - npm
+  directories:
+    - $HOME/.m2
