@@ -11,3 +11,4 @@ resources/
 target/
 static/assets/
 layouts/partials/assets.html
+public/
