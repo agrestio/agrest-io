@@ -9,22 +9,23 @@ install:
   - sudo dpkg -i "hugo_${HUGO_VERSION}_Linux-64bit.deb"
   - nvm install 8
 script:
-  # build main site assets: js, css, etc.
-  - cd ./app && npm run build
-  # build docs
-  # - cd ../ && bash build-asciidocs.sh docs
-  # run hugo
+  # 1. build main site assets: js, css, etc.
+  - cd app && npm run build
+  # 2. build docs
+  - cd .. && ./build-asciidocs.sh master
+  # 3. run hugo
   - hugo
 branches:
   only:
-    - agrest_1.1
+    - new-site # todo: change this to master once new site is deployed
 #deploy:
 #  provider: pages
 #  skip_cleanup: true
 #  github_token: $GITHUB_TOKEN
 #  on:
-#    branch: agrest_1.1
+#    branch: master
 #  local_dir: public
 #  target_branch: gh-pages
 #cache:
 #  - npm
+#  - ./app/node-modules
