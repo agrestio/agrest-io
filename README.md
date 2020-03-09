@@ -4,19 +4,26 @@
 
 [Live Agrest Site](https://agrest.io/)
 
-## How To Run
+## How to run in dev mode
 
-1. Setup env: Node.js, Java, Hugo;
-2. Run Node.js to generate JS/CSS:
+1. Setup env: npm, Java, Hugo
 
-        % cd ./app
-        % npm run build
+2. Run npm to generate JS/CSS assets:
+
+        $ cd ./app && npm run build:watch
         
-3. Run bush to generate docs:
+3. Run `build-asciidocs.sh` script to update documentation (if needed):
 
-        % cd ../
-        % bash build-asciidocs.sh docs
+        $ ./build-asciidocs.sh master
 
-4. Run Hugo to assemble all parts of website.
+4. Run Hugo in dev mode:
 
-        % hugo server
+        $ hugo server
+
+5. Navigate to http://localhost:1313/
+
+<!--
+## How to publish
+
+This site is published by Travis CI, see `.travis.yml` for details.
+-->

@@ -21,14 +21,7 @@ if [ -z "$1" ]; then
 fi
 
 GIT_TAG="$1"
-
-# version can be passed as a second parameter
-if [ -z "$2" ]; then
-    echo "Using git-tag \"$GIT_TAG\" as agrest version"
-else
-    VERSION="$2"
-    echo "Using git-tag \"$GIT_TAG\" and agrest version"
-fi
+echo "Using tag \"$GIT_TAG\""
 
 # change dir to one with this script
 cd "$( dirname "${BASH_SOURCE[0]}" )"
@@ -50,7 +43,7 @@ cd  "$AGREST_TMP_DIR/agrest-docs/"
 
 # build it
 echo "Running Maven build... it can take a while..."
-mvn package -DskipTests
+mvn package -q -B -DskipTests
 echo "Maven build complete"
 
 # copy everything from ./docs/asciidoc/**/target/site/** directories
