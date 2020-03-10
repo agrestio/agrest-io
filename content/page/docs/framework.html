@@ -40,10 +40,10 @@ ServerRuntime is outside the scope of this document. Please refer to the
 Ant, you do what needs to be done there to include Agrest dependency.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
    &lt;artifactId&gt;agrest&lt;/artifactId&gt;
-   &lt;version&gt;3.0&lt;/version&gt;
+   &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -53,7 +53,7 @@ Ant, you do what needs to be done there to include Agrest dependency.</p>
 container is Jersey, this may look like this:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Java" data-lang="Java">import javax.ws.rs.ApplicationPath;
+<pre class="highlight"><code class="language-java" data-lang="java">import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import io.agrest.runtime.AgBuilder;
 

@@ -77,10 +77,10 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.agrest&lt;/groupId&gt;
     &lt;artifactId&gt;agrest&lt;/artifactId&gt;
-    &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;
 
 &lt;dependency&gt;
@@ -106,7 +106,7 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>&lt;plugin&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
     &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
     &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;9.4.12.v20180830&lt;/version&gt;
@@ -518,7 +518,7 @@ For more details, please refer tothe next section <a href="#configure-and-run-ap
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
-            &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+            &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/plugin&gt;</code></pre>
@@ -687,7 +687,7 @@ Make sure that Agrest protocol parameters are defined as references.</p>
 <div class="paragraph">
 <p>To generate an Agrest-based API, a special Maven plugin is used.
 This plugin should be configured in accordance with your <code>.yaml</code> files location
-<a href="#inputSpec">&lt;inputSpec&gt;</a>, packages <a href="#apiPackage">&lt;apiPackage&gt;</a>, output catalog <a href="#output">&lt;output&gt;</a>, etc.</p>
+<a href="#inputSpec">[inputSpec]</a>, packages <a href="#apiPackage">[apiPackage]</a>, output catalog <a href="#output">[output]</a>, etc.</p>
 </div>
 <div class="paragraph">
 <p><code>mvn clean install</code> runs generation of the API.</p>
@@ -753,7 +753,7 @@ public class CategoryResource {
 </div>
 </div>
 <div class="paragraph">
-<p>If you configure Maven plugin to generate models <a href="#generateModels">&lt;generateModels&gt;</a>, the POJO <code>Category.java</code> will be generated.</p>
+<p>If you configure Maven plugin to generate models <a href="#generateModels">[generateModels]</a>, the POJO <code>Category.java</code> will be generated.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -803,7 +803,7 @@ public class CategoryResource {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;plugin&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
     &lt;groupId&gt;org.openapitools&lt;/groupId&gt;
     &lt;artifactId&gt;openapi-generator-maven-plugin&lt;/artifactId&gt;
     &lt;version&gt;3.0.2&lt;/version&gt;
@@ -817,7 +817,7 @@ public class CategoryResource {
                 &lt;generatorName&gt;io.swagger.codegen.languages.AgServerCodegen&lt;/generatorName&gt;
                 &lt;output&gt;${project.basedir}&lt;/output&gt;
                 &lt;apiPackage&gt;org.example.agrest&lt;/apiPackage&gt;
-                &lt;modelPackage&gt;org.example.agrest.persistente&lt;/modelPackage&gt;
+                &lt;modelPackage&gt;org.example.agrest.persistent&lt;/modelPackage&gt;
                 &lt;invokerPackage&gt;org.example.agrest&lt;/invokerPackage&gt;
                 &lt;generateModels&gt;false&lt;/generateModels&gt;
                 &lt;skipOverwrite&gt;false&lt;/skipOverwrite&gt;
@@ -829,59 +829,59 @@ public class CategoryResource {
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
-            &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+            &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/plugin&gt;</code></pre>
 </div>
 </div>
-<div class="sect4">
-<h5 id="inputSpec"><a class="anchor" href="#inputSpec"></a>&lt;inputSpec&gt;</h5>
+<div id="inputSpec" class="paragraph">
+<p><strong>&lt;inputSpec&gt;</strong></p>
+</div>
 <div class="paragraph">
 <p>Points to your API definition in <code>.yaml</code> or <code>.json</code> formats.</p>
 </div>
+<div id="generatorName" class="paragraph">
+<p><strong>&lt;generatorName&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="generatorName"><a class="anchor" href="#generatorName"></a>&lt;generatorName&gt;</h5>
 <div class="paragraph">
 <p>Sets the Agrest custom code generator.</p>
 </div>
+<div id="output" class="paragraph">
+<p><strong>&lt;output&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="output"><a class="anchor" href="#output"></a>&lt;output&gt;</h5>
 <div class="paragraph">
 <p>Sets the output catalog for all generated items.</p>
 </div>
+<div id="apiPackage" class="paragraph">
+<p><strong>&lt;apiPackage&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="apiPackage"><a class="anchor" href="#apiPackage"></a>&lt;apiPackage&gt;</h5>
 <div class="paragraph">
 <p>Contains full package name of resource implementation classes to be generated.</p>
 </div>
+<div id="modelPackage" class="paragraph">
+<p><strong>&lt;modelPackage&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="modelPackage"><a class="anchor" href="#modelPackage"></a>&lt;modelPackage&gt;</h5>
 <div class="paragraph">
 <p>Contains full package name of model classes.
-If <a href="#generateModels">&lt;generateModels&gt;</a> is set to <code>true</code>, the POJO stubs of models will be generated.
+If <a href="#generateModels">[generateModels]</a> is set to <code>true</code>, the POJO stubs of models will be generated.
 Otherwise, existing model classes from this package will be used.</p>
 </div>
+<div id="generateModels" class="paragraph">
+<p><strong>&lt;generateModels&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="generateModels"><a class="anchor" href="#generateModels"></a>&lt;generateModels&gt;</h5>
 <div class="paragraph">
 <p>Generates POJO of models or uses existing ones.</p>
 </div>
+<div id="skipOverwrite" class="paragraph">
+<p><strong>&lt;skipOverwrite&gt;</strong></p>
 </div>
-<div class="sect4">
-<h5 id="skipOverwrite"><a class="anchor" href="#skipOverwrite"></a>&lt;skipOverwrite&gt;</h5>
 <div class="paragraph">
 <p>If it is set to <code>false</code>, all generated files will be overwritten each time during <code>mvn clean install</code>.
 So, if you are planning to customize the generated API implementation, this parameter should be set to <code>true</code>.</p>
 </div>
-</div>
 <div class="sect3">
-<h4 id="run-the-application"><a class="anchor" href="#run-the-application"></a>2.5.8. Run the Application</h4>
+<h4 id="run-the-application"><a class="anchor" href="#run-the-application"></a>2.5.1. Run the Application</h4>
 <div class="paragraph">
 <p>As we mentioned in the chapter <a href="#building-and-running">Building and running</a> the Application is run by command <code>mvn jetty:run</code>.
 After the Jetty server starts, the following <code>curl</code> commands can be used for the API testing:</p>
