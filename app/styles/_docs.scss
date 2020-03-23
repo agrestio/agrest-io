@@ -23,7 +23,7 @@
   		.cd-toc-link {
   			display: inline-block;
   	        padding: .5rem 2rem .5rem .5rem;
-      		line-height: 1.5;
+      		line-height: 1.1;
 
   			&.active {
   				padding-bottom: 0;
@@ -32,6 +32,8 @@
 
   	    // Active states
   	    .nav-link {
+
+            font-size: 0.95rem;
 
   		    &.active {
   		    	position: relative;
@@ -227,7 +229,7 @@
   }
 
   h2 {
-    ont-size:1.7rem;
+    font-size:1.7rem;
   }
 
   h3 {
@@ -240,5 +242,9 @@
     font-size: 1.1rem;
     margin-bottom: 1rem;
     margin-top: 2rem;
+  }
+
+  .cd-content {
+      font-size: 0.95rem;
   }
 }
