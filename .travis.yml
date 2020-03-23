@@ -17,15 +17,15 @@ script:
   - hugo
 branches:
   only:
-    - new-site # todo: change this to master once new site is deployed
-#deploy:
-#  provider: pages
-#  skip_cleanup: true
-#  github_token: $GITHUB_TOKEN
-#  on:
-#    branch: master
-#  local_dir: public
-#  target_branch: gh-pages
+    - master
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
+  local_dir: public
+  target_branch: gh-pages
 cache:
   npm: true
   directories:
