@@ -4,7 +4,8 @@
 
 [Live Agrest Site](https://agrest.io/)
 
-## How to run in dev mode
+
+## Run in dev mode
 
 1. Setup env: npm, Java, Hugo
 
@@ -22,8 +23,9 @@
 
 5. Navigate to http://localhost:1313/
 
-<!--
-## How to publish
+
+## Publish to agrest.io
+
+To publish your changes to the website, commit them to the `master` branch and push to GitHub. Travis will pick them up, buid and publish to the live site in just a few minutes. Documentation changes coming from Agrest will also be picked up. If you only have documentation changes, login to Travis and start a build manually.
 
 This site is published by Travis CI, see `.travis.yml` for details.
--->
