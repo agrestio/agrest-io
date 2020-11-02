@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on Agrest - Model-Driven REST Data Services</title>
+    <link>https://agrest.io/</link>
+    <description>Recent content in Home on Agrest - Model-Driven REST Data Services</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 24 Feb 2020 09:16:57 +0300</lastBuildDate>
+    
+	<atom:link href="https://agrest.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Overview</title>
+      <link>https://agrest.io/docs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://agrest.io/docs/</guid>
+      <description>1. What is Agrest Agrest is a set of tools to build web APIs for your data. You would use it to expose a data store (such as a relational database) as a RESTful web service. To achieve that goal Agrest defines a simple HTTP/JSON-based protocol (described in Agrest Protocol) and a server-side framework (described in Agrest Framework). The protocol ensures that any client, be it JavaScript, a mobile app or maybe a server-side app, can make sense of any Agrest-enabled service.</description>
+    </item>
+    
+    <item>
+      <title>Protocol</title>
+      <link>https://agrest.io/protocol/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://agrest.io/protocol/</guid>
+      <description>1. Overview Agrest Protocol is a simple HTTP/JSON-based message protocol. It operates on an object model implicitly shared between a client and a server. It defines the format of JSON documents exchanged between client and server, and a set of control parameters that let the client to control representation of the model returned from the server. E.g. the client may request a range of objects, sorted in a specific order, matching a criteria, with each object including a subset of attributes and related entities.</description>
+    </item>
+    
+    <item>
+      <title>Framework</title>
+      <link>https://agrest.io/framework/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://agrest.io/framework/</guid>
+      <description>1. Prerequisites   Java 1.8 or newer
+  A Java web app project that will serve your REST requests.
+  A JAX-RS 2.0 container, such as Jersey 2.x.
+  Cayenne 4.0 or newer. Mapping your database and starting Cayenne ServerRuntime is outside the scope of this document. Please refer to the corresponding Cayenne docs
+     2. Getting Started To load Agrest in your project, follow these simple steps:</description>
+    </item>
+    
+    <item>
+      <title>Workflow</title>
+      <link>https://agrest.io/workflow/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://agrest.io/workflow/</guid>
+      <description>1. Create a Simple Agrest App 1.1. Setting up the environment In this chapter, we install (or check that you already have installed) a minimally needed set of software to build an Agrest-based application.
+ 1.1.1. Install Java JDK has to be installed. In this tutorial we use JDK 1.8.
+  1.1.2. Install IntelliJ IDEA Download and install IntelliJ IDEA Community Edition. This tutorial is based on version 2016.3, still it should work with any recent IntelliJ IDEA version.</description>
+    </item>
+    
+  </channel>
+</rss>
