@@ -80,7 +80,7 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.agrest&lt;/groupId&gt;
     &lt;artifactId&gt;agrest&lt;/artifactId&gt;
-    &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
+    &lt;version&gt;4.1-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;
 
 &lt;dependency&gt;
@@ -518,7 +518,7 @@ For more details, please refer tothe next section <a href="#configure-and-run-ap
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
-            &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
+            &lt;version&gt;4.1-SNAPSHOT&lt;/version&gt;
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/plugin&gt;</code></pre>
@@ -829,7 +829,7 @@ public class CategoryResource {
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest.openapi&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-openapi-designfirst&lt;/artifactId&gt;
-            &lt;version&gt;3.4-SNAPSHOT&lt;/version&gt;
+            &lt;version&gt;4.1-SNAPSHOT&lt;/version&gt;
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/plugin&gt;</code></pre>
@@ -925,8 +925,8 @@ We use testing fixtures from <a href="https://github.com/agrestio/agrest/tree/ma
 <pre class="highlight"><code class="language-yaml" data-lang="yaml">components:
   queryParams:
 
-    CayenneExp:
-      name: cayenneExp
+    Exp:
+      name: exp
       in: query
       style: form
       explode: false
@@ -941,7 +941,7 @@ We use testing fixtures from <a href="https://github.com/agrestio/agrest/tree/ma
             type: object
             additionalProperties:
               type: string
-      description: cayenneExp query
+      description: exp query
       required: false
 
     Dir:
@@ -1004,8 +1004,8 @@ We use testing fixtures from <a href="https://github.com/agrestio/agrest/tree/ma
         properties:
           value:
             type: string
-          cayenneExp:
-            $ref: '#/components/queryParams/CayenneExp'
+          exp:
+            $ref: '#/components/queryParams/Exp'
           sort:
             $ref: '#/components/queryParams/Sort'
           mapBy:

@@ -157,37 +157,49 @@ GET, however POST/PUT can also return a Collection Document, so many of the para
 also applicable when modifying the data.</p>
 </div>
 <div class="sect2">
-<h3 id="filtering-collection-with-cayenneexp"><a class="anchor" href="#filtering-collection-with-cayenneexp"></a>4.1. Filtering Collection with <code>cayenneExp</code></h3>
+<h3 id="filtering-collection-with-exp"><a class="anchor" href="#filtering-collection-with-exp"></a>4.1. Filtering Collection with <code>exp</code></h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+"exp" key was first introduced in Agrest 4.1. Previously it was called "cayenneExp".
+Both are synonymous. "cayenneExp" is still supported, though should be considered deprecated.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>A conditional expression that is used to filter the response objects. Expression
-String should follow the
-<a href="http://cayenne.apache.org/docs/4.0/cayenne-guide/expressions.html">format understood by Cayenne</a>
-(hence the name - "cayenneExp"). The root for the property paths is the request entity
-(unless "cayenneExp" is used within a relationship "include", in which case the root is that related entity).</p>
+<p>A condition expression used to filter the response objects. Expression follow syntax of the
+<a href="https://cayenne.apache.org/docs/4.0/cayenne-guide/expressions.html">Apache Cayenne expressions</a>.
+An implicit "root" for the property paths is the request entity, (unless "exp" is used within
+an "include" JSON, in which case the root is that related entity).</p>
 </div>
 <div class="paragraph">
 <p>Example 1: Filtering on a single property.</p>
 </div>
 <div class="paragraph">
-<p><code>cayenneExp=vhost='agrest.io'</code></p>
+<p><code>exp=vhost='agrest.io'</code></p>
 </div>
 <div class="paragraph">
-<p>Example 2: Filtering using outer join (the "+" sign is Cayenne notation for outer).</p>
+<p>Example 2: Filtering using outer join (the "+" sign is notation for "outer").</p>
 </div>
 <div class="paragraph">
-<p><code>cayenneExp=articles+ = null</code></p>
+<p><code>exp=articles+ = null</code></p>
 </div>
 <div class="paragraph">
 <p>Example 3: Filtering with parameters using positional bindings.</p>
 </div>
 <div class="paragraph">
-<p><code>cayenneExp=["articles.body like $b","%Agrest%"]</code></p>
+<p><code>exp=["articles.body like $b","%Agrest%"]</code></p>
 </div>
 <div class="paragraph">
 <p>Example 4: Filtering with parameters using named bindings.</p>
 </div>
 <div class="paragraph">
-<p><code>cayenneExp={ "exp" : "articles.body like $b", "params":{"b":"%Agrest%"}}</code></p>
+<p><code>exp={ "exp" : "articles.body like $b", "params":{"b":"%Agrest%"}}</code></p>
 </div>
 </div>
 <div class="sect2">
@@ -334,11 +346,11 @@ showing include/exclude parameters and resulting entity contents.</p>
 </div>
 <div class="paragraph">
 <p>Example 4: Advanced include. Include specification can itself be a JSON object and
-contain <code>"cayenneExp"</code>, <code>"sort"</code>, <code>"start"</code> and <code>"limit"</code> keys shaping up a collection
+contain <code>"exp"</code>, <code>"sort"</code>, <code>"start"</code> and <code>"limit"</code> keys shaping up a collection
 of related objects for each root object.</p>
 </div>
 <div class="paragraph">
-<p><code>include={"path":"articles","cayenneExp":"title like '%Agrest%'","sort":"title"}&amp;include=articles.title</code></p>
+<p><code>include={"path":"articles","exp":"title like '%Agrest%'","sort":"title"}&amp;include=articles.title</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -350,6 +362,19 @@ of related objects for each root object.</p>
    ]
 }</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+"exp" key was first introduced in Agrest 4.1. Previously it was called "cayenneExp".
+Both are synonymous. "cayenneExp" is still supported, though should be considered deprecated.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Example 5: Related objects as a map. Here we&#8217;ll map article bodies by title.</p>
@@ -382,7 +407,7 @@ of related objects for each root object.</p>
 <p>Example 7: The array can contain both the simple include and the advanced include values</p>
 </div>
 <div class="paragraph">
-<p><code>include=["id","articles.title",{"path":"articles","cayenneExp":"title like '%Agrest%'"}]</code></p>
+<p><code>include=["id","articles.title",{"path":"articles","exp":"title like '%Agrest%'"}]</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -448,7 +473,7 @@ framework would also generate a companion "synthetic" FK property called
 "propertyName_id"</p>
 </li>
 <li>
-<p><code>"filter"</code> key - an alternative to <code>"cayenneExp"</code>.</p>
+<p><code>"filter"</code> key - an alternative to <code>"exp"</code>.</p>
 </li>
 <li>
 <p><code>"group"</code> / <code>"groupDir"</code> keys that are functionally equivalent to <code>"sort"</code> / <code>"dir"</code>.</p>
