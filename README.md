@@ -1,6 +1,6 @@
 # agrest-io
 
-[![Build Status](https://travis-ci.org/agrestio/agrest-io.svg?branch=master)](https://travis-ci.org/agrestio/agrest-io)
+[![deploy site](https://github.com/agrestio/agrest-io/workflows/deploy%20site/badge.svg)](https://github.com/agrestio/agrest-io/actions)
 
 [Live Agrest Site](https://agrest.io/)
 
@@ -26,6 +26,9 @@
 
 ## Publish to agrest.io
 
-To publish your changes to the website, commit them to the `master` branch and push to GitHub. Travis will pick them up, buid and publish to the live site in just a few minutes. Documentation changes coming from Agrest will also be picked up. If you only have documentation changes, login to Travis and start a build manually.
+To publish your changes to the website, commit them to the `master` branch and push to GitHub. 
+GitHub Actions workflow will pick them up, build and publish to the live site in just a few minutes. 
+Documentation changes coming from Agrest will also be picked up.
+Additionally, GitHub Actions will run build once a week to pick up any changes in the documentation.
 
-This site is published by Travis CI, see `.travis.yml` for details.
+See `.github/workflows/site.yml` for publishing details.
