@@ -16,7 +16,7 @@ $gray-800: #343a40 !default;
 $black:    #000 !default;
 
 $primary:       #D95767; //#BF1C31;
-$secondary:     #82797a; //$gray-450;
+$secondary:     #7d7d7d; //$gray-450;
 $action:        #585253;
 
 // stylelint-disable
@@ -74,7 +74,7 @@ $h5-font-size:                $font-size-base * 1.0625;
 $h6-font-size:                $font-size-base;
 
 $headings-font-weight:        700;                      // 900
-$headings-color:              #493A3C;
+$headings-color:              #333;
 
 $lead-font-size:              ($font-size-base * 1.111) !default;
 $lead-font-weight:            400;

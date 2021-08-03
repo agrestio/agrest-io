@@ -216,6 +216,13 @@ $i: "../images/"; // PATH VAR
 		overflow-x: auto;
 	}
 
+	// contrast ratio AA 4.5
+	.hljs-number,
+	.hljs-symbol,
+	.hljs-bullet {
+		color: #ff9e9e;
+	}
+
 	section,
 	footer {
 		padding-top: map-get($spacers, 5);
