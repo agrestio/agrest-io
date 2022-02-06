@@ -37,9 +37,8 @@ clearDir          "$AGREST_TMP_DIR"
 checkAndCreateDir "$ASCII_DOC_DIR"
 
 # clone git repo and checkout requested TAG
-git clone https://github.com/agrestio/agrest.git "$AGREST_TMP_DIR" --branch "$GIT_TAG" --depth 1
-# we will need Maven to build only asciidoc modules
-cd  "$AGREST_TMP_DIR/agrest-docs/"
+git clone https://github.com/agrestio/agrest-docs.git "$AGREST_TMP_DIR" --branch "$GIT_TAG"
+cd  "$AGREST_TMP_DIR/"
 
 # build it
 echo "Running Maven build... it can take a while..."

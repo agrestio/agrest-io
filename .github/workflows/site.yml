@@ -43,7 +43,7 @@ jobs:
         shell: bash
 
       - name: Build docs...
-        run: ./build-asciidocs.sh master
+        run: ./build-asciidocs.sh main
         shell: bash
 
       - name: Run Hugo...
