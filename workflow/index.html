@@ -102,11 +102,13 @@
  </div> 
  <ul class="sectlevel1 nav"> 
   <li><a href="#create-a-simple-agrest-app" class="nav-link">1. Create a Simple <code>Agrest</code> App</a> 
-   <ul class="sectlevel2 nav"> 
-    <li><a href="#setting-up-the-environment" class="nav-link">1.1. Setting up the environment</a></li> 
-    <li><a href="#starting-a-project" class="nav-link">1.2. Starting a project</a></li> 
-    <li><a href="#implementation" class="nav-link">1.3. Implementation</a></li> 
-    <li><a href="#running-the-application" class="nav-link">1.4. Running the Application</a></li> 
+   <ul class="sectlevel3 nav"> 
+    <li><a href="#install-java" class="nav-link">1.1. Install Java</a></li> 
+    <li><a href="#install-intellij-idea" class="nav-link">1.2. Install IntelliJ IDEA</a></li> 
+    <li><a href="#the-resulting-application" class="nav-link">1.3. The resulting application</a></li> 
+    <li><a href="#starting-a-project" class="nav-link">1.4. Starting a project</a></li> 
+    <li><a href="#implementation" class="nav-link">1.5. Implementation</a></li> 
+    <li><a href="#running-the-application" class="nav-link">1.6. Running the Application</a></li> 
    </ul> </li> 
  </ul> 
 </div>
@@ -120,40 +122,36 @@
                         <div class="sect1">
 <h2 id="create-a-simple-agrest-app"><a class="anchor" href="#create-a-simple-agrest-app"></a>1. Create a Simple <code>Agrest</code> App</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="setting-up-the-environment"><a class="anchor" href="#setting-up-the-environment"></a>1.1. Setting up the environment</h3>
 <div class="paragraph">
-<p>In this chapter, we install (or check that you already have installed) a minimally needed set of software to build an Agrest-based application.</p>
+<p>In this chapter, we set up a minimal environment to build an Agrest-based application.</p>
 </div>
 <div class="sect3">
-<h4 id="install-java"><a class="anchor" href="#install-java"></a>1.1.1. Install Java</h4>
+<h4 id="install-java"><a class="anchor" href="#install-java"></a>1.1. Install Java</h4>
 <div class="paragraph">
-<p>JDK has to be installed. In this tutorial we use JDK 1.8.</p>
+<p>Install Java 1.8 or later.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="install-intellij-idea"><a class="anchor" href="#install-intellij-idea"></a>1.1.2. Install IntelliJ IDEA</h4>
+<h4 id="install-intellij-idea"><a class="anchor" href="#install-intellij-idea"></a>1.2. Install IntelliJ IDEA</h4>
 <div class="paragraph">
-<p>Download and install IntelliJ IDEA Community Edition.
-This tutorial is based on version 2016.3, still it should work with any recent IntelliJ IDEA version.</p>
+<p>Download and install IntelliJ IDEA or your own preferred Java IDE.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="the-resulting-application"><a class="anchor" href="#the-resulting-application"></a>1.1.3. The resulting application</h4>
+<h4 id="the-resulting-application"><a class="anchor" href="#the-resulting-application"></a>1.3. The resulting application</h4>
 <div class="paragraph">
-<p>The final application could be downloaded from GitHub:
-<a href="https://github.com/agrestio/agrest-bookstore-example">Bookstore app</a></p>
-</div>
+<p>The final application is available at
+<a href="https://github.com/agrestio/agrest-examples/tree/main/agrest4-jaxrs-cayenne">from GitHub</a></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="starting-a-project"><a class="anchor" href="#starting-a-project"></a>1.2. Starting a project</h3>
+<h3 id="starting-a-project"><a class="anchor" href="#starting-a-project"></a>1.4. Starting a project</h3>
 <div class="paragraph">
 <p>In this chapter, we create a new Java project in IntelliJ IDEA
 and introduce a simple Bookstore application that will be used as an example.</p>
 </div>
 <div class="sect3">
-<h4 id="define-a-bookstore-domain-model"><a class="anchor" href="#define-a-bookstore-domain-model"></a>1.2.1. Define a <code>Bookstore</code> Domain Model</h4>
+<h4 id="define-a-bookstore-domain-model"><a class="anchor" href="#define-a-bookstore-domain-model"></a>1.4.1. Define a <code>Bookstore</code> Domain Model</h4>
 <div class="paragraph">
 <p>The application contains two types of entities: <code>Category</code> and <code>Book</code>.
 The relationship between <code>Category</code> and <code>Book</code> entities is <strong>one-to-many</strong>.</p>
@@ -165,7 +163,7 @@ The relationship between <code>Category</code> and <code>Book</code> entities is
 </div>
 </div>
 <div class="sect3">
-<h4 id="create-a-new-project-in-intellij-idea"><a class="anchor" href="#create-a-new-project-in-intellij-idea"></a>1.2.2. Create a new Project in IntelliJ IDEA</h4>
+<h4 id="create-a-new-project-in-intellij-idea"><a class="anchor" href="#create-a-new-project-in-intellij-idea"></a>1.4.2. Create a new Project in IntelliJ IDEA</h4>
 <div class="paragraph">
 <p>In IntelliJ IDEA, select <code>File &gt; New &gt; Project..</code>. Then select <code>Maven</code> and click <code>Next</code>.</p>
 </div>
@@ -184,7 +182,7 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 </div>
 </div>
 <div class="sect3">
-<h4 id="configure-maven-pom-xml"><a class="anchor" href="#configure-maven-pom-xml"></a>1.2.3. Configure Maven <code>pom.xml</code></h4>
+<h4 id="configure-maven-pom-xml"><a class="anchor" href="#configure-maven-pom-xml"></a>1.4.3. Configure Maven <code>pom.xml</code></h4>
 <div class="paragraph">
 <p>Add the following dependencies:</p>
 </div>
@@ -199,18 +197,18 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 &lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.containers&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-container-servlet-core&lt;/artifactId&gt;
-    &lt;version&gt;2.27&lt;/version&gt;
+    &lt;version&gt;2.35&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;org.glassfish.jersey.inject&lt;/groupId&gt;
     &lt;artifactId&gt;jersey-hk2&lt;/artifactId&gt;
-    &lt;version&gt;2.27&lt;/version&gt;
+    &lt;version&gt;2.35&lt;/version&gt;
 &lt;/dependency&gt;
 
 &lt;dependency&gt;
     &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
     &lt;artifactId&gt;derby&lt;/artifactId&gt;
-    &lt;version&gt;10.13.1.1&lt;/version&gt;
+    &lt;version&gt;10.15.2.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
@@ -222,7 +220,7 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;plugin&gt;
     &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
     &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
-    &lt;version&gt;9.4.12.v20180830&lt;/version&gt;
+    &lt;version&gt;10.0.7&lt;/version&gt;
     &lt;configuration&gt;
         &lt;scanIntervalSeconds&gt;5&lt;/scanIntervalSeconds&gt;
         &lt;classesDirectory&gt;${project.basedir}/target/classes&lt;/classesDirectory&gt;
@@ -234,14 +232,14 @@ Click <code>Finish</code> where you are done. Now you should have a new empty pr
 </div>
 </div>
 <div class="sect2">
-<h3 id="implementation"><a class="anchor" href="#implementation"></a>1.3. Implementation</h3>
+<h3 id="implementation"><a class="anchor" href="#implementation"></a>1.5. Implementation</h3>
 <div class="paragraph">
 <p>In this chapter, we implement a simple application to demonstrate Agrest features.
 The application uses <code>Cayenne</code> as an ORM framework and for further information
 regarding a DB mapping please, refer to <a href="http://cayenne.apache.org">Apache Cayenne ORM</a></p>
 </div>
 <div class="sect3">
-<h4 id="configure-cayenne"><a class="anchor" href="#configure-cayenne"></a>1.3.1. Configure <code>Cayenne</code></h4>
+<h4 id="configure-cayenne"><a class="anchor" href="#configure-cayenne"></a>1.5.1. Configure <code>Cayenne</code></h4>
 <div class="paragraph">
 <p>In the application&#8217;s <code>resources</code> folder, create a Cayenne project file:</p>
 </div>
@@ -260,7 +258,7 @@ regarding a DB mapping please, refer to <a href="http://cayenne.apache.org">Apac
     &gt;
         &lt;map-ref name="datamap"/&gt;
         &lt;data-source&gt;
-            &lt;driver value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+            &lt;driver value="org.apache.derby.iapi.jdbc.AutoloadedDriver"/&gt;
             &lt;url value="jdbc:derby:memory:testdb;create=true"/&gt;
             &lt;connectionPool min="1" max="1"/&gt;
             &lt;login/&gt;
@@ -316,7 +314,7 @@ The mapping is done based on the ER diagram from the <a href="#starting-a-projec
 </div>
 </div>
 <div class="sect3">
-<h4 id="define-domain-models"><a class="anchor" href="#define-domain-models"></a>1.3.2. Define domain models</h4>
+<h4 id="define-domain-models"><a class="anchor" href="#define-domain-models"></a>1.5.2. Define domain models</h4>
 <div class="paragraph">
 <p>Create two classes to present data objects in package <code>org.example.agrest.persistent</code>:</p>
 </div>
@@ -346,21 +344,20 @@ The mapping is done based on the ER diagram from the <a href="#starting-a-projec
 </div>
 </div>
 <div class="sect3">
-<h4 id="implement-agrest-application-classes"><a class="anchor" href="#implement-agrest-application-classes"></a>1.3.3. Implement <code>Agrest</code> application classes</h4>
+<h4 id="implement-agrest-application-classes"><a class="anchor" href="#implement-agrest-application-classes"></a>1.5.3. Implement <code>Agrest</code> application classes</h4>
 <div class="paragraph">
 <p>Create an application and a resource class in package <code>org.example.agrest</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-Java" data-lang="Java">@ApplicationPath("/api/*")
-public class BookstoreApplication extends ResourceConfig {
+public class Application extends ResourceConfig {
 
-    public BookstoreApplication() {
+    public Application() {
 
-        ServerRuntime cayenneRuntime
-                = ServerRuntime.builder()
-                               .addConfig("cayenne-project.xml")
-                               .build();
+        ServerRuntime cayenneRuntime = ServerRuntime.builder()
+            .addConfig("cayenne-project.xml")
+            .build();
 
         AgRuntime agRuntime = AgBuilder.build(cayenneRuntime);
         super.register(agRuntime);
@@ -393,7 +390,7 @@ public class CategoryResource {
 </div>
 </div>
 <div class="sect3">
-<h4 id="configure-web-xml"><a class="anchor" href="#configure-web-xml"></a>1.3.4. Configure <code>web.xml</code></h4>
+<h4 id="configure-web-xml"><a class="anchor" href="#configure-web-xml"></a>1.5.4. Configure <code>web.xml</code></h4>
 <div class="paragraph">
 <p>Provide a servlet configuration and a mapping based on the application class that you already created.</p>
 </div>
@@ -407,16 +404,16 @@ public class CategoryResource {
          version="3.1"&gt;
 
     &lt;servlet&gt;
-        &lt;servlet-name&gt;BookstoreApp&lt;/servlet-name&gt;
+        &lt;servlet-name&gt;api&lt;/servlet-name&gt;
         &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
         &lt;init-param&gt;
             &lt;param-name&gt;javax.ws.rs.Application&lt;/param-name&gt;
-            &lt;param-value&gt;org.example.agrest.BookstoreApplication&lt;/param-value&gt;
+            &lt;param-value&gt;org.example.agrest.Application&lt;/param-value&gt;
         &lt;/init-param&gt;
     &lt;/servlet&gt;
 
     &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;BookstoreApp&lt;/servlet-name&gt;
+        &lt;servlet-name&gt;api&lt;/servlet-name&gt;
         &lt;url-pattern&gt;/api/*&lt;/url-pattern&gt;
     &lt;/servlet-mapping&gt;
 
@@ -426,7 +423,7 @@ public class CategoryResource {
 </div>
 </div>
 <div class="sect2">
-<h3 id="running-the-application"><a class="anchor" href="#running-the-application"></a>1.4. Running the Application</h3>
+<h3 id="running-the-application"><a class="anchor" href="#running-the-application"></a>1.6. Running the Application</h3>
 <div class="paragraph">
 <p>In this chapter, we run and test our application.
 After you have completed the above steps, the structure of your project will look like this:</p>
@@ -437,7 +434,7 @@ After you have completed the above steps, the structure of your project will loo
 </div>
 </div>
 <div class="sect3">
-<h4 id="building-and-running"><a class="anchor" href="#building-and-running"></a>1.4.1. Building and running</h4>
+<h4 id="building-and-running"><a class="anchor" href="#building-and-running"></a>1.6.1. Building and running</h4>
 <div class="paragraph">
 <p>To build the application, use the <code>mvn clean install</code> command.</p>
 </div>
@@ -446,14 +443,14 @@ After you have completed the above steps, the structure of your project will loo
 </div>
 </div>
 <div class="sect3">
-<h4 id="configure-intellij-idea-maven-plugin"><a class="anchor" href="#configure-intellij-idea-maven-plugin"></a>1.4.2. Configure IntelliJ IDEA Maven plugin</h4>
+<h4 id="configure-intellij-idea-maven-plugin"><a class="anchor" href="#configure-intellij-idea-maven-plugin"></a>1.6.2. Configure IntelliJ IDEA Maven plugin</h4>
 <div class="paragraph">
 <p>To run the application using IDE, add a new <code>Maven</code> configuration on a menu path <code>Run &#8594; Edit Configurations&#8230;&#8203;</code>.
 Then set a <code>Name:</code> (e.g. <strong>Bookstore</strong>) and a <code>Command line:</code> in <strong>jetty:run</strong></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="testing"><a class="anchor" href="#testing"></a>1.4.3. Testing</h4>
+<h4 id="testing"><a class="anchor" href="#testing"></a>1.6.3. Testing</h4>
 <div class="paragraph">
 <p>After running the application, you can call this endpoint to get a list of categories:</p>
 </div>
