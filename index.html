@@ -114,34 +114,36 @@
                         <input id="tab1" type="radio" name="tabs" checked>
                         <label for="tab1">
                             <span class="step-counter">1</span>
-                            <span class="tab-text">Add Maven <br />Dependency</span>
+                            <span class="tab-text">Add Dependency</span>
                         </label>
 
                         <input id="tab2" type="radio" name="tabs">
                         <label for="tab2">
                             <span class="step-counter">2</span>
-                            <span class="tab-text">Load in JAX RS Application</span>
+                            <span class="tab-text">Register in JAX-RS App</span>
                         </label>
 
                         <input id="tab3" type="radio" name="tabs">
                         <label for="tab3">
                             <span class="step-counter">3</span>
-                            <span class="tab-text">Write a JAX-RS Resource</span>
+                            <span class="tab-text">Write a JAX-RS Endpoint</span>
                         </label>
 
                         <input id="tab4" type="radio" name="tabs">
                         <label for="tab4">
                             <span class="step-counter">4</span>
-                            <span class="tab-text">Start Sending Requests</span>
+                            <span class="tab-text">Query Endpoint</span>
                         </label>
 
                         <div id="content1">
 
                             <div>
-                                <pre class="highlight"><code class="language-xml">&lt;dependency&gt;
+                                <pre class="highlight"><code class="language-xml">
+
+&lt;-- Agrest with Cayenne backend --&gt;
+&lt;dependency&gt;
     &lt;groupId&gt;io.agrest&lt;/groupId&gt;
-    &lt;artifactId&gt;agrest&lt;/artifactId&gt;
-    &lt;version&gt;4.9&lt;/version&gt;
+    &lt;artifactId&gt;agrest-cayenne&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
                             </div>
 
@@ -187,7 +189,7 @@ public class MyEntityResource {
                         </div>
                     </div>
                 </div> <!-- .Tabs : Getting Started -->
-                <p class="text-center  mb-0">Read full documentation <a href="docs/index.html">here</a></p>
+                <p class="text-center  mb-0">The above is a simpliefied illustration on the main steps involved. Read the full documentation <a href="docs/index.html">here</a> for more details.</p>
             </div>
         </div>
     </div>
