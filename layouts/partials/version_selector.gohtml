@@ -1,0 +1,31 @@
+{{- $CurrentUrl := .RelPermalink -}}
+{{- $UrlComponents := split .RelPermalink "/" -}}
+
+{{/* get doc version from URL */}}
+{{- if ne (index $UrlComponents 2) "" -}}
+    {{- $.Scratch.Set "curVersion" (index $UrlComponents 2) -}}
+{{- else -}}
+    {{- $.Scratch.Set "curVersion" $.Site.Data.versions.DefaultVersionUrl -}}
+{{- end -}}
+{{- $Version := index $.Site.Data.versions.ByUrl ($.Scratch.Get "curVersion") -}}
+
+{{/*get doc page name from URL*/}}
+{{- $Doc := index $UrlComponents 3 -}}
+{{- if and (ne $Doc "") (isset $UrlComponents 3) -}}
+    {{- $.Scratch.Set "docPage" (string (delimit (slice "/docs/%s" $Doc) "/")) -}}
+{{- else -}}
+    {{- $.Scratch.Set "docPage" "/docs/%s" -}}
+{{- end -}}
+<div class="dropdown doc-version">
+    <a class="dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-24,4">
+        Version {{ $Version.Name }}
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        {{- range sort $.Site.Data.versions.ByUrl "URL" "desc" -}}
+            {{ $NextVersion := . }}
+            {{ with ($.Site.GetPage (printf ($.Scratch.Get "docPage") .URL)) }}
+                <a class="dropdown-item {{if eq $Version $NextVersion}}active{{end}}" href="{{ .RelPermalink }}">Version {{ $NextVersion.Name }}</a>
+            {{ end}}
+        {{- end -}}
+    </div>
+</div>

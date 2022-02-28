@@ -1,0 +1,32 @@
+{{ define "main" }}
+
+    {{ partial "navbar-docs.html" . }}
+
+    <div class="navbar-overlay"><!-- v --></div>
+    <div class="documentation-page container content docbook">
+        <h1>
+            Agrest Navigation
+        </h1>
+
+        {{ partial "version_selector.gohtml" . }}
+        <hr/>
+
+        <div class="container">
+
+            <div class="ml-5 mt-3 pl-5 cd-content">
+                <article>
+
+                    <ul>
+                        <!-- Ranges through content/posts/*.md -->
+                        {{ range .Pages.ByParam "weight" }}
+                        <li class="mt-2">
+                            <a href="{{ .Permalink }}">{{.Params.title}}</a> - {{.Params.description}}
+                        </li>
+                        {{ end }}
+                    </ul>
+
+                </article>
+            </div>
+        </div>
+    </div>
+{{ end }}

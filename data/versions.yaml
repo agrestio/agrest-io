@@ -1,0 +1,10 @@
+DefaultVersionUrl: "4.x"
+
+ByUrl:
+  "4.x":
+    URL: "4.x"
+    Name: "4.x (stable)"
+
+  "5.x":
+    URL: "5.x"
+    Name: "5.x (release candidate)"

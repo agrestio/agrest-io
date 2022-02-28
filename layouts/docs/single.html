@@ -1,0 +1,25 @@
+{{ define "main" }}
+    {{ partial "navbar-docs.html" . }}
+    <div class="navbar-overlay"><!-- v --></div>
+    <div class="documentation-page container content docbook">
+        <h1>
+            Agrest {{ .Title }}
+        </h1>
+
+            {{ partial "version_selector.gohtml" . }}
+        <hr/>
+
+        <div class="row ">
+            <div id="docs-nav" class="col-12 col-lg-4 col-xl-3 nav  docs-nav">
+                {{ partial "sidebar-single.html" . }}
+            </div>
+
+            <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
+                <article>
+                    {{ .Content }}
+                </article>
+            </div>
+
+        </div>
+    </div>
+{{ end }}

@@ -7,7 +7,7 @@
 
 ## Run in dev mode
 
-1. Setup env: npm, Java, Hugo
+1. Setup env: npm, Java 11, Hugo 0.92.2, Node 8.9.4
 
 2. Run npm to generate JS/CSS assets:
 
@@ -15,7 +15,7 @@
         
 3. Run `build-asciidocs.sh` script to update documentation (if needed):
 
-        $ ./build-asciidocs.sh master
+        $ cd .. && ./build-asciidocs.sh master
 
 4. Run Hugo in dev mode:
 

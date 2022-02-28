@@ -1,0 +1,12 @@
+{{ $currentPage := . }}
+
+{{ range .Site.Menus.main.ByWeight }}
+    {{ $UrlReference := .URL }}
+
+    {{- if eq .Name "Documentation" -}}
+        {{ $UrlReference = printf "%s%s" $UrlReference $.Site.Data.versions.DefaultVersionUrl }}
+    {{- end -}}
+    <li class="nav-item">
+        <a href="{{ $UrlReference }}" class="nav-link">{{ .Name }}</a>
+    </li>
+{{ end }}

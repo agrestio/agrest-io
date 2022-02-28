@@ -1,9 +1,5 @@
-<!doctype html>
-<html class="no-js" lang="en-us">
-  {{ partial "head-index.html" . }}
-  <body>
-
-    {{ partial "navbar-docs.html" . }}
+{{ define "main" }}
+    {{ partial "navbar.html" . }}
 
     <div class="not-found-page container content docbook">
       <h1>
@@ -17,9 +13,5 @@
         </p>
       </article>
     </div>
-
-    {{ partial "footer.html" . }}
-
-  </body>
-</html>
+{{ end }}
 

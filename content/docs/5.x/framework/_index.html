@@ -1,8 +1,8 @@
 ---
 title: "Framework"
-layout: docs-index
+description: " about prerequisites, first steps to start work with Agrest and it's features"
+layout: single
 weight: 30
-docsMenuTitle: "Framework"
 ---
 <div class="sect1">
 <h2 id="prerequisites"><a class="anchor" href="#prerequisites"></a>1. Prerequisites</h2>
@@ -40,10 +40,21 @@ ServerRuntime is outside the scope of this document. Please refer to the
 Ant, you do what needs to be done there to include Agrest dependency.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;!-- The main Agrest engine --&gt;
+&lt;dependency&gt;
    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
-   &lt;artifactId&gt;agrest&lt;/artifactId&gt;
-   &lt;version&gt;4.1-SNAPSHOT&lt;/version&gt;
+   &lt;artifactId&gt;agrest-engine&lt;/artifactId&gt;
+   &lt;version&gt;{agrest.version}&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!--
+You will likely also need "agrest-cayenne",
+as this is the most capable Agrest backend as of now
+--&gt;
+&lt;dependency&gt;
+   &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+   &lt;artifactId&gt;agrest-cayenne&lt;/artifactId&gt;
+   &lt;version&gt;{agrest.version}&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
