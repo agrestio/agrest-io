@@ -10,10 +10,9 @@
 {{- $Version := index $.Site.Data.versions.ByUrl ($.Scratch.Get "curVersion") -}}
 
 {{/*get doc page name from URL*/}}
-{{- $DocDir := index $UrlComponents 3 -}}
-{{- $DocFile := index $UrlComponents 4 -}}
+{{- $DocFile := index $UrlComponents 3 -}}
 {{- if and $DocFile (ne $DocFile "") -}}
-    {{- $.Scratch.Set "docPage" (string (delimit (slice "/docs/%s" $DocDir  $DocFile) "/")) -}}
+    {{- $.Scratch.Set "docPage" (string (delimit (slice "/docs/%s" $DocFile) "/")) -}}
 {{- else -}}
     {{- $.Scratch.Set "docPage" "/docs/%s" -}}
 {{- end -}}

@@ -8,3 +8,7 @@ ByUrl:
   "5.x":
     URL: "5.x"
     Name: "5.x (release candidate)"
+
+  "main":
+    URL: "main"
+    Name: "main (release candidate)"
