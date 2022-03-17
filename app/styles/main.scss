@@ -1,4 +1,6 @@
 // GLOBAL SETTINGS
+@use "sass:math";
+
 $path-root: "..";
 $site-max-h: 914px;
 $tw-color: #1DA1F2;
@@ -140,11 +142,11 @@ $i: "../images/"; // PATH VAR
 			}
 		}
 		font-weight: 600;
-		padding-left: $btn-padding-x / 2;
+		padding-left: math.div($btn-padding-x, 2);
 		font-size: $font-size-base * .875;
 		@include media-breakpoint-up(md) {
 			padding: $btn-padding-y-lg $btn-padding-x-lg;
-			padding-left: $btn-padding-x-lg / 2;
+			padding-left: math.div($btn-padding-x-lg, 2);
 			font-size: $font-size-base;
 		}
 
@@ -161,9 +163,9 @@ $i: "../images/"; // PATH VAR
 			border-radius: 50rem;
 			background: rgba(#131313, .38);
 			box-shadow: 0 calculateRem(1px) calculateRem(6px) rgba($black, .27);
-			margin-right: $btn-padding-x / 2;
+			margin-right: math.div($btn-padding-x, 2);
 			@include media-breakpoint-up(md) {
-				margin-right: $btn-padding-x-lg / 2;
+				margin-right: math.div($btn-padding-x-lg, 2);
 			}
 
 			.icon-svg {
