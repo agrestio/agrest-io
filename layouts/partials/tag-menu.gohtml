@@ -1,10 +1,17 @@
 {{ $currentPage := . }}
 
+{{- $UrlComponents := split .RelPermalink "/" -}}
+{{- if and (isset $UrlComponents 2) (ne (index $UrlComponents 2) "") -}}
+    {{- $.Scratch.Set "curVersion" (index $UrlComponents 2) -}}
+{{- else -}}
+    {{- $.Scratch.Set "curVersion" $.Site.Data.versions.DefaultVersionUrl -}}
+{{- end -}}
+
 {{ range .Site.Menus.main.ByWeight }}
     {{ $UrlReference := .URL }}
 
     {{- if eq .Name "Documentation" -}}
-        {{ $UrlReference = printf "%s%s" $UrlReference $.Site.Data.versions.DefaultVersionUrl }}
+        {{ $UrlReference = printf "%s%s" $UrlReference ($.Scratch.Get "curVersion") }}
     {{- end -}}
     <li class="nav-item">
         <a href="{{ $UrlReference }}" class="nav-link">{{ .Name }}</a>
