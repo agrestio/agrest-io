@@ -6,7 +6,7 @@ import '../styles/main.scss';
 import { initYouTubeJSApi } from './youtube.js';
 
 // Highlight.js
-import hljs from 'highlight.js/lib/highlight.js';
+import hljs from 'highlight.js/lib/core';
 import xml  from 'highlight.js/lib/languages/xml';
 import java from 'highlight.js/lib/languages/java';
 import json from 'highlight.js/lib/languages/json';
@@ -19,7 +19,10 @@ function initHljs() {
       hljs.registerLanguage('json', json);
       hljs.registerLanguage('bash', bash);
       hljs.registerLanguage('yaml', yaml);
-      hljs.initHighlightingOnLoad();
+      hljs.configure({
+        ignoreUnescapedHTML: true
+      });
+      hljs.highlightAll();
 }
 
 function initMainMenuBlur() {

@@ -1,30 +1,28 @@
 const path = require("path");
 const webpack = require("webpack");
 const sass = require("sass");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const autoprefixer = require("autoprefixer")({
     overrideBrowserslist: ["> 1%", "last 2 versions", "Firefox ESR"],
     remove: false
 });
 
-module.exports = function (options = {}) {
+module.exports = (env, argv) => {
   // Settings
-  // --env.NODE_ENV root --env.SOURCE_MAP source-map ...
-  mode = 'production';
-  const NODE_ENV = options.NODE_ENV || "development"; // "production"
-  const SOURCE_MAP = options.SOURCE_MAP || "eval-source-map"; // "source-map"
+  // --mode ... --devtool  ...
   console.log(`
 Build started with following configuration:
 ===========================================
-→ NODE_ENV: ${NODE_ENV}
-→ SOURCE_MAP: ${SOURCE_MAP}
+→ mode: ${argv.mode}
+→ devtool: ${argv.devtool}
 `);
 
   const publicPath = "/assets/";
   const limit = 1024;
 
   return {
+      devtool: argv.devtool,
       performance: {
         maxEntrypointSize: 400000,
         maxAssetSize: 400000
@@ -36,22 +34,57 @@ Build started with following configuration:
       },
       output: {
         path: path.resolve(__dirname, "..", "static", "assets"),
-        filename: "[name].js?[hash]",
+        filename: "[name].js?[contenthash]",
         publicPath
       },
       resolve: {
         extensions: [".js"]
       },
       bail: false,
-      devtool: SOURCE_MAP,
       module: {
         rules: [{
             test: /\.s[ac]ss$/,
-            use: ExtractTextPlugin.extract({
-                fallback: "style-loader",
-                use: [{
-                    loader: "css-loader"
-                }, {
+            use: [
+                argv.mode === 'production' ? "style-loader" : MiniCssExtractPlugin.loader,
+                { loader: "css-loader",
+                    options: {
+                        sourceMap: true,
+                    },
+                },
+                {
+                    loader: "postcss-loader",
+                    options: {
+                        postcssOptions: {
+                            plugins: [[function () {
+                                           return [
+                                               autoprefixer
+                                           ];
+                                        }
+                                    ],
+                            ],
+                        },
+                        sourceMap: true,
+                    },
+                },
+                {
+                    loader: "sass-loader",
+                    options: {
+                        implementation: sass,
+                        sourceMap: true,
+                    },
+                },
+            ],
+        },
+        {
+            test: /\.css$/,
+            use: [
+                argv.mode === 'production' ? "style-loader" : MiniCssExtractPlugin.loader,
+                { loader: "css-loader",
+                    options: {
+                        sourceMap: true,
+                    },
+                },
+                {
                     loader: "postcss-loader",
                     options: {
                         plugins: function () {
@@ -59,48 +92,25 @@ Build started with following configuration:
                                 autoprefixer
                             ];
                         },
-                        url: false,
-                        minimize: true,
-                        sourceMap: true
-                    }
-                }, {
-                    loader: "sass-loader",
-                    options: {
-                        implementation: sass,
-                        sourceMap: true
-                    }
-                }]
-            })
-        }, {
-            test: /\.css$/,
-            use: ExtractTextPlugin.extract({
-                fallback: "style-loader",
-                use: [{
-                    loader: "css-loader"
-                }, {
-                    loader: "postcss-loader",
-                    options: {
-                        plugins: function () {
-                            return [
-                                autoprefixer
-                            ];
-                        }
-                    }
-                }]
-            })
+                    },
+                }
+            ],
         }, {
             test: /\.(png|jpg|gif)$/,
             loader: "url-loader",
             options: {
                 limit,
                 publicPath,
-                name: "/images/[name].[ext]?[hash]"
-            }
-        }
-        ]
+                name: "/images/[name].[ext]?[contenthash]"
+            },
+        },
+        ],
       },
       plugins: [
-          new ExtractTextPlugin("app.css?[hash]"),
+          new MiniCssExtractPlugin({
+            filename: "[name].css?[contenthash]",
+            chunkFilename: "[id].css?[contenthash]",
+          }),
           new webpack.ProvidePlugin({
               $: "jquery",
               jQuery: "jquery",
@@ -113,6 +123,6 @@ Build started with following configuration:
               template: "assets.ejs",
               inject: false
           })
-      ]
+      ],
   };
 };

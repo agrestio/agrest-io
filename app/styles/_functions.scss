@@ -5,6 +5,8 @@
 /// @param {String} $search - Substring to replace
 /// @param {String} $replace ('') - New value
 /// @return {String} - Updated string
+@use "sass:math";
+
 @function str-replace($string, $search, $replace: '') {
     $index: str-index($string, $search);
 
@@ -16,6 +18,6 @@
   }
 
 @function calculateRem($size) {
-  $remSize: $size / 16px;
+  $remSize: math.div($size, 16px);
   @return #{$remSize}rem;
 }
