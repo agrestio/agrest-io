@@ -1,6 +1,7 @@
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/modal.js';
 import 'bootstrap/js/dist/scrollspy';
+import 'bootstrap/js/dist/dropdown';
 
 import '../styles/main.scss';
 import { initYouTubeJSApi } from './youtube.js';

@@ -1,0 +1,8 @@
+<div class="tab-content" id="cd-docs-nav">
+        <div class="cd-toc-item">
+            {{- $tocFile := printf "content/%s/%s.toc.html" (path.Dir .File) .File.BaseFileName -}}
+            {{- if (fileExists $tocFile) -}}
+                {{- readFile $tocFile | safeHTML -}}
+            {{- end -}}
+        </div>
+</div>

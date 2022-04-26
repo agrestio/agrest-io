@@ -44,7 +44,7 @@ jobs:
         shell: bash
 
       - name: Build docs...
-        run: ./build-asciidocs.sh main
+        run: ./build-asciidocs.sh 5.x 4.x
         shell: bash
 
       - name: Run Hugo...

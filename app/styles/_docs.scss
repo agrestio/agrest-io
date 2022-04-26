@@ -154,6 +154,42 @@
     padding-bottom: map-get($spacers, 5);
   }
 
+  .doc-version {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+
+      .dropdown-toggle:after {
+        font-size: .875em;
+      }
+
+      > a {
+        font-size: 1.56rem;
+      }
+
+      a {
+        font-weight: 300;
+        text-decoration: none;
+        color: #777;
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        &:active {
+          background-color: inherit;
+        }
+
+        &:focus {
+          outline-style: none;
+        }
+      }
+
+      a.active {
+        background-color: rgba(0, 0, 0, .05);
+      }
+    }
+
   .toc {
       display: none;
   }
