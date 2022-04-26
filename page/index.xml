@@ -5,11 +5,7 @@
     <link>https://agrest.io/page/</link>
     <description>Recent content in Pages on Agrest - Model-Driven REST Data Services</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="https://agrest.io/page/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="https://agrest.io/page/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Overview</title>
       <link>https://agrest.io/docs/</link>
