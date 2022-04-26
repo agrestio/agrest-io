@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pages on Agrest - Model-Driven REST Data Services</title>
-    <link>https://agrest.io/page/</link>
-    <description>Recent content in Pages on Agrest - Model-Driven REST Data Services</description>
+    <title>Agrest - Model-Driven REST Data Services</title>
+    <link>https://agrest.io/docs/4.x/</link>
+    <description>Recent content on Agrest - Model-Driven REST Data Services</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://agrest.io/page/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://agrest.io/docs/4.x/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Overview</title>
-      <link>https://agrest.io/docs/</link>
+      <link>https://agrest.io/docs/4.x/overview/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://agrest.io/docs/</guid>
+      <guid>https://agrest.io/docs/4.x/overview/</guid>
       <description>1. What is Agrest Agrest is a set of tools to build web APIs for your data. You would use it to expose a data store (such as a relational database) as a RESTful web service. To achieve that goal Agrest defines a simple HTTP/JSON-based protocol (described in Agrest Protocol) and a server-side framework (described in Agrest Framework). The protocol ensures that any client, be it JavaScript, a mobile app or maybe a server-side app, can make sense of any Agrest-enabled service.</description>
     </item>
     
     <item>
       <title>Protocol</title>
-      <link>https://agrest.io/protocol/</link>
+      <link>https://agrest.io/docs/4.x/protocol/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://agrest.io/protocol/</guid>
+      <guid>https://agrest.io/docs/4.x/protocol/</guid>
       <description>1. Overview Agrest Protocol is a simple HTTP/JSON-based message protocol. It operates on an object model implicitly shared between a client and a server. It defines the format of JSON documents exchanged between client and server, and a set of control parameters that let the client to control representation of the model returned from the server. E.g. the client may request a range of objects, sorted in a specific order, matching a criteria, with each object including a subset of attributes and related entities.</description>
     </item>
     
     <item>
       <title>Framework</title>
-      <link>https://agrest.io/framework/</link>
+      <link>https://agrest.io/docs/4.x/framework/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://agrest.io/framework/</guid>
+      <guid>https://agrest.io/docs/4.x/framework/</guid>
       <description>1. Prerequisites   Java 1.8 or newer
   A Java web app project that will serve your REST requests.
   A JAX-RS 2.0 container, such as Jersey 2.x.
@@ -39,10 +39,10 @@
     
     <item>
       <title>Workflow</title>
-      <link>https://agrest.io/workflow/</link>
+      <link>https://agrest.io/docs/4.x/workflow/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://agrest.io/workflow/</guid>
+      <guid>https://agrest.io/docs/4.x/workflow/</guid>
       <description>1. Create a Simple Agrest App In this chapter, we set up a minimal environment to build an Agrest-based application.
  1.1. Install Java Install Java 1.8 or later.
   1.2. Install IntelliJ IDEA Download and install IntelliJ IDEA or your own preferred Java IDE.

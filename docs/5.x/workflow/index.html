@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="en-us">
+
     <head>
     <meta charset="utf-8">
     <title>Agrest - Model-Driven REST Data Services</title>
@@ -20,81 +21,70 @@
     <title>agrest - Model-Driven REST Data Services</title>
     <link rel="canonical" href="http://agrest.io" />
 
-    <link href="" rel="stylesheet"><script src="/assets/app.js?404727669160316f64a0"></script>
+    <link href="" rel="stylesheet"><script src="/assets/app.js?40ac97cb88d8c427d828"></script>
 
 </head>
 
-<body data-spy="scroll" data-target=".toc-side" class="cd-head">
+    <body data-spy="scroll" data-target=".toc-side" class="cd-head" style="height: 100%; min-height: 100vh; padding-bottom: 70px;">
 
-        <nav class="navbar navbar-expand-md navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="https://agrest.io/">
-                <img src="/images/logo.svg" alt="agrest">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse" id="mainmenu">
-                <div class="navbar-right">
-                    <ul class="navbar-nav">
+        
+    <nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://agrest.io/">
+            <img src="/images/logo.svg" alt="agrest">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="mainmenu">
+            <div class="navbar-right">
+                <ul class="navbar-nav">
     <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
 
     
-    
     <li class="nav-item">
-        <a href="/docs/" class="nav-link">Documentation</a>
+        <a href="/docs/5.x" class="nav-link">Documentation</a>
     </li>
-    
+
     <li class="nav-item">
         <a href="https://groups.google.com/forum/?#!forum/agrest-user" class="nav-link">Forum</a>
     </li>
-    
-</ul>
-                    <ul class="navbar-nav" id="navbar-social-links">
-                        <li class="nav-item"><a href="https://github.com/agrestio/agrest" class="nav-link"><img class="inline-svg icon-svg" src=" /images/fa/fab/github-brands.svg" alt="GitHub"></a></li>
-                        <li class="nav-item"><a href="https://twitter.com/AgrestProject" class="nav-link"><img class="inline-svg icon-svg" src=" /images/fa/fab/twitter-brands.svg" alt="Twitter"></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div> 
-    </nav>
 
+
+</ul>
+                <ul class="navbar-nav" id="navbar-social-links">
+                    <li class="nav-item"><a href="https://github.com/agrestio/agrest" class="nav-link"><img class="inline-svg icon-svg" src=" /images/fa/fab/github-brands.svg" alt="GitHub"></a></li>
+                    <li class="nav-item"><a href="https://twitter.com/AgrestProject" class="nav-link"><img class="inline-svg icon-svg" src=" /images/fa/fab/twitter-brands.svg" alt="Twitter"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div> 
+</nav>
     <div class="navbar-overlay"></div>
     <div class="documentation-page container content docbook">
         <h1>
             Agrest Workflow
         </h1>
+
+            <div class="dropdown doc-version">
+    <a class="dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-24,4">
+        Version 5.x (development)
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            
+                <a class="dropdown-item active" href="/docs/5.x/workflow/">Version 5.x (development)</a>
+            
+            
+                <a class="dropdown-item " href="/docs/4.x/workflow/">Version 4.x (stable)</a>
+            </div>
+</div>
+
         <hr/>
 
-        <div class="container">
-            <div class="row no-gutters">
-                <div class="col-12 col-lg-4 col-xl-3  br  py-2  bg-gray-100  cd-sidebar docs-nav">
-
-                    
-
-<div class="tab-content" id="cd-docs-nav">
-    
-            <div class="cd-toc-item">
-                
-                        <a class="cd-toc-link"  href="/docs/">Overview</a>
-                    
-            </div>
-    
-            <div class="cd-toc-item">
-                
-                        <a class="cd-toc-link"  href="/protocol/">Protocol</a>
-                    
-            </div>
-    
-            <div class="cd-toc-item">
-                
-                        <a class="cd-toc-link"  href="/framework/">Framework</a>
-                    
-            </div>
-    
-            <div class="cd-toc-item">
-                
-                    <span class="cd-toc-link active">Workflow</span><div id="toc" class="toc toc-side"> 
+        <div class="row ">
+            <div id="docs-nav" class="col-12 col-lg-4 col-xl-3 nav  docs-nav">
+                <div class="tab-content" id="cd-docs-nav">
+        <div class="cd-toc-item"><div id="toc" class="toc toc-side"> 
  <div id="toctitle">
   Table of Contents
  </div> 
@@ -109,15 +99,14 @@
     <li><a href="#running-the-application" class="nav-link">1.6. Running the Application</a></li> 
    </ul> </li> 
  </ul> 
+</div></div>
 </div>
+
             </div>
-    </div>
 
-                </div>
-
-                <div class="col-12 col-lg-8 col-xl-9 py-2 pl-lg-2 cd-content">
-                    <article>
-                        <div class="sect1">
+            <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
+                <article>
+                    <div class="sect1">
 <h2 id="create-a-simple-agrest-app"><a class="anchor" href="#create-a-simple-agrest-app"></a>1. Create a Simple <code>Agrest</code> App</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -519,13 +508,14 @@ Server: Jetty(9.3.14.v20161028)
 </div>
 </div>
 </div>
-                    </article>
-                </div>
+                </article>
             </div>
+
         </div>
     </div>
 
-    <footer id="footer" class="pt-0 pb-3">
+
+        <footer id="footer" class="pt-0 pb-3" style ="bottom: 0px; position: absolute; width: 100%;">
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-8 col-md-12">
@@ -547,5 +537,5 @@ Server: Jetty(9.3.14.v20161028)
     </div>
 </footer>
 
-</body>
+    </body>
 </html>
