@@ -11,7 +11,7 @@
 
 2. Run npm to generate JS/CSS assets:
 
-        $ cd ./app && npm run build:watch
+        $ cd ./app && npm run build
         
 3. Run `build-asciidocs.sh` script to update documentation (if needed):
 
