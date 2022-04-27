@@ -14,6 +14,9 @@ $i: "../images/"; // PATH VAR
 @import '~highlight.js/styles/agate.css';
 @import "tabs";
 @import 'docs';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
 
 // SVG
 .inline-svg.icon-svg {
@@ -602,4 +605,22 @@ $i: "../images/"; // PATH VAR
 			}
 		}
 	}
+}
+
+// Translate Asciidoctor icon style to the Fontawesome 6 format
+.icon-tip {
+	@extend .fa-2x;
+	@include fa-icon-solid($fa-var-lightbulb);
+}
+.icon-note {
+	@extend .fa-2x;
+	@include fa-icon-solid($fa-var-info-circle);
+}
+.icon-important {
+	@extend .fa-2x;
+	@include fa-icon-solid($fa-var-exclamation-circle);
+}
+.icon-warning .icon-caution {
+	@extend .fa-2x;
+	@include fa-icon-solid($fa-var-exclamation-triangle);
 }

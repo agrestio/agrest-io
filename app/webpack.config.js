@@ -104,6 +104,14 @@ Build started with following configuration:
                 name: "/images/[name].[ext]?[contenthash]"
             },
         },
+        {
+            test: /\.(svg|eot|woff|woff2|ttf)$/,
+            type: 'asset/resource',
+            generator: {
+                publicPath: "/assets/",
+                filename: '[name][ext]?[contenthash]'
+            }
+        },
         ],
       },
       plugins: [
