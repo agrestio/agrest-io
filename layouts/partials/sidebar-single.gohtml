@@ -1,8 +1,28 @@
+{{- $currentPageURL := .Permalink -}}
+{{- $UrlComponents := split .RelPermalink "/" -}}
+{{- if ne (index $UrlComponents 2) "" -}}
+        {{- $.Scratch.Set "curVersion" (index $UrlComponents 2) -}}
+{{- else -}}
+        {{- $.Scratch.Set "curVersion" $.Site.Data.versions.DefaultVersionUrl -}}
+{{- end -}}
+
 <div class="tab-content" id="cd-docs-nav">
-        <div class="cd-toc-item">
-            {{- $tocFile := printf "content/%s/%s.toc.html" (path.Dir .File) .File.BaseFileName -}}
-            {{- if (fileExists $tocFile) -}}
-                {{- readFile $tocFile | safeHTML -}}
-            {{- end -}}
-        </div>
+        {{ range (sort (where $.Site.Pages "Kind" "page") "Weight" ) -}}
+                {{- if eq .Params.layout "docs-index" }}
+                        {{- $PageVersion := (index (split .RelPermalink "/") 2) -}}
+                        {{- if eq $PageVersion ($.Scratch.Get "curVersion") -}}
+                        <div class="cd-toc-item">
+                                {{ if eq $currentPageURL .Permalink }}
+                                        <span class="cd-toc-link active">{{ if .Params.docsMenuTitle }}{{ .Params.docsMenuTitle }}{{ else }}{{ .Title }}{{ end }}</span>
+                                        {{- $tocFile := printf "content/docs/%s/%s.toc.html" $PageVersion .File.BaseFileName -}}
+                                        {{- if (fileExists $tocFile) -}}
+                                                {{- readFile $tocFile | safeHTML -}}
+                                        {{- end -}}
+                                {{ else }}
+                                        <a class="cd-toc-link"  href="{{ .Permalink }}">{{ if .Params.docsMenuTitle }}{{ .Params.docsMenuTitle }}{{ else }}{{ .Title }}{{ end }}</a>
+                                {{ end }}
+                        </div>
+                        {{- end -}}
+                {{- end }}
+        {{ end -}}
 </div>
