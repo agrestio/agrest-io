@@ -15,7 +15,7 @@
         
 3. Run `build-asciidocs.sh` script to update documentation (if needed):
 
-        $ cd .. && ./build-asciidocs.sh master
+        $ cd .. && ./build-asciidocs.sh 5.x 4.x
 
 4. Run Hugo in dev mode:
 
