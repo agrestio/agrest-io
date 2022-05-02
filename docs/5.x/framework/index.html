@@ -148,18 +148,15 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Java 1.8 or newer</p>
+<p>Java 11 or newer</p>
 </li>
 <li>
-<p>A Java web app project that will serve your REST requests.</p>
+<p>A Java web app project that will contain REST endpoints</p>
 </li>
 <li>
-<p>A JAX-RS 2.0 container, such as Jersey 2.x.</p>
-</li>
-<li>
-<p>Cayenne 4.0 or newer. Mapping your database and starting Cayenne
+<p>Cayenne 4.2 or newer. Mapping your database and starting Cayenne
 ServerRuntime is outside the scope of this document. Please refer to the
-<a href="http://cayenne.apache.org/docs/4.0/cayenne-guide/index.html">corresponding Cayenne docs</a></p>
+<a href="http://cayenne.apache.org/docs/4.2/cayenne-guide/">corresponding Cayenne docs</a></p>
 </li>
 </ul>
 </div>
@@ -237,7 +234,7 @@ public class JaxRsApplication extends ResourceConfig {
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s create a resource class called DomainResource, annotated with JAX-RS @Path and
-@Produces annotations. One extra thing we need for Agrest to work is a an instance of
+@Produces annotations. One extra thing we need for Agrest to work is an instance of
 <code>javax.ws.rs.core.Configuration</code>, that can be injected with <code>@Context</code> annotation:</p>
 </div>
 <div class="listingblock">
@@ -521,7 +518,7 @@ explicit mapper on the chain:</p>
 </div>
 <div class="paragraph">
 <p><code>ByKeyObjectMapperFactory</code> mapper is provided by Agrest. If something other than mapping by property is needed, a
- custom <code>ObjectMapperFactory</code> can be coded by the user.</p>
+custom <code>ObjectMapperFactory</code> can be coded by the user.</p>
 </div>
 </div>
 <div class="sect2">
@@ -532,7 +529,7 @@ explicit mapper on the chain:</p>
 that "idempotent" ones perform an extra check on the input to ensure that it is repeatable,
 i.e. it will be safe to run it multiple times with the same effect as running it once. At the
 minimum this means that all the "new" objects have their ids set in the request. This is where
-  <code>ByKeyObjectMapperFactory</code> discussed above comes in handy. Pretty much all
+<code>ByKeyObjectMapperFactory</code> discussed above comes in handy. Pretty much all
 idempotent chains need to use <code>ByKeyObjectMapperFactory</code> or an equivalent mapper to
 match by some unique property of the entity, that is known to the client at the object
 creation time.</p>

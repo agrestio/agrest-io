@@ -114,10 +114,6 @@
     <li><a href="#structuring-collection-with-mapby" class="nav-link">4.4. Structuring Collection with <code>mapBy</code></a></li> 
     <li><a href="#shaping-collection-with-include-exclude" class="nav-link">4.5. Shaping Collection with <code>include / exclude</code></a></li> 
    </ul> </li> 
-  <li><a href="#protocol-extensions" class="nav-link">5. Protocol Extensions</a> 
-   <ul class="sectlevel2 nav"> 
-    <li><a href="#sencha-adapter" class="nav-link">5.1. Sencha Adapter</a></li> 
-   </ul> </li> 
  </ul> 
 </div>
                         </div>
@@ -173,7 +169,7 @@ and Article, with a 1..N relationship between them:</p>
 <h3 id="response-simple-document"><a class="anchor" href="#response-simple-document"></a>2.1. Response: Simple Document</h3>
 <div class="paragraph">
 <p>This document is used in responses that contain no data, just a boolean status and a
-message. On success it might look like this:</p>
+message. On success, it might look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -187,7 +183,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="paragraph">
-<p>On failure it might look like this:</p>
+<p>On failure, it might look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -233,7 +229,7 @@ no limit on the depth of nesting.</p>
 <p><code>"total"</code> is a number of objects one would see in the collection if there
 was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with <code>start / limit</code></a>),
 the total may be greater than the number of visible objects in the "data" array.
-Otherwise it is equal to the size of "data".</p>
+Otherwise, it is equal to the size of "data".</p>
 </div>
 </div>
 <div class="sect2">
@@ -265,7 +261,7 @@ a single object and an array of objects:</p>
 <div class="paragraph">
 <p>JSON doesn&#8217;t have datatypes for either date or time. Both are represented as strings.
 Server and client must ensure that date/time strings are in
-<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> E.g.:</p>
+<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> E.g.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -285,7 +281,7 @@ All timezone-aware expressions should contain time zone offset or "Z" suffix (fo
 <div class="sectionbody">
 <div class="paragraph">
 <p>Control parameters, usually passed as URL keys, apply to the Collection Document and let
-the server to provide a single generic endpoint per entity, while still allowing the client
+the server provide a single generic endpoint per entity, while still allowing the client
 to shape up the response Collection to its liking. These parameters are normally used with
 GET, however POST/PUT can also return a Collection Document, so many of the parameters are
 also applicable when modifying the data.</p>
@@ -384,7 +380,7 @@ offset are discarded from the collection. Default "start" is 0.</p>
 </div>
 <div class="paragraph">
 <p>"limit" is applied after "start". So for a collection with a total of 10 objects,
-<code>?start=2&amp;limit=5</code> would result in objects 2..6 returned from the server. Returned Collection "total" would still be 10.</p>
+<code>?start=2&amp;limit=5</code> would result in objects 2 through 6 returned from the server. Returned Collection "total" would still be 10.</p>
 </div>
 </div>
 <div class="sect2">
@@ -583,36 +579,6 @@ Both are synonymous. "cayenneExp" is still supported, though should be considere
 </div>
 <div class="paragraph">
 <p><code>include={"path":"articles","sort":"title","include":["title",{"categories":["id","name"]}]}</code></p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="protocol-extensions"><a class="anchor" href="#protocol-extensions"></a>5. Protocol Extensions</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><code>Agrest</code> ships with one such optional extension that adapts the framework
-for the use with Sencha/ExtJS JavaScript client. This extension is described below.</p>
-</div>
-<div class="sect2">
-<h3 id="sencha-adapter"><a class="anchor" href="#sencha-adapter"></a>5.1. Sencha Adapter</h3>
-<div class="paragraph">
-<p>Provides a few extensions to the Agrest protocol to better handle certain Sencha features:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>If a to-one relationship property is included in the Collection, the
-framework would also generate a companion "synthetic" FK property called
-"propertyName_id"</p>
-</li>
-<li>
-<p><code>"filter"</code> key - an alternative to <code>"exp"</code>.</p>
-</li>
-<li>
-<p><code>"group"</code> / <code>"groupDir"</code> keys that are functionally equivalent to <code>"sort"</code> / <code>"dir"</code>.</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
