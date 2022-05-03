@@ -104,7 +104,11 @@
   Table of Contents
  </div> 
  <ul class="sectlevel1 nav"> 
-  <li><a href="#prerequisites" class="nav-link">1. Prerequisites</a></li> 
+  <li><a href="#overview" class="nav-link">1. Overview</a> 
+   <ul class="sectlevel2 nav"> 
+    <li><a href="#what-is-agrest-server-framework" class="nav-link">1.1. What is Agrest Server Framework</a></li> 
+    <li><a href="#java-version" class="nav-link">1.2. Java Version</a></li> 
+   </ul> </li> 
   <li><a href="#getting-started" class="nav-link">2. Getting Started</a></li> 
   <li><a href="#writing-resource-endpoints" class="nav-link">3. Writing Resource Endpoints</a> 
    <ul class="sectlevel2 nav"> 
@@ -143,22 +147,95 @@
             <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
                 <article>
                     <div class="sect1">
-<h2 id="prerequisites"><a class="anchor" href="#prerequisites"></a>1. Prerequisites</h2>
+<h2 id="overview"><a class="anchor" href="#overview"></a>1. Overview</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="what-is-agrest-server-framework"><a class="anchor" href="#what-is-agrest-server-framework"></a>1.1. What is Agrest Server Framework</h3>
+<div class="paragraph">
+<p>Agrest provides a server framework to quickly build Java RESTful applications that
+serve and consume data graphs in a way compatible with the Agrest Protocol.</p>
+</div>
+<div class="paragraph">
+<p>The core API of the framework is not dependent on a specific REST engine (such as Jersey
+or Spring Web), and can be integrated with most of them. The same is true for
+data backends - a number of them can be plugged in, either provided by Agrest (Apache Cayenne ORM)
+or implemented by the user. The simplest form of a custom backend is a Java function performing
+some calculation to produce a value for a single property.</p>
+</div>
+<div class="paragraph">
+<p>Agrest server is model-driven with its own metadata layer. It allows to take some existing
+data model (e.g. POJOs, ORM entities, etc.), and shape it in the form appropriate for the REST API
+you intend to build. Agrest entity model also allows defining per-entity,
+and per-request security policies at the object and attribute level.</p>
+</div>
+<div class="paragraph">
+<p>Agrest integrates with Swagger to API serve documentation in the widely-adopted <a href="https://swagger.io/specification/">OpenAPI 3</a>
+format.</p>
+</div>
+<div class="sect3">
+<h4 id="rest-engines"><a class="anchor" href="#rest-engines"></a>1.1.1. REST Engines</h4>
+<div class="paragraph">
+<p>Out of the box Agrest supports the following Java REST engines:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Java 11 or newer</p>
+<p><a href="https://en.wikipedia.org/wiki/Jakarta_RESTful_Web_Services">JAX-RS - Jakarta</a></p>
 </li>
 <li>
-<p>A Java web app project that will contain REST endpoints</p>
-</li>
-<li>
-<p>Cayenne 4.2 or newer. Mapping your database and starting Cayenne
-ServerRuntime is outside the scope of this document. Please refer to the
-<a href="http://cayenne.apache.org/docs/4.2/cayenne-guide/">corresponding Cayenne docs</a></p>
+<p>Older JavaEE version of JAX-RS</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It should be fairly straightforward to port Agrest to other engines like SpringWeb.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="data-sources"><a class="anchor" href="#data-sources"></a>1.1.2. Data Sources</h4>
+<div class="paragraph">
+<p>Out of the box Agrest supports the following data sources:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://cayenne.apache.org/">Apache Cayenne</a>, which is a well-optimized ORM backend with support for
+all Agrest Protocol features. Currently, supported version of Cayenne is 4.2.</p>
+</li>
+<li>
+<p>Custom functions (derived attribute calculation, REST services mapping, etc.)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are working on alternative advanced query-based data backends, specifically JPA. As of this writing
+it is experimental, and we&#8217;d recommend Cayenne as the most tried and reliable.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="java-version"><a class="anchor" href="#java-version"></a>1.2. Java Version</h3>
+<div class="paragraph">
+<p>Java 11 or newer is required.</p>
+</div>
 </div>
 </div>
 </div>
