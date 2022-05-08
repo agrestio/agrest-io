@@ -43,7 +43,7 @@
 
     
     <li class="nav-item">
-        <a href="/docs/4.x" class="nav-link">Documentation</a>
+        <a href="/docs/5.x" class="nav-link">Documentation</a>
     </li>
 
     <li class="nav-item">
@@ -63,19 +63,17 @@
     <div class="navbar-overlay"></div>
     <div class="documentation-page container content docbook">
         <h1>
-            Agrest Overview
+            Agrest Getting Started
         </h1>
 
             <div class="dropdown doc-version">
     <a class="dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="-24,4">
-        Version 4.x (stable)
+        Version 5.x (development)
     </a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             
-                <a class="dropdown-item " href="/docs/5.x/overview/">Version 5.x (development)</a>
+                <a class="dropdown-item active" href="/docs/5.x/getting-started/">Version 5.x (development)</a>
             
-            
-                <a class="dropdown-item active" href="/docs/4.x/overview/">Version 4.x (stable)</a>
             </div>
 </div>
 
@@ -84,97 +82,159 @@
         <div class="row ">
             <div id="docs-nav" class="col-12 col-lg-4 col-xl-3 nav  docs-nav">
                 <div class="tab-content" id="cd-docs-nav">
-        
         <div class="cd-toc-item">
                                 
-                                        <span class="cd-toc-link active">Overview</span><div id="toc" class="toc toc-side"> 
+                                        <span class="cd-toc-link active">Getting Started</span><div id="toc" class="toc toc-side"> 
  <div id="toctitle">
   Table of Contents
  </div> 
  <ul class="sectlevel1 nav"> 
-  <li><a href="#what-is-agrest" class="nav-link">1. What is Agrest</a></li> 
-  <li><a href="#what-agrest-is-not" class="nav-link">2. What Agrest is Not</a></li> 
-  <li><a href="#supported-data-stores" class="nav-link">3. Supported Data Stores</a></li> 
-  <li><a href="#security" class="nav-link">4. Security</a></li> 
+  <li><a href="#setting-up-the-project" class="nav-link">1. Setting up the Project</a></li> 
+  <li><a href="#writing-rest-endpoints" class="nav-link">2. Writing REST Endpoints</a></li> 
+  <li><a href="#interacting-with-agrest" class="nav-link">3. Interacting with Agrest</a></li> 
  </ul> 
 </div>
                         </div>
         
         <div class="cd-toc-item">
                                 
-                                        <a class="cd-toc-link"  href="https://agrest.io/docs/4.x/protocol/">Protocol</a>
-                                
-                        </div>
-        <div class="cd-toc-item">
-                                
-                                        <a class="cd-toc-link"  href="https://agrest.io/docs/4.x/framework/">Framework</a>
+                                        <a class="cd-toc-link"  href="https://agrest.io/docs/5.x/overview/">Overview</a>
                                 
                         </div>
         
         
         <div class="cd-toc-item">
                                 
-                                        <a class="cd-toc-link"  href="https://agrest.io/docs/4.x/workflow/">Workflow</a>
+                                        <a class="cd-toc-link"  href="https://agrest.io/docs/5.x/protocol/">Protocol</a>
                                 
                         </div>
+        <div class="cd-toc-item">
+                                
+                                        <a class="cd-toc-link"  href="https://agrest.io/docs/5.x/framework/">Server Framework</a>
+                                
+                        </div>
+        
         </div>
             </div>
 
             <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
                 <article>
-                    <div class="sect1">
-<h2 id="what-is-agrest"><a class="anchor" href="#what-is-agrest"></a>1. What is Agrest</h2>
+                    <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Agrest is a set of tools to build web APIs for your data. You would use it to expose a data store
-(such as a relational database) as a RESTful web service. To achieve that
-goal Agrest defines a simple HTTP/JSON-based protocol
-(described in <a href="/docs/4.x/protocol">Agrest Protocol</a>) and a server-side framework
-(described in <a href="/docs/4.x/framework">Agrest Framework</a>).
-The protocol ensures that any client, be it JavaScript, a mobile
-app or maybe a server-side app, can make sense of any Agrest-enabled service. The
-framework is written in Java and helps you to build services adhering to the
-protocol.</p>
+<p>Through this tutorial we will build a simple Bookstore REST application in Agrest with a real database. Agrest can work
+with various REST API stacks, and different backends. The tutorial will be done with the following components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SpringBoot / JAX-RS 2 (via <code>spring-boot-starter-jersey</code>)</p>
+</li>
+<li>
+<p>Derby database</p>
+</li>
+<li>
+<p>Apache Cayenne ORM backend</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Agrest is open source and is distributed under the terms of
-<a href="https://raw.githubusercontent.com/agrestio/agrest/master/LICENSE.txt">Apache 2.0 license</a></p>
+<p>To build the project, we&#8217;ll be using Maven and Java 17. But keep in mind that Agrest would work fine with Gradle and
+supports Java versions 11 and higher. The full tutorial code is available
+<a href="https://github.com/agrestio/agrest-docs">on Github</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="what-agrest-is-not"><a class="anchor" href="#what-agrest-is-not"></a>2. What Agrest is Not</h2>
+<h2 id="setting-up-the-project"><a class="anchor" href="#setting-up-the-project"></a>1. Setting up the Project</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Agrest is not an automated engine to take your DB online with a single command.
-You still have to write code for JAX-RS endpoints (however simple and trivial that code might end up being).
-Having this code around allows you to customize processing, implement security around endpoints, hide certain methods, etc.
-This is a defensive approach that goes a long way to avoid unintended consequences when opening up your data on the web.</p>
+<p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a POM file, let&#8217;s add a
+<code>&lt;dependencyManagement/&gt;</code> section with Agrest "BOM" ("Bill of Materials"):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+            &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
+            &lt;!-- Should be a specific 5.x version --&gt;
+            &lt;version&gt;${agrest.version}&lt;/version&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Having said that, such an engine can be written on top of Agrest with relative ease.</p>
+<p>This will allow the <code>&lt;dependencies/&gt;</code> section that follows to include various Agrest modules and not
+worry about their individual versions. Now let&#8217;s set up the <code>&lt;dependencies/&gt;</code> section:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+        &lt;artifactId&gt;agrest-jaxrs2&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+        &lt;artifactId&gt;agrest-cayenne&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-jersey&lt;/artifactId&gt;
+        &lt;version&gt;2.6.7&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+        &lt;artifactId&gt;derby&lt;/artifactId&gt;
+        &lt;version&gt;10.14.2.0&lt;/version&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- TODO: this import is a hack until
+        https://github.com/spring-projects/spring-boot/issues/30896 is resolved
+   --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;5.3.19&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first two dependencies are Agrest-related, others are SpringBoot and Derby.
+== Creating ORM Mapping</p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="supported-data-stores"><a class="anchor" href="#supported-data-stores"></a>3. Supported Data Stores</h2>
+<h2 id="writing-rest-endpoints"><a class="anchor" href="#writing-rest-endpoints"></a>2. Writing REST Endpoints</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Agrest is written on top of <a href="https://cayenne.apache.org">Apache Cayenne ORM</a>
-and supports any relational data store, such as MySQL or Oracle.
-Support for alternative data stores can be provided with relative ease. E.g. NoSQL
-databases, flat files, etc. E.g. we&#8217;ve written POJO and LDAP backends.</p>
+<p>TODO</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="security"><a class="anchor" href="#security"></a>4. Security</h2>
+<h2 id="interacting-with-agrest"><a class="anchor" href="#interacting-with-agrest"></a>3. Interacting with Agrest</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>From the very beginning Agrest was designed with security in mind. It can be easily
-integrated with common web and enterprise security solutions
-(OAuth, <a href="https://shiro.apache.org/">Apache Shiro</a>, Spring Security, etc.),
-giving Java developers a straightforward API to implement custom object and attribute-level access.</p>
+<p>TODO</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -d '{"name":"Ernest Hemingway"}' \
+  -H 'Content-Type: application/json' \
+  -i 'http://localhost:8080/author'</code></pre>
+</div>
 </div>
 </div>
 </div>
