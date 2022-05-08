@@ -122,13 +122,14 @@
                     <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Through this tutorial we will build a simple Bookstore REST application in Agrest with a real database. Agrest can work
-with various REST API stacks, and different backends. The tutorial will be done with the following components:</p>
+<p>Through this tutorial we will be building a simple Bookstore REST application using Agrest with a real database.
+Agrest can work with various REST API stacks, and different backends. The tutorial will be done with the following
+components:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>SpringBoot / JAX-RS 2 (via <code>spring-boot-starter-jersey</code>)</p>
+<p>SpringBoot / Jersey (via <code>spring-boot-starter-jersey</code>)</p>
 </li>
 <li>
 <p>Derby database</p>
@@ -140,8 +141,8 @@ with various REST API stacks, and different backends. The tutorial will be done 
 </div>
 <div class="paragraph">
 <p>To build the project, we&#8217;ll be using Maven and Java 17. But keep in mind that Agrest would work fine with Gradle and
-supports Java versions 11 and higher. The full tutorial code is available
-<a href="https://github.com/agrestio/agrest-docs">on Github</a></p>
+supports Java versions 11 and higher. The full code of the tutorial is available
+<a href="https://github.com/agrestio/agrest-docs/tree/5.x/agrest-docs-get-started-cayenne-sb">on Github</a>.</p>
 </div>
 </div>
 </div>
@@ -195,8 +196,8 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
         &lt;version&gt;10.14.2.0&lt;/version&gt;
     &lt;/dependency&gt;
 
-    &lt;!-- TODO: this import is a hack until
-        https://github.com/spring-projects/spring-boot/issues/30896 is resolved
+    &lt;!-- TODO: this import is a hack until this issue is resolved:
+        https://github.com/spring-projects/spring-boot/issues/30896
    --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;org.springframework&lt;/groupId&gt;
