@@ -142,8 +142,11 @@ components:</p>
 </div>
 <div class="paragraph">
 <p>To build the project, we&#8217;ll be using Maven and Java 17. But keep in mind that Agrest would work fine with Gradle and
-supports Java versions 11 and higher. The full code of the tutorial is available
-<a href="https://github.com/agrestio/agrest-docs/tree/5.x/agrest-docs-get-started-cayenne-sb">on Github</a>.</p>
+supports Java versions 11 and higher.</p>
+</div>
+<div class="paragraph">
+<p><em>The tutorial document will focus on the important pieces to understand how to write an Agrest application. The full
+code is available <a href="https://github.com/agrestio/agrest-docs/tree/5.x/agrest-docs-get-started-cayenne-sb">on Github</a>.</em></p>
 </div>
 </div>
 </div>
@@ -151,13 +154,23 @@ supports Java versions 11 and higher. The full code of the tutorial is available
 <h2 id="setting-up-the-project"><a class="anchor" href="#setting-up-the-project"></a>1. Setting up the Project</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a POM file, let&#8217;s add a
-<code>&lt;dependencyManagement/&gt;</code> section with Agrest "BOM" ("Bill of Materials"):</p>
+<p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a <code>pom.xml</code> file, add a
+<code>&lt;dependencyManagement/&gt;</code> section with "BOM" ("Bill of Materials") declarations for Spring Boot and Agrest:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
+        &lt;!-- Controls versions of Spring Boot and its dependencies --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;2.6.7&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Controls versions of Agrest modules --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
@@ -177,33 +190,30 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+
+    &lt;!-- This adds Agrest integration for JAX-RS / Jersey 2  --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;io.agrest&lt;/groupId&gt;
         &lt;artifactId&gt;agrest-jaxrs2&lt;/artifactId&gt;
     &lt;/dependency&gt;
+
+    &lt;!-- This adds an Agrest DB backend based on Cayenne ORM --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;io.agrest&lt;/groupId&gt;
         &lt;artifactId&gt;agrest-cayenne&lt;/artifactId&gt;
     &lt;/dependency&gt;
 
+    &lt;!-- Spring Boot + Jersey --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
         &lt;artifactId&gt;spring-boot-starter-jersey&lt;/artifactId&gt;
-        &lt;version&gt;2.6.7&lt;/version&gt;
     &lt;/dependency&gt;
+
+    &lt;!-- Simple embedded Java DB --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
         &lt;artifactId&gt;derby&lt;/artifactId&gt;
         &lt;version&gt;10.14.2.0&lt;/version&gt;
-    &lt;/dependency&gt;
-
-    &lt;!-- TODO: this import is a hack until this issue is resolved:
-        https://github.com/spring-projects/spring-boot/issues/30896
-   --&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
-        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
-        &lt;version&gt;5.3.19&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
