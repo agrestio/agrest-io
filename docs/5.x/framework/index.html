@@ -337,7 +337,7 @@ public SimpleResponse create(String data) {
 <p>Here we&#8217;ve built a very simple "create chain" using Agrest fluent API. It starts with a
 static "create" method on Agrest class, taking a type of entity to create (Domain) and
 previously injected Configuration. Finally it calls "sync" method to execute the
-request. "data" String is expected to be an "Update Document" (see <a href="/protocol#request-update-document">Request: Update Document</a>), i.e. a single object or an array of objects.
+request. "data" String is expected to be an "Update Document" (see <a href="#Update Document">[Update Document]</a>), i.e. a single object or an array of objects.
 Now if you compile your app and deploy it in a web container (e.g. Tomcat), you may call
 this endpoint to create new Domain objects:</p>
 </div>
@@ -349,10 +349,13 @@ this endpoint to create new Domain objects:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 201 Created
-Content-Type: application/json
-
-{"success":true}</code></pre>
+<pre class="highlight"><code>HTTP/1.1 201 Created
+Content-Type: application/json</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"success":true}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -395,10 +398,13 @@ client like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
+<pre class="highlight"><code>HTTP/1.1 200 OK
+Content-Type: application/json</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
     "data" : [
         { "id" : 1, "name" : "My Site #1", "vhost" : "mysite1.example.org" },
         { "id" : 2, "name" : "My Site #2", "vhost" : "mysite2.example.org" }
@@ -409,17 +415,20 @@ Content-Type: application/json
 </div>
 <div class="paragraph">
 <p>Since select chain above incorporates UriInfo, it will recognize Agrest control
-parameters passed from the client (see <a href="/protocol#control-parameters">Control Parameters</a>). Let&#8217;s try using "cayenneExp" filter and "include":</p>
+parameters passed from the client (see <a href="#Control Parameters">[Control Parameters]</a>). Let&#8217;s try using "exp" filter and "include":</p>
 </div>
 <div class="paragraph">
 <p><code>curl -i -X GET 'http://example.org/myapp/domain?exp=vhost="mysite1.example.org"&amp;include=id'</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
+<pre class="highlight"><code>HTTP/1.1 200 OK
+Content-Type: application/json</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
     "data" : [
         { "id" : 1 }
     ],
@@ -458,10 +467,13 @@ Calling this endpoint, we&#8217;ll get an expected result:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
+<pre class="highlight"><code>HTTP/1.1 200 OK
+Content-Type: application/json</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
     "data" : [
         { "id" : 1, "name" : "My Site #1", "vhost" : "mysite1.example.org" }
     ],
@@ -477,7 +489,7 @@ Document as we&#8217;ve seen before.</p>
 <div class="sect2">
 <h3 id="update-entity-with-put"><a class="anchor" href="#update-entity-with-put"></a>3.4. Update Entity with "PUT"</h3>
 <div class="paragraph">
-<p>To update the entity we created before <a href="#Create Entity with <code>POST</code>">[Create Entity with <code>POST</code>]</a> we have to implement a <code>PUT</code> method in DomainResource class:</p>
+<p>To update the entity we created before <a href="#create-entity-with-post">Create Entity with "POST"</a> we have to implement a <code>PUT</code> method in DomainResource class:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -494,7 +506,7 @@ public SimpleResponse update(@PathParam("id") int id, String data) {
 </div>
 </div>
 <div class="paragraph">
-<p>This simple "update chain" is very similar to the <a href="#Create Entity with <code>POST</code>">[Create Entity with <code>POST</code>]</a> and the <a href="#Read a Single Entity with <code>GET</code>">[Read a Single Entity with <code>GET</code>]</a> chains.
+<p>This simple "update chain" is very similar to the <a href="#create-entity-with-post">Create Entity with "POST"</a> and the <a href="#read-a-single-entity-with-get">Read a Single Entity with "GET"</a> chains.
 Try to send a request to this endpoint and get a result as expected</p>
 </div>
 <div class="listingblock">
@@ -505,10 +517,13 @@ Try to send a request to this endpoint and get a result as expected</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
-Content-Type: application/json
-
-{"success":true}</code></pre>
+<pre class="highlight"><code>HTTP/1.1 200 OK
+Content-Type: application/json</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"success":true}</code></pre>
 </div>
 </div>
 <div class="paragraph">

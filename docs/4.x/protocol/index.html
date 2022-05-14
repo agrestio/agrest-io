@@ -87,7 +87,7 @@
         
         
         <div class="cd-toc-item">
-                                <span class="cd-toc-link active">Protocol</span><div id="toc" class="toc toc-side"> 
+                                <span class="cd-toc-link active">Table of Contents</span><div id="toc" class="toc toc-side"> 
  <div id="toctitle">
   Table of Contents
  </div> 
@@ -95,18 +95,18 @@
   <li><a href="#overview" class="nav-link">1. Overview</a></li> 
   <li><a href="#json-documents" class="nav-link">2. JSON Documents</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#response-simple-document" class="nav-link">2.1. Response: Simple Document</a></li> 
-    <li><a href="#response-collection-document" class="nav-link">2.2. Response: Collection Document</a></li> 
-    <li><a href="#request-update-document" class="nav-link">2.3. Request: Update Document</a></li> 
+    <li><a href="#simple-document" class="nav-link">2.1. Simple Document</a></li> 
+    <li><a href="#collection-document" class="nav-link">2.2. Collection Document</a></li> 
+    <li><a href="#update-document" class="nav-link">2.3. Update Document</a></li> 
    </ul> </li> 
   <li><a href="#dates-and-times" class="nav-link">3. Dates and Times</a></li> 
   <li><a href="#control-parameters" class="nav-link">4. Control Parameters</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#filtering-collection-with-exp" class="nav-link">4.1. Filtering Collection with <code>exp</code></a></li> 
-    <li><a href="#ordering-collection-with-sort-dir" class="nav-link">4.2. Ordering Collection with <code>sort / dir</code></a></li> 
-    <li><a href="#Pagination" class="nav-link">4.3. Pagination with <code>start / limit</code></a></li> 
-    <li><a href="#structuring-collection-with-mapby" class="nav-link">4.4. Structuring Collection with <code>mapBy</code></a></li> 
-    <li><a href="#shaping-collection-with-include-exclude" class="nav-link">4.5. Shaping Collection with <code>include / exclude</code></a></li> 
+    <li><a href="#filtering-collection-with-exp" class="nav-link">4.1. Filtering Collection with "exp"</a></li> 
+    <li><a href="#ordering-collection-with-sort-dir" class="nav-link">4.2. Ordering Collection with "sort" / "dir"</a></li> 
+    <li><a href="#Pagination" class="nav-link">4.3. Pagination with "start" / "limit"</a></li> 
+    <li><a href="#structuring-collection-with-mapby" class="nav-link">4.4. Structuring Collection with "mapBy"</a></li> 
+    <li><a href="#shaping-collection-with-include-exclude" class="nav-link">4.5. Shaping Collection with "include" / "exclude"</a></li> 
    </ul> </li> 
   <li><a href="#protocol-extensions" class="nav-link">5. Protocol Extensions</a> 
    <ul class="sectlevel2 nav"> 
@@ -155,14 +155,14 @@ and Article, with a 1..N relationship between them:</p>
 <h2 id="json-documents"><a class="anchor" href="#json-documents"></a>2. JSON Documents</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="response-simple-document"><a class="anchor" href="#response-simple-document"></a>2.1. Response: Simple Document</h3>
+<h3 id="simple-document"><a class="anchor" href="#simple-document"></a>2.1. Simple Document</h3>
 <div class="paragraph">
-<p>This document is used in responses that contain no data, just a boolean status and a
-message. On success it might look like this:</p>
+<p>This document is used in <em>responses</em> that contain no data, just a boolean status and a
+message. On success, it might look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -172,11 +172,11 @@ Content-Type: application/json
 </div>
 </div>
 <div class="paragraph">
-<p>On failure it might look like this:</p>
+<p>On failure, it might look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 500 Server error
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 500 Server error
 Content-Type: application/json
 
 {
@@ -187,14 +187,14 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect2">
-<h3 id="response-collection-document"><a class="anchor" href="#response-collection-document"></a>2.2. Response: Collection Document</h3>
+<h3 id="collection-document"><a class="anchor" href="#collection-document"></a>2.2. Collection Document</h3>
 <div class="paragraph">
-<p>A document that passes the data from the server to the client. This is the main
+<p>A document is used in <em>responses</em> that return the data from the server. This is the main
 representation of data in Agrest.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -216,26 +216,26 @@ no limit on the depth of nesting.</p>
 </div>
 <div class="paragraph">
 <p><code>"total"</code> is a number of objects one would see in the collection if there
-was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with <code>start / limit</code></a>),
+was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with "start" / "limit"</a>),
 the total may be greater than the number of visible objects in the "data" array.
 Otherwise it is equal to the size of "data".</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="request-update-document"><a class="anchor" href="#request-update-document"></a>2.3. Request: Update Document</h3>
+<h3 id="update-document"><a class="anchor" href="#update-document"></a>2.3. Update Document</h3>
 <div class="paragraph">
-<p>Update Document is sent from the client to the server to modify an entity collection.
+<p>Update Document is sent in a <em>request</em> body from the client to the server to modify an entity collection.
 It is a Collection document stripped down to its "data" section. There are two flavors -
 a single object and an array of objects:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 5, "name": "X" }</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 5, "name": "X" }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">[
+<pre class="highlight"><code class="language-json" data-lang="json">[
    { "id" : 5, "name": "X" },
    { "id" : 8, "name": "Y" }
 ]</code></pre>
@@ -254,7 +254,7 @@ Server and client must ensure that date/time strings are in
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">2015-04-19T11:08:53Z
+<pre class="highlight"><code class="language-json" data-lang="json">2015-04-19T11:08:53Z
 2015-04-10T11:08
 2015-04-19</code></pre>
 </div>
@@ -276,7 +276,7 @@ GET, however POST/PUT can also return a Collection Document, so many of the para
 also applicable when modifying the data.</p>
 </div>
 <div class="sect2">
-<h3 id="filtering-collection-with-exp"><a class="anchor" href="#filtering-collection-with-exp"></a>4.1. Filtering Collection with <code>exp</code></h3>
+<h3 id="filtering-collection-with-exp"><a class="anchor" href="#filtering-collection-with-exp"></a>4.1. Filtering Collection with "exp"</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -322,7 +322,7 @@ an "include" JSON, in which case the root is that related entity).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ordering-collection-with-sort-dir"><a class="anchor" href="#ordering-collection-with-sort-dir"></a>4.2. Ordering Collection with <code>sort / dir</code></h3>
+<h3 id="ordering-collection-with-sort-dir"><a class="anchor" href="#ordering-collection-with-sort-dir"></a>4.2. Ordering Collection with "sort" / "dir"</h3>
 <div class="paragraph">
 <p>Example 1: Sort on a single property.</p>
 </div>
@@ -355,17 +355,17 @@ an "include" JSON, in which case the root is that related entity).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Pagination"><a class="anchor" href="#Pagination"></a>4.3. Pagination with <code>start / limit</code></h3>
+<h3 id="Pagination"><a class="anchor" href="#Pagination"></a>4.3. Pagination with "start" / "limit"</h3>
 <div class="paragraph">
 <p>These two parameters are used together to request from the server a range of objects
 for a potentially huge collection. They allow to implement efficient data pagination on the client.</p>
 </div>
 <div class="paragraph">
-<p><code>"start"</code> is an offset within the "data" array. All the objects below this
+<p><code>start</code> is an offset within the "data" array. All the objects below this
 offset are discarded from the collection. Default "start" is 0.</p>
 </div>
 <div class="paragraph">
-<p><code>"limit"</code> is a maximum number of objects in the collection "data". Default is infinity (no limit).</p>
+<p><code>limit</code> is a maximum number of objects in the collection "data". Default is infinity (no limit).</p>
 </div>
 <div class="paragraph">
 <p>"limit" is applied after "start". So for a collection with a total of 10 objects,
@@ -373,14 +373,14 @@ offset are discarded from the collection. Default "start" is 0.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="structuring-collection-with-mapby"><a class="anchor" href="#structuring-collection-with-mapby"></a>4.4. Structuring Collection with <code>mapBy</code></h3>
+<h3 id="structuring-collection-with-mapby"><a class="anchor" href="#structuring-collection-with-mapby"></a>4.4. Structuring Collection with "mapBy"</h3>
 <div class="paragraph">
-<p>Agrest presents the response as an array of entities <a href="#response-collection-document">Response: Collection Document</a>.
+<p>Agrest presents the response as an array of entities <a href="#Response: Collection Document">[Response: Collection Document]</a>.
 E.g. Request of articles returns the following array:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
 "data" : [
     { "title" : "Agrest mapBy",  "body" : "mapBy is used ..", "publishedOn" : "6 July, 2018" },
     { "title" : "Other Tech News",  "body" : "Java community ..", "publishedOn" : "8 October, 2017" },
@@ -398,7 +398,7 @@ E.g. Request of articles returns the following array:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
 "data" : {
     "8 October, 2017" : [
         { "title" : "Other Tech News",  "body" : "Java community …", "publishedOn" : "8 October, 2017" }
@@ -414,7 +414,7 @@ E.g. Request of articles returns the following array:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="shaping-collection-with-include-exclude"><a class="anchor" href="#shaping-collection-with-include-exclude"></a>4.5. Shaping Collection with <code>include / exclude</code></h3>
+<h3 id="shaping-collection-with-include-exclude"><a class="anchor" href="#shaping-collection-with-include-exclude"></a>4.5. Shaping Collection with "include" / "exclude"</h3>
 <div class="paragraph">
 <p>Model entities may have "simple" properties (attributes) and properties that point to
 related entities (relationships). By default Collection Document contains entity
@@ -431,7 +431,7 @@ showing include/exclude parameters and resulting entity contents.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -442,7 +442,7 @@ showing include/exclude parameters and resulting entity contents.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45 }</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 45 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -453,7 +453,7 @@ showing include/exclude parameters and resulting entity contents.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
    "id" : 45,
    "articles" : [
       { "title" : "Agrest Includes" },
@@ -473,7 +473,7 @@ of related objects for each root object.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
    "id" : 45,
    "articles" : [
       { "title" : "Introducing Agrest" },
@@ -503,7 +503,7 @@ Both are synonymous. "cayenneExp" is still supported, though should be considere
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
    "articles" : {
       "Introducing Agrest" : { "body" : "Agrest is a .." },
       "Agrest Includes" : { "body" : "Includes are .." }
@@ -519,7 +519,7 @@ Both are synonymous. "cayenneExp" is still supported, though should be considere
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 45, "name" : "Agrest Site" }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -530,7 +530,7 @@ Both are synonymous. "cayenneExp" is still supported, though should be considere
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
    "id" : 45,
    "articles" : [
       { "title" : "Introducing Agrest" },
@@ -547,7 +547,7 @@ Both are synonymous. "cayenneExp" is still supported, though should be considere
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
    "id" : 45,
    "name" : "Agrest Site",
    "articles" : [
