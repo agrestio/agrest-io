@@ -9,9 +9,15 @@ permalinks:
 
 menu:
   main:
+    - name: "Home"
+      url: "/"
+      weight: 1
+    - name: "Getting Started"
+      url: "/docs/5.x/getting-started/"
+      weight: 2
     - name: "Documentation"
       url: "/docs/"
-      weight: 1
+      weight: 3
     - name: "Forum"
       url: "https://groups.google.com/forum/?#!forum/agrest-user"
-      weight: 2
+      weight: 4
