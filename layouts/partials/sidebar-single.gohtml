@@ -10,7 +10,7 @@
         {{ range (where $.Site.Pages "Kind" "page") -}}
                 {{- if eq .Params.layout "docs-index" }}
                         {{- $PageVersion := (index (split .RelPermalink "/") 2) -}}
-                        {{- if (eq $PageVersion ($.Scratch.Get "curVersion")) and (eq $currentPageURL .Permalink) -}}
+                        {{- if and (eq $PageVersion ($.Scratch.Get "curVersion")) (eq $currentPageURL .Permalink) -}}
                         <div class="cd-toc-item">
                                 <span class="cd-toc-link active">{{ if .Params.docsMenuTitle }}{{ .Params.docsMenuTitle }}{{ else }}{{ .Title }}{{ end }}</span>
                                 {{- $tocFile := printf "content/docs/%s/%s.toc.html" $PageVersion .File.BaseFileName -}}
