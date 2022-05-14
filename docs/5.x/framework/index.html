@@ -103,10 +103,10 @@
   <li><a href="#getting-started" class="nav-link">2. Getting Started</a></li> 
   <li><a href="#writing-resource-endpoints" class="nav-link">3. Writing Resource Endpoints</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#create-entity-with-post" class="nav-link">3.1. Create Entity with <code>POST</code></a></li> 
-    <li><a href="#read-collection-of-entities-with-get" class="nav-link">3.2. Read Collection of Entities with <code>GET</code></a></li> 
-    <li><a href="#read-a-single-entity-with-get" class="nav-link">3.3. Read a Single Entity with <code>GET</code></a></li> 
-    <li><a href="#update-entity-with-put" class="nav-link">3.4. Update Entity with <code>PUT</code></a></li> 
+    <li><a href="#create-entity-with-post" class="nav-link">3.1. Create Entity with "POST"</a></li> 
+    <li><a href="#read-collection-of-entities-with-get" class="nav-link">3.2. Read Collection of Entities with "GET"</a></li> 
+    <li><a href="#read-a-single-entity-with-get" class="nav-link">3.3. Read a Single Entity with "GET"</a></li> 
+    <li><a href="#update-entity-with-put" class="nav-link">3.4. Update Entity with "PUT"</a></li> 
    </ul> </li> 
   <li><a href="#request-chains" class="nav-link">4. Request Chains</a> 
    <ul class="sectlevel2 nav"> 
@@ -316,7 +316,7 @@ public class DomainResource {
 </div>
 </div>
 <div class="sect2">
-<h3 id="create-entity-with-post"><a class="anchor" href="#create-entity-with-post"></a>3.1. Create Entity with <code>POST</code></h3>
+<h3 id="create-entity-with-post"><a class="anchor" href="#create-entity-with-post"></a>3.1. Create Entity with "POST"</h3>
 <div class="paragraph">
 <p>Now let&#8217;s implement a <code>POST</code> method in DomainResource class:</p>
 </div>
@@ -368,7 +368,7 @@ INFO CommonsJdbcEventLogger - === updated 1 row.</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="read-collection-of-entities-with-get"><a class="anchor" href="#read-collection-of-entities-with-get"></a>3.2. Read Collection of Entities with <code>GET</code></h3>
+<h3 id="read-collection-of-entities-with-get"><a class="anchor" href="#read-collection-of-entities-with-get"></a>3.2. Read Collection of Entities with "GET"</h3>
 <div class="paragraph">
 <p>You may create more Domain objects, executing <code>POST</code> request above. Now
 let&#8217;s write a <code>GET</code> method to search for domains:</p>
@@ -395,7 +395,7 @@ client like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -416,7 +416,7 @@ parameters passed from the client (see <a href="/protocol#control-parameters">Co
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -429,14 +429,14 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect2">
-<h3 id="read-a-single-entity-with-get"><a class="anchor" href="#read-a-single-entity-with-get"></a>3.3. Read a Single Entity with <code>GET</code></h3>
+<h3 id="read-a-single-entity-with-get"><a class="anchor" href="#read-a-single-entity-with-get"></a>3.3. Read a Single Entity with "GET"</h3>
 <div class="paragraph">
 <p>A common request is to locate a single instance of an entity by ID. Here is how
 this can be done with Agrest:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.DataResponse;
+<pre class="highlight"><code class="language-java" data-lang="java">import io.agrest.DataResponse;
 import io.agrest.Ag;
 
 ...
@@ -458,7 +458,7 @@ Calling this endpoint, we&#8217;ll get an expected result:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
@@ -475,13 +475,13 @@ Document as we&#8217;ve seen before.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="update-entity-with-put"><a class="anchor" href="#update-entity-with-put"></a>3.4. Update Entity with <code>PUT</code></h3>
+<h3 id="update-entity-with-put"><a class="anchor" href="#update-entity-with-put"></a>3.4. Update Entity with "PUT"</h3>
 <div class="paragraph">
-<p>To update the entity we created before <a href="#create-entity-with-post">Create Entity with <code>POST</code></a> we have to implement a <code>PUT</code> method in DomainResource class:</p>
+<p>To update the entity we created before <a href="#Create Entity with <code>POST</code>">[Create Entity with <code>POST</code>]</a> we have to implement a <code>PUT</code> method in DomainResource class:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Java" data-lang="Java">import io.agrest.Ag;
+<pre class="highlight"><code class="language-java" data-lang="java">import io.agrest.Ag;
 import io.agrest.SimpleResponse;
 
 ...
@@ -494,8 +494,8 @@ public SimpleResponse update(@PathParam("id") int id, String data) {
 </div>
 </div>
 <div class="paragraph">
-<p>This simple "update chain" is very similar to the <a href="#create-entity-with-post">Create Entity with <code>POST</code></a> and the <a href="#read-a-single-entity-with-get">Read a Single Entity with <code>GET</code></a> chains.
-Try to sent a request to this endpoint and get a result as expected</p>
+<p>This simple "update chain" is very similar to the <a href="#Create Entity with <code>POST</code>">[Create Entity with <code>POST</code>]</a> and the <a href="#Read a Single Entity with <code>GET</code>">[Read a Single Entity with <code>GET</code>]</a> chains.
+Try to send a request to this endpoint and get a result as expected</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -505,7 +505,7 @@ Try to sent a request to this endpoint and get a result as expected</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">HTTP/1.1 200 OK
+<pre class="highlight"><code class="language-json" data-lang="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {"success":true}</code></pre>

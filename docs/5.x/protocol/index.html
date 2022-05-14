@@ -101,13 +101,14 @@
     <li><a href="#response-collection-document" class="nav-link">2.2. Response: Collection Document</a></li> 
     <li><a href="#request-update-document" class="nav-link">2.3. Request: Update Document</a></li> 
    </ul> </li> 
-  <li><a href="#dates-and-times" class="nav-link">3. Dates and Times</a> 
+  <li><a href="#dates-and-times" class="nav-link">3. Dates and Times</a></li> 
+  <li><a href="#control-parameters" class="nav-link">4. Control Parameters</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#filtering-collection-with-exp" class="nav-link">3.1. Filtering Collection with <code>exp</code></a></li> 
-    <li><a href="#ordering-collection-with-sort-dir" class="nav-link">3.2. Ordering Collection with <code>sort / dir</code></a></li> 
-    <li><a href="#Pagination" class="nav-link">3.3. Pagination with <code>start / limit</code></a></li> 
-    <li><a href="#structuring-collection-with-mapby" class="nav-link">3.4. Structuring Collection with <code>mapBy</code></a></li> 
-    <li><a href="#shaping-collection-with-include-exclude" class="nav-link">3.5. Shaping Collection with <code>include / exclude</code></a></li> 
+    <li><a href="#filtering-collection-with-exp" class="nav-link">4.1. Filtering Collection with "exp"</a></li> 
+    <li><a href="#ordering-collection-with-sort-dir" class="nav-link">4.2. Ordering Collection with "sort" / "dir"</a></li> 
+    <li><a href="#Pagination" class="nav-link">4.3. Pagination with "start" / "limit"</a></li> 
+    <li><a href="#structuring-collection-with-mapby" class="nav-link">4.4. Structuring Collection with "mapBy"</a></li> 
+    <li><a href="#shaping-objects-with-include-exclude" class="nav-link">4.5. Shaping Objects with "include" / "exclude"</a></li> 
    </ul> </li> 
  </ul> 
 </div></div>
@@ -220,7 +221,7 @@ no limit on the depth of nesting.</p>
 </div>
 <div class="paragraph">
 <p><code>"total"</code> is a number of objects one would see in the collection if there
-was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with <code>start / limit</code></a>),
+was no pagination. If pagination is in use (see <a href="#Pagination">Pagination with "start" / "limit"</a>),
 the total may be greater than the number of visible objects in the "data" array.
 Otherwise, it is equal to the size of "data".</p>
 </div>
@@ -265,9 +266,13 @@ Server and client must ensure that date/time strings are in
 </div>
 <div class="paragraph">
 <p>Developers should not assume that the server is in the same time zone as the browser.
-All timezone-aware expressions should contain time zone offset or "Z" suffix (for "Zulu" time).
-== Control Parameters</p>
+All timezone-aware expressions should contain time zone offset or "Z" suffix (for "Zulu" time).</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="control-parameters"><a class="anchor" href="#control-parameters"></a>4. Control Parameters</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Control parameters, usually passed as URL keys, apply to the Collection Document and let
 the server provide a single generic endpoint per entity, while still allowing the client
@@ -276,7 +281,7 @@ GET, however POST/PUT can also return a Collection Document, so many of the para
 also applicable when modifying the data.</p>
 </div>
 <div class="sect2">
-<h3 id="filtering-collection-with-exp"><a class="anchor" href="#filtering-collection-with-exp"></a>3.1. Filtering Collection with <code>exp</code></h3>
+<h3 id="filtering-collection-with-exp"><a class="anchor" href="#filtering-collection-with-exp"></a>4.1. Filtering Collection with "exp"</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -322,7 +327,7 @@ an "include" JSON, in which case the root is that related entity).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ordering-collection-with-sort-dir"><a class="anchor" href="#ordering-collection-with-sort-dir"></a>3.2. Ordering Collection with <code>sort / dir</code></h3>
+<h3 id="ordering-collection-with-sort-dir"><a class="anchor" href="#ordering-collection-with-sort-dir"></a>4.2. Ordering Collection with "sort" / "dir"</h3>
 <div class="paragraph">
 <p>Example 1: Sort on a single property.</p>
 </div>
@@ -355,7 +360,7 @@ an "include" JSON, in which case the root is that related entity).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Pagination"><a class="anchor" href="#Pagination"></a>3.3. Pagination with <code>start / limit</code></h3>
+<h3 id="Pagination"><a class="anchor" href="#Pagination"></a>4.3. Pagination with "start" / "limit"</h3>
 <div class="paragraph">
 <p>These two parameters are used together to request from the server a range of objects
 for a potentially huge collection. They allow to implement efficient data pagination on the client.</p>
@@ -373,7 +378,7 @@ offset are discarded from the collection. Default "start" is 0.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="structuring-collection-with-mapby"><a class="anchor" href="#structuring-collection-with-mapby"></a>3.4. Structuring Collection with <code>mapBy</code></h3>
+<h3 id="structuring-collection-with-mapby"><a class="anchor" href="#structuring-collection-with-mapby"></a>4.4. Structuring Collection with "mapBy"</h3>
 <div class="paragraph">
 <p>Agrest presents the response as an array of entities <a href="#response-collection-document">Response: Collection Document</a>.
 E.g. Request of articles returns the following array:</p>
@@ -398,7 +403,7 @@ E.g. Request of articles returns the following array:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-JSON" data-lang="JSON">{
+<pre class="highlight"><code class="language-json" data-lang="json">{
 "data" : {
     "8 October, 2017" : [
         { "title" : "Other Tech News",  "body" : "Java community …", "publishedOn" : "8 October, 2017" }
@@ -414,7 +419,7 @@ E.g. Request of articles returns the following array:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="shaping-collection-with-include-exclude"><a class="anchor" href="#shaping-collection-with-include-exclude"></a>3.5. Shaping Collection with <code>include / exclude</code></h3>
+<h3 id="shaping-objects-with-include-exclude"><a class="anchor" href="#shaping-objects-with-include-exclude"></a>4.5. Shaping Objects with "include" / "exclude"</h3>
 <div class="paragraph">
 <p>Model entities may have "simple" properties (attributes) and properties that point to
 related entities (relationships). By default Collection Document contains entity
