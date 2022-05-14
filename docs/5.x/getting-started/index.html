@@ -616,9 +616,6 @@ public DataResponse&lt;Book&gt; get(@Context UriInfo uriInfo) {
 <pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:8080/book</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>This returns the following JSON:</p>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
@@ -639,7 +636,7 @@ pass various Agrest protocol keys in the URL, to filter the result, resolve rela
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?include=title&amp;include=author.name'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?exclude=id&amp;include=author.name'</code></pre>
 </div>
 </div>
 <div class="listingblock">
