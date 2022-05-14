@@ -95,7 +95,7 @@
   Table of Contents
  </div> 
  <ul class="sectlevel1 nav"> 
-  <li><a href="#setting-up-the-project" class="nav-link">1. Setting up the Project</a></li> 
+  <li><a href="#setting-up-project" class="nav-link">1. Setting up Project</a></li> 
   <li><a href="#orm-mapping" class="nav-link">2. ORM Mapping</a></li> 
   <li><a href="#rest-endpoints" class="nav-link">3. REST Endpoints</a> 
    <ul class="sectlevel2 nav"> 
@@ -151,7 +151,7 @@ code is available <a href="https://github.com/agrestio/agrest-docs/tree/5.x/agre
 </div>
 </div>
 <div class="sect1">
-<h2 id="setting-up-the-project"><a class="anchor" href="#setting-up-the-project"></a>1. Setting up the Project</h2>
+<h2 id="setting-up-project"><a class="anchor" href="#setting-up-project"></a>1. Setting up Project</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a <code>pom.xml</code> file, add a
@@ -234,8 +234,8 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 <div class="sectionbody">
 <div class="paragraph">
 <p>Apache Cayenne is a powerful ORM, fully integrated with Agrest. To makes things easier for this tutorial, we will
-provide ready-to-use Cayenne ORM model files. And you will use CayenneModeler GUI tool to generate the Java classes
-from the model.</p>
+provide ready-to-use Cayenne ORM model files. And you will generate persistent Java classes from the model with
+the CayenneModeler GUI tool.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -706,7 +706,7 @@ a natural key.
 <div class="sectionbody">
 <div class="paragraph">
 <p>Agrest has a powerful API for building REST entity schemas, but so far we didn&#8217;t have to interact with it.
-Agrest simply took the existing model from Cayenne and exposed each ORM entity as a REST entity. In reality REST
+Agrest simply took the existing model from Cayenne and exposed each ORM entity as a REST entity. In reality, REST
 entities often look very different from persistent objects, and there are various mechanisms to define their structure
 and retrieval strategy. Here we will show the simplest way to define a new property in an existing entity.</p>
 </div>
@@ -745,7 +745,7 @@ public int getAge() {
 </div>
 <div class="paragraph">
 <p>We can see that as of this writing, Hemingway was 122 years old. Again, <code>@AgAttribute</code> on getters is not the only
-way to add custom properties, bit it is very handy for simple properties like our example.</p>
+way to add custom properties, bit it is very handy for simple calculated properties like our example.</p>
 </div>
 </div>
 </div>
@@ -754,7 +754,7 @@ way to add custom properties, bit it is very handy for simple properties like ou
 <div class="sectionbody">
 <div class="paragraph">
 <p>This concludes our tutorial. From here you should check the "Protocol" document on how to interact with Agrest from
-the client, and the "Server Framework" documentation for an in-depth discussion of how to write model-driven endpoints
+the client, and the "Server Framework" document for an in-depth discussion of how to write model-driven endpoints
 with user-specific schemas, security controls, a variety of backends, etc.</p>
 </div>
 </div>
