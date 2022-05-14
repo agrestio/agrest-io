@@ -39,9 +39,16 @@
         <div class="navbar-collapse collapse" id="mainmenu">
             <div class="navbar-right">
                 <ul class="navbar-nav">
-    <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
 
     
+    <li class="nav-item">
+        <a href="/" class="nav-link">Home</a>
+    </li>
+
+    <li class="nav-item">
+        <a href="/docs/5.x/getting-started/" class="nav-link">Getting Started</a>
+    </li>
+
     <li class="nav-item">
         <a href="/docs/5.x" class="nav-link">Documentation</a>
     </li>
@@ -133,12 +140,12 @@ what it needs, thus simplifying the code, minimizing the number of trips to the 
 optimizing the size of the response.</p>
 </div>
 <div class="paragraph">
-<p><code>application/json</code> is used in both requests and responses where applicable.
+<p>Content type of <code>application/json</code> is used in both requests and responses where applicable.
 Values of some control parameters below are also represented as JSON.</p>
 </div>
 <div class="paragraph">
-<p>All examples below use an imaginary CMS data model that is made of 2 entities: Domain
-and Article, with a 1..N relationship between them:</p>
+<p>All examples below use a data model for an imaginary CMS made of 2 entities: Domain
+and Article, with a 1-to-N relationship between them:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
@@ -219,9 +226,8 @@ array may contain related objects, those in turn may contain their related objec
 no limit on the depth of nesting.</p>
 </div>
 <div class="paragraph">
-<p><code>total</code> is a number of objects one would see in the collection if there
-was no pagination. If pagination is in use (see <a href="#Pagination">start / limit</a>),
-the total may be greater than the number of visible objects in the "data" array.
+<p><code>total</code> is a number of objects one would see in the collection if there was no pagination. If
+<a href="#Pagination">pagination is in use</a>, the total may be greater than the number of visible objects in the "data" array.
 Otherwise, it is equal to the size of "data".</p>
 </div>
 </div>
@@ -252,9 +258,9 @@ objects:</p>
 <h2 id="dates-and-times"><a class="anchor" href="#dates-and-times"></a>3. Dates and Times</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>JSON doesn&#8217;t have datatypes for either date or time. Both are represented as strings.
+<p>JSON doesn&#8217;t have data types for either date or time. Both are represented as strings.
 Server and client must ensure that date/time strings are in
-<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> E.g.:</p>
+<a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a>. E.g.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
