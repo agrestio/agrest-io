@@ -91,8 +91,13 @@
  <ul class="sectlevel1 nav"> 
   <li><a href="#setting-up-the-project" class="nav-link">1. Setting up the Project</a></li> 
   <li><a href="#creating-orm-mapping" class="nav-link">2. Creating ORM Mapping</a></li> 
-  <li><a href="#writing-rest-endpoints" class="nav-link">3. Writing REST Endpoints</a></li> 
-  <li><a href="#interacting-with-agrest" class="nav-link">4. Interacting with Agrest</a></li> 
+  <li><a href="#writing-rest-endpoints" class="nav-link">3. Writing REST Endpoints</a> 
+   <ul class="sectlevel2 nav"> 
+    <li><a href="#creating-data-with-post" class="nav-link">3.1. Creating data with POST</a></li> 
+    <li><a href="#setting-up-the-app" class="nav-link">3.2. Setting up the App</a></li> 
+    <li><a href="#running-the-app-and-creating-data" class="nav-link">3.3. Running the App and Creating Data</a></li> 
+    <li><a href="#selecting-data" class="nav-link">3.4. Selecting Data</a></li> 
+   </ul> </li> 
  </ul> 
 </div>
                         </div>
@@ -348,7 +353,7 @@ For this tutorial you will need the latest version of the Modeler <code>4.2</cod
 <p>Open <code>cayenne-project.xml</code> in the Modeler.</p>
 </li>
 <li>
-<p>Expand the project tree on the left, navigating to <code>project &gt; datamap</code>, and select <code>Class Generation</code> tab on the
+<p>Expand the project tree on the left, navigating to <code>project</code> &gt; <code>datamap</code>, and select <code>Class Generation</code> tab on the
 right:</p>
 </li>
 </ul>
@@ -390,22 +395,281 @@ that represent our persistent entities:</p>
 <div class="sect1">
 <h2 id="writing-rest-endpoints"><a class="anchor" href="#writing-rest-endpoints"></a>3. Writing REST Endpoints</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="creating-data-with-post"><a class="anchor" href="#creating-data-with-post"></a>3.1. Creating data with POST</h3>
 <div class="paragraph">
-<p>TODO</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="interacting-with-agrest"><a class="anchor" href="#interacting-with-agrest"></a>4. Interacting with Agrest</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>TODO</p>
+<p>Let&#8217;s write a couple of POST endpoints to allow users to create Authors and Books. We&#8217;ll start by creating Java classes
+<code>AuthorApi</code> and <code>BookApi</code>, placing a few JAX-RS annotations on them, and injecting JAX-RS <code>Configuration</code> object:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -d '{"name":"Ernest Hemingway"}' \
+<pre class="highlight"><code class="language-java" data-lang="java">@Path("author")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class AuthorApi {
+
+    @Context
+    private Configuration config;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Path("book")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class BookApi {
+
+    @Context
+    private Configuration config;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s create POST methods in both classes. In <code>AuthorApi</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@POST
+public DataResponse&lt;Author&gt; create(@Context UriInfo uri, String data) {
+    return AgJaxrs.create(Author.class, config) <i class="conum" data-value="1"></i><b>(1)</b>
+            .clientParams(uri.getQueryParameters()) <i class="conum" data-value="2"></i><b>(2)</b>
+            .syncAndSelect(data); <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Start a builder for "create" operation. <code>config</code> parameter passed to <code>create(..)</code>, contains Agrest runtime</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pass URL parameters. This will control the shape of the response</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Execute create operation and return created Author to the client</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In <code>BookApi</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@POST
+public SimpleResponse create(String data) {
+    return AgJaxrs.create(Book.class, config).sync(data);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the difference between Author and Book POST methods. In the former case, after creating an object
+Agrest returns <code>DataResponse&lt;Author&gt;</code>, allowing the client to inspect the result of the operation (e.g. obtain the
+Author&#8217;s ID generated by the server). In the latter case, it returns <code>SimpleResponse</code> that does not contain any data.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-up-the-app"><a class="anchor" href="#setting-up-the-app"></a>3.2. Setting up the App</h3>
+<div class="paragraph">
+<p>Now that we have a few endpoint, how do we integrate them in our app? Let&#8217;s create a main class of our SpringBoot
+application called <code>AgrestApp</code> with some bootstrap code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
+public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    public static void main(String[] args) {
+        SpringApplication application = new SpringApplication(AgrestApp.class);
+        application.setBannerMode(Banner.Mode.OFF);
+        application.run(args);
+    }
+
+    public AgrestApp() {
+
+        <i class="conum" data-value="2"></i><b>(2)</b>
+        ServerRuntime cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-project.xml").build();
+
+        <i class="conum" data-value="3"></i><b>(3)</b>
+        AgCayenneModule agCayenneBackend = AgCayenneBuilder.build(cayenneRuntime);
+        AgRuntime agRuntime = AgRuntime.builder().module(agCayenneBackend).build();
+
+        <i class="conum" data-value="4"></i><b>(4)</b>
+        AgJaxrsFeature agFeature = AgJaxrsFeature.builder().runtime(agRuntime).build();
+        register(agFeature);
+
+        <i class="conum" data-value="5"></i><b>(5)</b>
+        register(AuthorApi.class);
+        register(BookApi.class);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Our app class extends <code>ResourceConfig</code> coming from Jersey (our JAX-RS provider). Jersey configuration normally
+happens in the <code>ResourceConfig</code> constructor (as described below), and the <code>ResourceConfig</code> is then automatically loaded
+by SpringBoot on startup.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Create Cayenne runtime</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Create Agrest runtime with Cayenne backend</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Register Agrest runtime with Jersey / JAX-RS environment</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Register API endpoints with Jersey</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="running-the-app-and-creating-data"><a class="anchor" href="#running-the-app-and-creating-data"></a>3.3. Running the App and Creating Data</h3>
+<div class="paragraph">
+<p>Now we can run the main class in the IDE, and use <code>curl</code> or a similar HTTP client to create some data:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
+  -d '{"name":"Ernest Hemingway"}' \
   -H 'Content-Type: application/json' \
-  -i 'http://localhost:8080/author'</code></pre>
+  http://localhost:8080/author</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response might look like this (note the id value, we&#8217;ll need it to create Books) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/1.1 201
+Content-Type: application/json
+Content-Length: 55
+Date: Sat, 14 May 2022 09:39:39 GMT</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"data":[{"id":1,"name":"Ernest Hemingway"}],"total":1}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s create a <code>Book</code>. In the following POST request, use the ID of the author from the previous call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
+  -d '[{"title":"A Farewell to Arms","author":1},{"title":"For Whom the Bell Tolls","author":1}]' \
+  -H 'Content-Type: application/json' \
+  http://localhost:8080/book</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since <code>BookApi</code> used <code>SimpleResponse</code>, the JSON returned will be just an acknowledgement of success:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>HTTP/1.1 201
+Content-Type: application/json
+Content-Length: 16
+Date: Sat, 14 May 2022 09:43:01 GMT</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{"success":true}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="selecting-data"><a class="anchor" href="#selecting-data"></a>3.4. Selecting Data</h3>
+<div class="paragraph">
+<p>Now that we have some data in the DB, let&#8217;s build an endpoint to retrieve it via <code>GET</code> requests. In <code>BookApi</code> add
+the following method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Book&gt; get(@Context UriInfo uriInfo) {
+    return AgJaxrs.select(Book.class, config)
+            .clientParams(uriInfo.getQueryParameters())
+            .get();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can restart the app, and run the  following request:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:8080/book</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This returns the following JSON:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "data":[
+    {"id":1,"title":"A Farewell to Arms"},
+    {"id":2,"title":"For Whom the Bell Tolls"}
+  ],
+  "total":2
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since we passed all URL parameters directly to Agrest (via <code>clientParams(uriInfo.getQueryParameters())</code>), we can
+pass various Agrest protocol keys in the URL, to filter the result, resolve related objects, etc. Some examples:</p>
+</div>
+<div class="paragraph">
+<p>Include Author in the response, and exclude ids:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?include=title&amp;include=author.name'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "data":[
+    {"author":{"name":"Ernest Hemingway"},"title":"For Whom the Bell Tolls"},
+    {"author":{"name":"Ernest Hemingway"},"title":"A Farewell to Arms"}
+  ],
+  "total":2
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Sort by title:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?include=title&amp;sort=title'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "data":[
+    {"title":"A Farewell to Arms"},
+    {"title":"For Whom the Bell Tolls"}
+  ],
+  "total":2}</code></pre>
+</div>
 </div>
 </div>
 </div>
