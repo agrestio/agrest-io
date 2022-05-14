@@ -161,7 +161,7 @@ code is available <a href="https://github.com/agrestio/agrest-docs/tree/5.x/agre
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
-        &lt;!-- Controls versions of Spring Boot and its dependencies --&gt;
+        &lt;!-- Defines the versions of Spring Boot and its dependencies --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
             &lt;artifactId&gt;spring-boot-dependencies&lt;/artifactId&gt;
@@ -170,7 +170,7 @@ code is available <a href="https://github.com/agrestio/agrest-docs/tree/5.x/agre
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
 
-        &lt;!-- Controls versions of Agrest modules --&gt;
+        &lt;!-- Defines the versions of Agrest modules --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;io.agrest&lt;/groupId&gt;
             &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
@@ -179,12 +179,19 @@ code is available <a href="https://github.com/agrestio/agrest-docs/tree/5.x/agre
             &lt;scope&gt;import&lt;/scope&gt;
             &lt;type&gt;pom&lt;/type&gt;
         &lt;/dependency&gt;
+
+        &lt;!-- Defines the version of Derby DB --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
+            &lt;artifactId&gt;derby&lt;/artifactId&gt;
+            &lt;version&gt;10.14.2.0&lt;/version&gt;
+        &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This will allow the <code>&lt;dependencies/&gt;</code> section that follows to include various Agrest modules and not
+<p>This will allow the following <code>&lt;dependencies/&gt;</code> section to include Agrest, Spring and other modules and not
 worry about their individual versions. Now let&#8217;s set up the <code>&lt;dependencies/&gt;</code> section:</p>
 </div>
 <div class="listingblock">
@@ -213,7 +220,6 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
     &lt;dependency&gt;
         &lt;groupId&gt;org.apache.derby&lt;/groupId&gt;
         &lt;artifactId&gt;derby&lt;/artifactId&gt;
-        &lt;version&gt;10.14.2.0&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
 </div>
@@ -227,7 +233,144 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 <h2 id="creating-orm-mapping"><a class="anchor" href="#creating-orm-mapping"></a>2. Creating ORM Mapping</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TODO</p>
+<p>Apache Cayenne is a powerful ORM. It has its own
+<a href="https://cayenne.apache.org/docs/4.2/getting-started-guide/">"Getting Started" documentation</a>. Here we will provide
+a ready-to-use ORM model files. And you will use CayenneModeler GUI tool to generate the Java classes from the model.</p>
+</div>
+<div class="paragraph">
+<p>Start by copying the following two XML files to the <code>src/main/resources</code> folder:</p>
+</div>
+<div class="paragraph">
+<p>Model file 1: <code>src/main/resources/cayenne-project.xml</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;domain xmlns="http://cayenne.apache.org/schema/10/domain"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/domain https://cayenne.apache.org/schema/10/domain.xsd"
+	 project-version="10"&gt;
+	&lt;map name="datamap"/&gt;
+	&lt;node name="datanode"
+		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.CreateIfNoSchemaStrategy"&gt;
+		&lt;map-ref name="datamap"/&gt;
+		&lt;data-source&gt;
+			&lt;driver value="org.apache.derby.jdbc.EmbeddedDriver"/&gt;
+			&lt;url value="jdbc:derby:target/db;create=true"/&gt;
+			&lt;connectionPool min="1" max="5"/&gt;
+			&lt;login/&gt;
+		&lt;/data-source&gt;
+	&lt;/node&gt;
+&lt;/domain&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Model file 2: <code>src/main/resources/datamap.map.xml</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
+	 project-version="10"&gt;
+	&lt;property name="defaultPackage" value="io.agrest.tutorial.sb.persistence"/&gt;
+	&lt;property name="quoteSqlIdentifiers" value="true"/&gt;
+	&lt;db-entity name="author"&gt;
+		&lt;db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/&gt;
+		&lt;db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/&gt;
+	&lt;/db-entity&gt;
+	&lt;db-entity name="book"&gt;
+		&lt;db-attribute name="author_id" type="BIGINT" isMandatory="true"/&gt;
+		&lt;db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/&gt;
+		&lt;db-attribute name="title" type="VARCHAR" isMandatory="true" length="200"/&gt;
+	&lt;/db-entity&gt;
+	&lt;obj-entity name="Author" className="io.agrest.tutorial.sb.persistence.Author" dbEntityName="author"&gt;
+		&lt;obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/&gt;
+	&lt;/obj-entity&gt;
+	&lt;obj-entity name="Book" className="io.agrest.tutorial.sb.persistence.Book" dbEntityName="book"&gt;
+		&lt;obj-attribute name="title" type="java.lang.String" db-attribute-path="title"/&gt;
+	&lt;/obj-entity&gt;
+	&lt;db-relationship name="books" source="author" target="book" toMany="true"&gt;
+		&lt;db-attribute-pair source="id" target="author_id"/&gt;
+	&lt;/db-relationship&gt;
+	&lt;db-relationship name="author" source="book" target="author"&gt;
+		&lt;db-attribute-pair source="author_id" target="id"/&gt;
+	&lt;/db-relationship&gt;
+	&lt;obj-relationship name="books" source="Author" target="Book" deleteRule="Deny" db-relationship-path="books"/&gt;
+	&lt;obj-relationship name="author" source="Book" target="Author" deleteRule="Nullify" db-relationship-path="author"/&gt;
+	&lt;cgen xmlns="http://cayenne.apache.org/schema/10/cgen"&gt;
+		&lt;destDir&gt;../java&lt;/destDir&gt;
+		&lt;mode&gt;entity&lt;/mode&gt;
+		&lt;template&gt;templates/v4_1/subclass.vm&lt;/template&gt;
+		&lt;superTemplate&gt;templates/v4_1/superclass.vm&lt;/superTemplate&gt;
+		&lt;template&gt;templates/v4_1/subclass.vm&lt;/template&gt;
+		&lt;superTemplate&gt;templates/v4_1/superclass.vm&lt;/superTemplate&gt;
+		&lt;embeddableTemplate&gt;templates/v4_1/embeddable-subclass.vm&lt;/embeddableTemplate&gt;
+		&lt;embeddableSuperTemplate&gt;templates/v4_1/embeddable-superclass.vm&lt;/embeddableSuperTemplate&gt;
+		&lt;queryTemplate&gt;templates/v4_1/datamap-subclass.vm&lt;/queryTemplate&gt;
+		&lt;querySuperTemplate&gt;templates/v4_1/datamap-superclass.vm&lt;/querySuperTemplate&gt;
+		&lt;outputPattern&gt;*.java&lt;/outputPattern&gt;
+		&lt;makePairs&gt;true&lt;/makePairs&gt;
+		&lt;usePkgPath&gt;true&lt;/usePkgPath&gt;
+		&lt;overwrite&gt;false&lt;/overwrite&gt;
+		&lt;createPropertyNames&gt;false&lt;/createPropertyNames&gt;
+		&lt;createPKProperties&gt;false&lt;/createPKProperties&gt;
+		&lt;client&gt;false&lt;/client&gt;
+	&lt;/cgen&gt;
+&lt;/data-map&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s generate persistent Java classes from the ORM model:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://cayenne.apache.org/docs/4.2/cayenne-guide/#runModeler">Download and start CayenneModeler GUI</a>, specific to your
+operating system. For this tutorial you will need the latest version of the Modeler <code>4.2</code>.</p>
+</li>
+<li>
+<p>Open <code>cayenne-project.xml</code> in the Modeler.</p>
+</li>
+<li>
+<p>Expand the project tree on the left, navigating to "project &gt; datamap", and select "Class Generation" tab on the
+right:</p>
+</li>
+</ul>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="/img/cgen.jpg" alt="cgen">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Make sure the "Output Directory" field points to your <code>src/main/java</code> folder, and then click the "Generate" button.</p>
+</li>
+<li>
+<p>If everything went well, you should see 4 Java classes generated under <code>src/main/java/io/agrest/tutorial/sb/persistence</code>,
+that represent our persistent entities:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>auto/_Author.java</code></p>
+</li>
+<li>
+<p><code>auto/_Book.java</code></p>
+</li>
+<li>
+<p><code>Author.java</code></p>
+</li>
+<li>
+<p><code>Book.java</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
