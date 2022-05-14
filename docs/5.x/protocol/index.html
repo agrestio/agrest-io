@@ -97,9 +97,9 @@
   <li><a href="#overview" class="nav-link">1. Overview</a></li> 
   <li><a href="#json-documents" class="nav-link">2. JSON Documents</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#response-simple-document" class="nav-link">2.1. Response: Simple Document</a></li> 
-    <li><a href="#response-collection-document" class="nav-link">2.2. Response: Collection Document</a></li> 
-    <li><a href="#request-update-document" class="nav-link">2.3. Request: Update Document</a></li> 
+    <li><a href="#simple-document" class="nav-link">2.1. Simple Document</a></li> 
+    <li><a href="#collection-document" class="nav-link">2.2. Collection Document</a></li> 
+    <li><a href="#update-document" class="nav-link">2.3. Update Document</a></li> 
    </ul> </li> 
   <li><a href="#dates-and-times" class="nav-link">3. Dates and Times</a></li> 
   <li><a href="#control-parameters" class="nav-link">4. Control Parameters</a> 
@@ -151,10 +151,10 @@ and Article, with a 1..N relationship between them:</p>
 <h2 id="json-documents"><a class="anchor" href="#json-documents"></a>2. JSON Documents</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="response-simple-document"><a class="anchor" href="#response-simple-document"></a>2.1. Response: Simple Document</h3>
+<h3 id="simple-document"><a class="anchor" href="#simple-document"></a>2.1. Simple Document</h3>
 <div class="paragraph">
-<p>This document is used in responses that contain no data, just a boolean status and a
-message. On success, it might look like this:</p>
+<p>This document is used in <em>responses</em> that contain no data, just a boolean status and a message. On success, it might
+look like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -189,10 +189,9 @@ Content-Type: application/json</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="response-collection-document"><a class="anchor" href="#response-collection-document"></a>2.2. Response: Collection Document</h3>
+<h3 id="collection-document"><a class="anchor" href="#collection-document"></a>2.2. Collection Document</h3>
 <div class="paragraph">
-<p>A document that passes the data from the server to the client. This is the main
-representation of data in Agrest.</p>
+<p>This document is used in <em>responses</em> that return the data from the server. This is the main representation of data in Agrest.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -212,7 +211,7 @@ Content-Type: application/json</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>"data"</code> array contains entity objects. Implicit entity model defines what
+<p><code>data</code> array contains entity objects. Implicit entity model defines what
 attributes and relationships (collectively - "properties") each object has. A subset of
 properties showing in the collection document is a defined by a combination of
 server-side constraints and client request control parameters. Each object in the data
@@ -220,18 +219,18 @@ array may contain related objects, those in turn may contain their related objec
 no limit on the depth of nesting.</p>
 </div>
 <div class="paragraph">
-<p><code>"total"</code> is a number of objects one would see in the collection if there
+<p><code>total</code> is a number of objects one would see in the collection if there
 was no pagination. If pagination is in use (see <a href="#Pagination">start / limit</a>),
 the total may be greater than the number of visible objects in the "data" array.
 Otherwise, it is equal to the size of "data".</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="request-update-document"><a class="anchor" href="#request-update-document"></a>2.3. Request: Update Document</h3>
+<h3 id="update-document"><a class="anchor" href="#update-document"></a>2.3. Update Document</h3>
 <div class="paragraph">
-<p>Update Document is sent from the client to the server to modify an entity collection.
-It is a Collection document stripped down to its "data" section. There are two flavors -
-a single object and an array of objects:</p>
+<p>Update Document is sent in a <em>request</em> body from the client to the server to modify an entity collection.
+It is a Collection document stripped down to its data section. There are two flavors - a single object and an array of
+objects:</p>
 </div>
 <div class="listingblock">
 <div class="content">
