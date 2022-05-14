@@ -96,8 +96,8 @@
  </div> 
  <ul class="sectlevel1 nav"> 
   <li><a href="#setting-up-the-project" class="nav-link">1. Setting up the Project</a></li> 
-  <li><a href="#creating-orm-mapping" class="nav-link">2. Creating ORM Mapping</a></li> 
-  <li><a href="#writing-rest-endpoints" class="nav-link">3. Writing REST Endpoints</a> 
+  <li><a href="#orm-mapping" class="nav-link">2. ORM Mapping</a></li> 
+  <li><a href="#rest-endpoints" class="nav-link">3. REST Endpoints</a> 
    <ul class="sectlevel2 nav"> 
     <li><a href="#creating-data-with-post" class="nav-link">3.1. Creating data with POST</a></li> 
     <li><a href="#setting-up-the-app" class="nav-link">3.2. Setting up the App</a></li> 
@@ -105,7 +105,8 @@
     <li><a href="#selecting-data" class="nav-link">3.4. Selecting Data</a></li> 
     <li><a href="#updating-data" class="nav-link">3.5. Updating Data</a></li> 
    </ul> </li> 
-  <li><a href="#conclusion" class="nav-link">4. Conclusion</a></li> 
+  <li><a href="#custom-property" class="nav-link">4. Custom Property</a></li> 
+  <li><a href="#conclusion" class="nav-link">5. Conclusion</a></li> 
  </ul> 
 </div></div>
         
@@ -122,14 +123,14 @@
                     <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Through this tutorial we will be building a simple Bookstore REST application using Agrest with a real database.
-Agrest can work with various REST API stacks, and different backends. The tutorial will be done with the following
-components:</p>
+<p>Through this tutorial we will be building a simple Bookstore REST application using Agrest with a relational database.
+Agrest can work with various REST API stacks and different backends. So there are some choices to make for the
+purpose of the tutorial. We decided to use the following components:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>SpringBoot / Jersey (via <code>spring-boot-starter-jersey</code>)</p>
+<p>SpringBoot / Jersey</p>
 </li>
 <li>
 <p>Derby database</p>
@@ -229,7 +230,7 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 </div>
 </div>
 <div class="sect1">
-<h2 id="creating-orm-mapping"><a class="anchor" href="#creating-orm-mapping"></a>2. Creating ORM Mapping</h2>
+<h2 id="orm-mapping"><a class="anchor" href="#orm-mapping"></a>2. ORM Mapping</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Apache Cayenne is a powerful ORM, fully integrated with Agrest. To makes things easier for this tutorial, we will
@@ -290,6 +291,7 @@ If you want to learn more about Cayenne,
 	&lt;property name="defaultPackage" value="io.agrest.tutorial.sb.persistence"/&gt;
 	&lt;property name="quoteSqlIdentifiers" value="true"/&gt;
 	&lt;db-entity name="author"&gt;
+		&lt;db-attribute name="date_of_birth" type="DATE" isMandatory="true"/&gt;
 		&lt;db-attribute name="id" type="BIGINT" isPrimaryKey="true" isGenerated="true" isMandatory="true"/&gt;
 		&lt;db-attribute name="name" type="VARCHAR" isMandatory="true" length="200"/&gt;
 	&lt;/db-entity&gt;
@@ -299,6 +301,7 @@ If you want to learn more about Cayenne,
 		&lt;db-attribute name="title" type="VARCHAR" isMandatory="true" length="200"/&gt;
 	&lt;/db-entity&gt;
 	&lt;obj-entity name="Author" className="io.agrest.tutorial.sb.persistence.Author" dbEntityName="author"&gt;
+		&lt;obj-attribute name="dateOfBirth" type="java.time.LocalDate" db-attribute-path="date_of_birth"/&gt;
 		&lt;obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/&gt;
 	&lt;/obj-entity&gt;
 	&lt;obj-entity name="Book" className="io.agrest.tutorial.sb.persistence.Book" dbEntityName="book"&gt;
@@ -387,7 +390,7 @@ that represent our persistent entities:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="writing-rest-endpoints"><a class="anchor" href="#writing-rest-endpoints"></a>3. Writing REST Endpoints</h2>
+<h2 id="rest-endpoints"><a class="anchor" href="#rest-endpoints"></a>3. REST Endpoints</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="creating-data-with-post"><a class="anchor" href="#creating-data-with-post"></a>3.1. Creating data with POST</h3>
@@ -537,7 +540,7 @@ by SpringBoot on startup.</td>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
-  -d '{"name":"Ernest Hemingway"}' \
+  -d '{"name":"Ernest Hemingway","dateOfBirth":"1899-07-21"}' \
   -H 'Content-Type: application/json' \
   http://localhost:8080/author</code></pre>
 </div>
@@ -555,7 +558,7 @@ Date: Sat, 14 May 2022 09:39:39 GMT</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{"data":[{"id":1,"name":"Ernest Hemingway"}],"total":1}</code></pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{"data":[{"id":1,"dateOfBirth":"1899-07-21","name":"Ernest Hemingway"}],"total":1}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -699,7 +702,55 @@ a natural key.
 </div>
 </div>
 <div class="sect1">
-<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>4. Conclusion</h2>
+<h2 id="custom-property"><a class="anchor" href="#custom-property"></a>4. Custom Property</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Agrest has a powerful API for building REST entity schemas, but so far we didn&#8217;t have to interact with it.
+Agrest simply took the existing model from Cayenne and exposed each ORM entity as a REST entity. In reality REST
+entities often look very different from persistent objects, and there are various mechanisms to define their structure
+and retrieval strategy. Here we will show the simplest way to define a new property in an existing entity.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s imagine we would like to add the <code>age</code> property to the <code>Author</code> object. This is not a persistent property, and
+is not known to Cayenne. Yet, it is rather easy to calculate from the current date and the <code>Author.dateOfBirth</code>
+property. So we can write a getter method on the Author object that performs this calculation. But we also need to
+tell Agrest that this property is a part of the REST model. For this we will use <code>@AgAttribute</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AgAttribute
+public int getAge() {
+    return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s restart the app, and run the following request for books with authors and their ages:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?exclude=id&amp;include=author.name&amp;include=author.age'</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "data":[
+    {"author":{"age":122,"name":"Ernest Hemingway"},"title":"For Whom the Bell Tolls"},
+    {"author":{"age":122,"name":"Ernest Hemingway"},"title":"A Farewell to Arms"}
+  ],
+  "total":2
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can see that as of this writing, Hemingway was 122 years old. Again, <code>@AgAttribute</code> on getters is not the only
+way to add custom properties, bit it is very handy for simple properties like our example.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>5. Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This concludes our tutorial. From here you should check the "Protocol" document on how to interact with Agrest from
