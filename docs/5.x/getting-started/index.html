@@ -233,12 +233,25 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 <h2 id="creating-orm-mapping"><a class="anchor" href="#creating-orm-mapping"></a>2. Creating ORM Mapping</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Apache Cayenne is a powerful ORM. It has its own
-<a href="https://cayenne.apache.org/docs/4.2/getting-started-guide/">"Getting Started" documentation</a>. Here we will provide
-a ready-to-use ORM model files. And you will use CayenneModeler GUI tool to generate the Java classes from the model.</p>
+<p>Apache Cayenne is a powerful ORM, fully integrated with Agrest. To makes things easier for this tutorial, we will
+provide ready-to-use Cayenne ORM model files. And you will use CayenneModeler GUI tool to generate the Java classes
+from the model.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you want to learn more about Cayenne,
+<a href="https://cayenne.apache.org/docs/4.2/getting-started-guide/">here is a link</a> to get started.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>Start by copying the following two XML files to the <code>src/main/resources</code> folder:</p>
+<p>The following 2 XML files comprise Cayenne mapping project. Copy both of them to the <code>src/main/resources</code> folder:</p>
 </div>
 <div class="paragraph">
 <p>Model file 1: <code>src/main/resources/cayenne-project.xml</code></p>
@@ -328,8 +341,8 @@ a ready-to-use ORM model files. And you will use CayenneModeler GUI tool to gene
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://cayenne.apache.org/docs/4.2/cayenne-guide/#runModeler">Download and start CayenneModeler GUI</a>, specific to your
-operating system. For this tutorial you will need the latest version of the Modeler <code>4.2</code>.</p>
+<p><a href="https://cayenne.apache.org/docs/4.2/cayenne-guide/#runModeler">Download CayenneModeler GUI and open it on your computer</a>.
+For this tutorial you will need the latest version of the Modeler <code>4.2</code>.</p>
 </li>
 <li>
 <p>Open <code>cayenne-project.xml</code> in the Modeler.</p>
@@ -342,7 +355,7 @@ right:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/img/getting-started/cgen.png" alt="cgen">
+<img src="../img/getting-started/cgen.png" alt="cgen">
 </div>
 </div>
 <div class="ulist">
