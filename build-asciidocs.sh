@@ -3,7 +3,7 @@
 function checkAndCreateDir() {
     if [ ! -d "$1" ]; then
         echo "Creating doc dir: $1"
-        mkdir "$1"
+        mkdir -p "$1"
     fi
 }
 
@@ -62,6 +62,7 @@ do
 
       echo "Syncing asciidoc content for ${d}"
       ASCII_DOC_DIR_VERSION="$ASCII_DOC_DIR/$GIT_TAG"
+      checkAndCreateDir "$ASCII_DOC_DIR_VERSION"
       cp -R "./${d}target/site/." "$ASCII_DOC_DIR_VERSION/"
   done
 
