@@ -99,11 +99,11 @@
   <li><a href="#orm-mapping" class="nav-link">2. ORM Mapping</a></li> 
   <li><a href="#rest-endpoints" class="nav-link">3. REST Endpoints</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#create-data-with-post" class="nav-link">3.1. Create data with POST</a></li> 
+    <li><a href="#post-create-data" class="nav-link">3.1. POST: Create data</a></li> 
     <li><a href="#rest-app-class" class="nav-link">3.2. REST App Class</a></li> 
     <li><a href="#run-the-app-and-create-data" class="nav-link">3.3. Run the App and Create Data</a></li> 
-    <li><a href="#select-data" class="nav-link">3.4. Select Data</a></li> 
-    <li><a href="#update-data" class="nav-link">3.5. Update Data</a></li> 
+    <li><a href="#get-select-data" class="nav-link">3.4. GET: Select Data</a></li> 
+    <li><a href="#put-update-data" class="nav-link">3.5. PUT: Update Data</a></li> 
    </ul> </li> 
   <li><a href="#custom-property" class="nav-link">4. Custom Property</a></li> 
   <li><a href="#conclusion" class="nav-link">5. Conclusion</a></li> 
@@ -392,7 +392,7 @@ that represent our persistent entities:</p>
 <h2 id="rest-endpoints"><a class="anchor" href="#rest-endpoints"></a>3. REST Endpoints</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="create-data-with-post"><a class="anchor" href="#create-data-with-post"></a>3.1. Create data with POST</h3>
+<h3 id="post-create-data"><a class="anchor" href="#post-create-data"></a>3.1. POST: Create data</h3>
 <div class="paragraph">
 <p>Let&#8217;s write a couple of POST endpoints to allow users to create Authors and Books. We&#8217;ll start by creating Java classes
 <code>AuthorApi</code> and <code>BookApi</code>, placing a few JAX-RS annotations on them, and injecting JAX-RS <code>Configuration</code> object:</p>
@@ -589,7 +589,7 @@ Date: Sat, 14 May 2022 09:43:01 GMT</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="select-data"><a class="anchor" href="#select-data"></a>3.4. Select Data</h3>
+<h3 id="get-select-data"><a class="anchor" href="#get-select-data"></a>3.4. GET: Select Data</h3>
 <div class="paragraph">
 <p>Now that we have some data in the DB, let&#8217;s build an endpoint to retrieve it via <code>GET</code> requests. In <code>BookApi</code> add
 the following method:</p>
@@ -666,7 +666,7 @@ pass various Agrest protocol keys in the URL, to filter the result, resolve rela
 </div>
 </div>
 <div class="sect2">
-<h3 id="update-data"><a class="anchor" href="#update-data"></a>3.5. Update Data</h3>
+<h3 id="put-update-data"><a class="anchor" href="#put-update-data"></a>3.5. PUT: Update Data</h3>
 <div class="paragraph">
 <p>Similar to how we implemented <code>POST</code>, you can also write <code>PUT</code> endpoints. We are leaving it as an exercise for the
 reader, but here are some hints:</p>
