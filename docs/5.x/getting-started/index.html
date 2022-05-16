@@ -712,8 +712,8 @@ and retrieval strategy. Here we will show the simplest way to define a new prope
 <div class="paragraph">
 <p>Let&#8217;s imagine we would like to add the <code>age</code> property to the <code>Author</code> object. This is not a persistent property, and
 is not known to Cayenne. Yet, it is rather easy to calculate from the current date and the <code>Author.dateOfBirth</code>
-property. So we can write a getter method on the Author object that performs this calculation. But we also need to
-tell Agrest that this property is a part of the REST model. For this we will use <code>@AgAttribute</code> annotation:</p>
+property. So we can write a getter method on the Author that performs such calculation. We will use a special
+<code>@AgAttribute</code> annotation to tell Agrest that the new property is a part of the REST model:</p>
 </div>
 <div class="listingblock">
 <div class="content">
