@@ -535,7 +535,7 @@ all the flavors with a few examples:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>`sort=[{"property":"name"},{"property":"dateOfBirth","direction":"DESC"}]`</code></pre>
+<pre class="highlight"><code>sort=[{"property":"name"},{"property":"dateOfBirth","direction":"DESC"}]</code></pre>
 </div>
 </div>
 </div>
@@ -553,7 +553,7 @@ collection. Default <code>start</code> is 0.</p>
 <p><code>limit</code> is a maximum number of objects in the collection "data". Default is no limit.</p>
 </div>
 <div class="paragraph">
-<p><code>limit</code> is applied after <code>start</code>. So for a collection of 10 objects, <code>?start=2&amp;limit=5</code> would result in objects 2
+<p><code>limit</code> is applied after <code>start</code>. So for a collection of 10 objects, <code>start=2&amp;limit=5</code> would result in objects 2
 through 6 returned from the server. Returned Collection "total" would still be 10.</p>
 </div>
 </div>
@@ -576,7 +576,7 @@ property. E.g. consider a typical list response:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Using <code>mapBy=genre</code> it can be transformed to a map. The total here is still the number of all objects in all the maps
+<p>With <code>mapBy=genre</code> it is transformed to a map. The total here is still the number of objects in all the maps
 combined:</p>
 </div>
 <div class="listingblock">
@@ -600,37 +600,57 @@ combined:</p>
 <h3 id="include-exclude"><a class="anchor" href="#include-exclude"></a>4.5. include / exclude</h3>
 <div class="paragraph">
 <p><code>include</code> and <code>exclude</code> are used to recursively shape individual objects in a response collection. These are the
-controls that turn your REST endpoints from fixed models to <em>graphs</em> that can be dynamically navigated by the clients.</p>
+controls that turn your REST endpoints fixed models into <em>graphs</em> that can be dynamically navigated by the clients.</p>
 </div>
 <div class="paragraph">
 <p><code>exclude</code> format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>// a single property path
-exclude=&lt;prop_path&gt;
-
-// a JSON array of property paths
-exclude=[&lt;prop_path&gt;,...]</code></pre>
+<pre class="highlight"><code>exclude=&lt;prop_path&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+exclude=[&lt;prop_path&gt;,...] <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A single property path</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A JSON array of property paths</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p><code>include</code> format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>// a single property path
-include=&lt;prop_path&gt;
-
-// a JSON include object
-include=&lt;json_include_object&gt;
-
-// a JSON array of property paths and include objects
-include=[&lt;prop_path_or_json_include_object&gt;,...]</code></pre>
+<pre class="highlight"><code>include=&lt;prop_path&gt; <i class="conum" data-value="1"></i><b>(1)</b>
+include=&lt;json_include_object&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+include=[&lt;prop_path_or_json_include_object&gt;,...] <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>A single property path</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>A JSON include object</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>A JSON array of property paths and include objects</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p><code>&lt;json_include_object&gt;</code> has the following format:</p>
+<p><code>&lt;json_include_object&gt;</code> has the following structure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -675,7 +695,7 @@ of a given entity, and none of the relationships.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-In the examples below we will omit the <code>{"data":[..],"total":N}</code> collection document wrapper, and will only
+In the examples below we will omit the <code>{"data":[..],"total": .. }</code> collection document wrapper, and will only
 show the structure of an individual object within the "data" collection.
 </td>
 </tr>
