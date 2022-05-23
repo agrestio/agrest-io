@@ -413,37 +413,31 @@ with <code>Author</code>, while <code>title</code> and <code>author.dateOfBirth<
 <div class="paragraph">
 <p>Here are a few examples using an expression key (not showing URL encoding):</p>
 </div>
-<div class="paragraph">
-<p>Example 1: Filtering on a single property:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 1: Filtering on a single property</div>
 <div class="content">
 <pre class="highlight"><code>exp=name='Ernest Hemingway'
 exp=name like 'E%'
 exp=name likeIgnoreCase '%ab%'</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 2: Filtering on a relationship with outer join (the "+" sign is notation for "outer"). Comparing to null returns
-all authors who have no books in the system:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 2: Filtering on a relationship with a left join</div>
 <div class="content">
 <pre class="highlight"><code>exp=books+ = null</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Example 3: Parameter resolution by position:</p>
+<p>The "+" sign denotes "left join" syntax. Comparing to null returns all authors who have no books in the system.</p>
 </div>
 <div class="listingblock">
+<div class="title">Example 3: Parameter resolution by position</div>
 <div class="content">
 <pre class="highlight"><code>exp=["author.dateOfBirth &gt; $afterDate","1900-01-01"]</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 4: Parameter resolution by name:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 4: Parameter resolution by name</div>
 <div class="content">
 <pre class="highlight"><code>exp={"exp":"author.dateOfBirth &gt; $afterDate", "params":{"afterDate":"1900-01-01" }}</code></pre>
 </div>
@@ -506,34 +500,26 @@ sort=[&lt;json_sort_object&gt;,...] <i class="conum" data-value="4"></i><b>(4)</
 <code>{"property": .., "direction": .. }</code>. <code>direction</code> is optional and takes the same values as <code>dir</code>. Let&#8217;s demonstrate
 all the flavors with a few examples:</p>
 </div>
-<div class="paragraph">
-<p>Example 1: Ascending sort by a single property:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 1: Ascending sort by a single property</div>
 <div class="content">
 <pre class="highlight"><code>sort=name</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 2: Descending sort by a single property with explicit direction:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 2: Descending sort by a single property with explicit direction</div>
 <div class="content">
 <pre class="highlight"><code>sort=id&amp;dir=DESC</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 3: Descending sort by a single property with a sort object:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 3: Descending sort by a single property with a sort object</div>
 <div class="content">
 <pre class="highlight"><code>sort={"property":"id","direction":"DESC"}</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 4: Sort by multiple properties with a list of sort objects:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 4: Sort by multiple properties with a list of sort objects</div>
 <div class="content">
 <pre class="highlight"><code>sort=[{"property":"name"},{"property":"dateOfBirth","direction":"DESC"}]</code></pre>
 </div>
@@ -696,15 +682,13 @@ of a given entity, and none of the relationships.</p>
 </td>
 <td class="content">
 In the examples below we will omit the <code>{"data":[..],"total": .. }</code> collection document wrapper, and will only
-show the structure of an individual object within the "data" collection.
+show the structure of a single individual object within the "data" collection.
 </td>
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Example 1: Include the id and the attributes, but exclude the "genre" attribute:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 1: Include the id and the attributes, but exclude the "genre" attribute</div>
 <div class="content">
 <pre class="highlight"><code>exclude=genre</code></pre>
 </div>
@@ -714,10 +698,8 @@ show the structure of an individual object within the "data" collection.
 <pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 8, "title" : "One Hundred Years of Solitude" }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 2: Only include "id":</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 2: Only include "id"</div>
 <div class="content">
 <pre class="highlight"><code>include=id</code></pre>
 </div>
@@ -727,10 +709,8 @@ show the structure of an individual object within the "data" collection.
 <pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 8 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 3: Multiple includes, one of them pointing to the attributes of a related entity:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 3: Multiple includes, one of them pointing to the attributes of a related entity</div>
 <div class="content">
 <pre class="highlight"><code>include=id&amp;include=author.name</code></pre>
 </div>
@@ -740,10 +720,8 @@ show the structure of an individual object within the "data" collection.
 <pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 8, "author" : {"name" : "Gabriel García Márquez"} }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 4: JSON include object with sorting, filtering and a nested include:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 4: JSON include object with sorting, filtering and a nested include</div>
 <div class="content">
 <pre class="highlight"><code>include={"path":"books","exp":"title like '%a%'","sort":"title", "include":"title"}</code></pre>
 </div>
@@ -758,10 +736,8 @@ show the structure of an individual object within the "data" collection.
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 5: JSON include object with mapBy and a nested include:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 5: JSON include object with mapBy and a nested include</div>
 <div class="content">
 <pre class="highlight"><code>include={"path":"books","mapBy":"genre", "include":"id"}</code></pre>
 </div>
@@ -778,10 +754,8 @@ show the structure of an individual object within the "data" collection.
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 6: Include and Exclude parameters can take an array of values:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 6: Include and Exclude parameters can take an array of values</div>
 <div class="content">
 <pre class="highlight"><code>include=["id","name"]</code></pre>
 </div>
@@ -791,10 +765,8 @@ show the structure of an individual object within the "data" collection.
 <pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 45, "name" : "Gabriel García Márquez"}</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 7: The include array can contain a combination of paths and include objects:</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 7: The include array can contain a combination of paths and include objects</div>
 <div class="content">
 <pre class="highlight"><code>include=["id","books.title",{"path":"books","exp":"title like %a%'"}]</code></pre>
 </div>
@@ -810,11 +782,8 @@ show the structure of an individual object within the "data" collection.
 }</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Example 8: Include array is recursive. Attributes of a related entity can be specified as a JSON array. Also, there is a
-shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are using <code>{"books":[..]}</code> :</p>
-</div>
 <div class="listingblock">
+<div class="title">Example 8: Include array is recursive</div>
 <div class="content">
 <pre class="highlight"><code>include=["id",{"books":["id", "title"]}]</code></pre>
 </div>
@@ -829,6 +798,10 @@ shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are usin
    ]
 }</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>In this example attributes of both the root entity and the related entity are specified as JSON arrays. Also, there is
+a shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are using <code>{"books":[..]}</code>.</p>
 </div>
 </div>
 </div>
