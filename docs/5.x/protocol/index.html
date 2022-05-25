@@ -308,8 +308,8 @@ pagination. I.e. it may be greater than the number of the returned objects in th
 <div class="sect2">
 <h3 id="update-request"><a class="anchor" href="#update-request"></a>3.3. Update Request</h3>
 <div class="paragraph">
-<p>This document is used as a body of POST or PUT requests to pass the data from the client to the server to modify an
-entity collection. It is either a single objects or a collection of objects (so pure custom model, no Agrest-specific
+<p>This document is used as a body of a POST or PUT request to pass the data from the client to the server to modify an
+entity collection. It is either a single object or a collection of objects (so pure custom model, no Agrest-specific
 properties) :</p>
 </div>
 <div class="listingblock">
@@ -366,12 +366,12 @@ exp={"exp"="&lt;exp_string&gt;", "params":{ "param1" : "value1", "param2", "valu
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>An expression with parameter resolution <em>by position</em> is represented as a list, where the expression string is the first
+<td>An expression with parameter resolution <em>by position</em> is represented as a JSON list, where the expression string is the first
 element, and all subsequent elements are positional parameters</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>An expression with parameter resolution <em>by name</em> is represented as a map with "exp" and "params" properties</td>
+<td>An expression with parameter resolution <em>by name</em> is represented as a JSON object with "exp" and "params" properties</td>
 </tr>
 </table>
 </div>
