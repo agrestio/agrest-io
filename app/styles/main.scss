@@ -194,8 +194,8 @@ $i: "../images/"; // PATH VAR
 		border-radius: calculateRem(5px);
 		display: inline-block;
 		overflow: visible;
-		padding: .05em .4em;
-		margin: .05em 0;
+		padding: 0em 0.4em;
+		line-height: 1.5;
 
 		a > &,
 		h1 > &, h2 > &, h3 > &, h4 > &, h5 > &, h6 > &,
