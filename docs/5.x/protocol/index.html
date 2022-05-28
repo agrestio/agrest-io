@@ -129,7 +129,14 @@
 
             <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
                 <article>
-                    <div class="sect1">
+                    <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Protocol Version 1.2</em></p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="overview"><a class="anchor" href="#overview"></a>1. Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -236,7 +243,6 @@ to follow:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-json" data-lang="json">{
-   "success" : true,
    "message" : "..."
 }</code></pre>
 </div>
@@ -249,12 +255,6 @@ to follow:</p>
 <col>
 </colgroup>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>success</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">boolean</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Whether the request was successful. This property is redundant and exists for legacy reasons only. It will be removed in
-the future. Client code should ignore it, and rely on the HTTP status code instead.</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
@@ -451,7 +451,7 @@ exp=name likeIgnoreCase '%ab%'</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>sort=&lt;prop_path&gt; <i class="conum" data-value="1"></i><b>(1)</b>
-sort=&lt;prop_path&gt;&amp;dir=&lt;dir_spec&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+sort=&lt;prop_path&gt;&amp;direction=&lt;direction_spec&gt; <i class="conum" data-value="2"></i><b>(2)</b>
 sort=&lt;json_sort_object&gt; <i class="conum" data-value="3"></i><b>(3)</b>
 sort=[&lt;json_sort_object&gt;,...] <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
@@ -477,27 +477,28 @@ sort=[&lt;json_sort_object&gt;,...] <i class="conum" data-value="4"></i><b>(4)</
 </table>
 </div>
 <div class="paragraph">
-<p><code>dir</code> is added to specify sort direction when sorting is done on a single property. It can have one of these values:</p>
+<p><code>direction</code> is added to specify sort direction when sorting is done on a single property. It can have one of these values
+(specified in lower or upper case) :</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>ASC</code>: this is also the default, when no <code>dir</code> is provided</p>
+<p><code>asc</code>: this is also the default, when no <code>direction</code> is provided</p>
 </li>
 <li>
-<p><code>DESC</code></p>
+<p><code>desc</code></p>
 </li>
 <li>
-<p><code>ASC_CI</code>: for case-insensitive ascending ordering</p>
+<p><code>asc_ci</code>: for case-insensitive ascending ordering</p>
 </li>
 <li>
-<p><code>DESC_CI</code>: for case-insensitive descending ordering</p>
+<p><code>desc_ci</code>: for case-insensitive descending ordering</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p><code>&lt;json_sort_object&gt;</code> allows to specify both the property and the direction in one place and has a form of
-<code>{"property": .., "direction": .. }</code>. <code>direction</code> is optional and takes the same values as <code>dir</code>. Let&#8217;s demonstrate
+<code>{"path": .., "direction": .. }</code>. <code>direction</code> is optional and takes the same values as <code>direction</code>. Let&#8217;s demonstrate
 all the flavors with a few examples:</p>
 </div>
 <div class="listingblock">
@@ -509,19 +510,19 @@ all the flavors with a few examples:</p>
 <div class="listingblock">
 <div class="title">Example 2: Descending sort by a single property with explicit direction</div>
 <div class="content">
-<pre class="highlight"><code>sort=id&amp;dir=DESC</code></pre>
+<pre class="highlight"><code>sort=id&amp;direction=desc</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example 3: Descending sort by a single property with a sort object</div>
 <div class="content">
-<pre class="highlight"><code>sort={"property":"id","direction":"DESC"}</code></pre>
+<pre class="highlight"><code>sort={"path":"id","direction":"desc"}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">Example 4: Sort by multiple properties with a list of sort objects</div>
 <div class="content">
-<pre class="highlight"><code>sort=[{"property":"name"},{"property":"dateOfBirth","direction":"DESC"}]</code></pre>
+<pre class="highlight"><code>sort=[{"path":"name"},{"path":"dateOfBirth","direction":"desc"}]</code></pre>
 </div>
 </div>
 </div>
