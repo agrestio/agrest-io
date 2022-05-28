@@ -1,5 +1,4 @@
 .documentation-page {
-  font-size: .875rem;
 
   .toc {
     display: block !important; // overwrite docbook style
@@ -10,7 +9,7 @@
 
     .sectlevel2 {
         padding-left: 10px;
-        // font-size: $small-font-size;
+        font-size: $small-font-size;
     }
   }
 
@@ -23,7 +22,7 @@
   		// 0 level links
   		.cd-toc-link {
   			display: inline-block;
-  	        padding: .5rem 2rem .5rem 0;
+  	        padding: .5rem 2rem .5rem .5rem;
       		line-height: 1.1;
 
   			&.active {
@@ -33,9 +32,10 @@
 
   	    // Active states
   	    .nav-link {
-          // font-size: 0.95rem;
 
-          &.active {
+            font-size: 0.95rem;
+
+  		    &.active {
   		    	position: relative;
 
   		    	&:before {
@@ -69,7 +69,7 @@
 
   			// ul 1st level
   			.sectlevel1 {
-  				padding: 0 2rem 0 0;
+  				padding: 0 2rem 0 .75rem;
   				margin-bottom: 0;
   			}
 
@@ -101,70 +101,6 @@
   		}
   }
 
-  // conum (callout nummber from code)
-  .conum[data-value],
-  .hljs-number {
-    // font-size: .875rem;
-    // font-style: normal;
-    // background: $body-color;
-    // color: $white;
-    // display: inline-flex;
-    // justify-content: center;
-    // align-items: center;
-    // min-width: 1.7143em;        //  = 24px from 14px
-    // height: 1.7143em;           //  = 24px from 14px
-    // border-radius: 50rem;
-    
-    &:after {
-      content: attr(data-value);
-      position: relative;
-      left: -0.5px;
-    }
-    
-    & + b {
-      display: none;
-    }
-    
-    // number for now but useless, only to demo
-    background: #d36363;
-    color: #fff;
-    width: 21px;
-    height: 21px;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 21px;
-    font-style: normal;
-    border-radius: 50rem;
-    margin-right: -0.5em;
-    margin-left: -0.5em;
-    position: relative;
-  }
-  
-  // colist (callout list)
-  .colist table {
-    border: none;
-
-    tr td:first-child {
-      padding-right: 0.35em;
-    }
-
-    tr:last-child td {
-      padding-bottom: 0;
-    }
-    
-    td {
-      border: none;
-      vertical-align: top;
-      padding-left: 0;
-      font-size: 14px;
-      
-      .conum[data-value] {
-        margin: -.25em .2857em auto;       // = 4px from 14px
-      }
-    }
-    
-  }
 
   table {
     border-collapse: collapse;
@@ -182,9 +118,9 @@
 
     caption {
       color: #000;
-      font: italic 100%/1 arial, sans-serif;
+      font: italic 85%/1 arial, sans-serif;
       padding: 1em 0;
-      caption-side: top;
+      text-align: center;
     }
 
     td, th {
@@ -207,12 +143,6 @@
     tbody > tr:last-child > td {
       border-bottom-width: 0;
     }
-  }
-
-  .title {
-    color: #000;
-    font: italic 100%/1 arial, sans-serif;
-    padding: 1em 0 .75em;
   }
 }
 
@@ -308,8 +238,6 @@
     }
   }
 
-  
-
   h1 {
       text-align: center;
   }
@@ -338,22 +266,12 @@
 
   h2 {
     font-size:1.7rem;
-    margin-top: 0 !important;
-    margin-bottom: 0.5em !important;
-  }
-
-  * + .sect1 h2 {
-    margin-top: 3rem !important;
   }
 
   h3 {
     font-size: 1.4rem;
-    margin-top: 1rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .sect2:not(:first-child) h3 {
-    margin-top: 2rem !important;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
   }
 
   h4 {
@@ -365,53 +283,4 @@
   .cd-content {
       font-size: 0.95rem;
   }
-
-  .imageblock img {
-    @extend .img-fluid;
-  }
-
-  .anchor {
-    position:absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    pointer-events: auto;
-    z-index: 1;
-
-    display: inline-block;
-    vertical-align: top;
-    
-    height: inherit;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: var(--fa-display,inline-block);
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;-moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: var(--fa-display,inline-block);
-    font-style: normal;
-    font-variant: normal;
-    line-height: 1;
-    text-rendering: auto;
-
-    font-family: var(--fa-style-family,"Font Awesome 6 Free");
-    font-weight: var(--fa-style,900);
-}
-
-.anchor:hover:before {
-    opacity:1;
-}
-
-.anchor:before {
-    position:absolute;
-    right: calc(100% + .75em);
-    top: 9px;
-    font-size: 16px;
-    color: #707070;
-    content: "\f0c1";
-    opacity: 0;
-    transition: all .2s linear;}
 }
