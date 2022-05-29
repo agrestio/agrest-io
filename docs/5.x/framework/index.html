@@ -107,15 +107,28 @@
     <li><a href="#java-version" class="nav-link">1.1. Java Version</a></li> 
    </ul> </li> 
   <li><a href="#dependencies" class="nav-link">2. Dependencies</a></li> 
-  <li><a href="#jersey-3-integration" class="nav-link">3. Jersey 3 Integration</a></li> 
-  <li><a href="#get-requests" class="nav-link">4. GET requests</a></li> 
-  <li><a href="#post-requests" class="nav-link">5. POST requests</a></li> 
-  <li><a href="#put-requests" class="nav-link">6. PUT requests</a></li> 
-  <li><a href="#delete-requests" class="nav-link">7. DELETE requests</a></li> 
-  <li><a href="#cayenne-integration" class="nav-link">8. Cayenne Integration</a></li> 
-  <li><a href="#schema" class="nav-link">9. Schema</a></li> 
-  <li><a href="#access-control" class="nav-link">10. Access Control</a></li> 
-  <li><a href="#swagger-integration" class="nav-link">11. Swagger Integration</a></li> 
+  <li><a href="#runtime" class="nav-link">3. Runtime</a> 
+   <ul class="sectlevel2 nav"> 
+    <li><a href="#auto-loadable-modules" class="nav-link">3.1. Auto-loadable Modules</a></li> 
+   </ul> </li> 
+  <li><a href="#jersey-integration" class="nav-link">4. Jersey Integration</a> 
+   <ul class="sectlevel2 nav"> 
+    <li><a href="#dependencies-2" class="nav-link">4.1. Dependencies</a></li> 
+    <li><a href="#jersey-bootstrap" class="nav-link">4.2. Jersey Bootstrap</a></li> 
+    <li><a href="#custom-extensions" class="nav-link">4.3. Custom Extensions</a></li> 
+   </ul> </li> 
+  <li><a href="#get-requests" class="nav-link">5. GET requests</a> 
+   <ul class="sectlevel2 nav"> 
+    <li><a href="#server-side-request-shaping" class="nav-link">5.1. Server-Side Request Shaping</a></li> 
+   </ul> </li> 
+  <li><a href="#post-requests" class="nav-link">6. POST requests</a></li> 
+  <li><a href="#put-requests" class="nav-link">7. PUT requests</a></li> 
+  <li><a href="#delete-requests" class="nav-link">8. DELETE requests</a></li> 
+  <li><a href="#cayenne-integration" class="nav-link">9. Cayenne Integration</a></li> 
+  <li><a href="#schema" class="nav-link">10. Schema</a></li> 
+  <li><a href="#access-control" class="nav-link">11. Access Control</a></li> 
+  <li><a href="#custom-stages" class="nav-link">12. Custom Stages</a></li> 
+  <li><a href="#swagger-integration" class="nav-link">13. Swagger Integration</a></li> 
  </ul> 
 </div></div>
         
@@ -155,85 +168,334 @@ with Swagger to generate REST documentation in the widely-adopted <a href="https
 <h2 id="dependencies"><a class="anchor" href="#dependencies"></a>2. Dependencies</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Agrest provides a number of modules that are added as dependencies to your app. To give a Maven example, the first
-thing you would usually import is the BOM (a so-called "bill of materials") that will define the version of all the
-other modules.</p>
+<p>Before we can start writing Agrest apps, we need to include the modules that we need as dependencies. While the
+framework has many modules, the first step is usually to import the common BOM (a so-called "bill of
+materials") that will define the version of all the other modules. It is placed in the <code>&lt;dependencyManagement/&gt;</code>
+section of the <code>pom.xml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
-    &lt;dependencies&gt;
-        &lt;!-- Defines the versions of Agrest modules --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;io.agrest&lt;/groupId&gt;
-            &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
-            &lt;!-- Replace with a specific 5.x version --&gt;
-            &lt;version&gt;${agrest.version}&lt;/version&gt;
-            &lt;scope&gt;import&lt;/scope&gt;
-            &lt;type&gt;pom&lt;/type&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-&lt;/dependencyManagement&gt;</code></pre>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+    &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
+    &lt;!-- Replace with a specific 5.x version of Agrest --&gt;
+    &lt;version&gt;${agrest.version}&lt;/version&gt;
+    &lt;scope&gt;import&lt;/scope&gt;
+    &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now you can include individual Agrest libraries in your projects without thinking about their version.</p>
+<p>With this out of the way, we will show the use of individual Agrest modules in your projects without having to worry
+about their version.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While all the build examples are Maven-based, Agrest apps most certainly can be assembled with  Gradle
+or any other Java build tool you might prefer.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="jersey-3-integration"><a class="anchor" href="#jersey-3-integration"></a>3. Jersey 3 Integration</h2>
+<h2 id="runtime"><a class="anchor" href="#runtime"></a>3. Runtime</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The discussion of Agrest APIs only makes sense in a context of a specific REST engine. This document focuses describes
-integration with Jersey 3.</p>
+<p><code>AgRuntime</code> object is the core of Agrest. It provides the strategies to process various types of requests, stores
+the app data "schema", and serves as an integration point for various data backends. When working in the
+environments like <a href="#jersey-integration">Jersey / JAX-RS</a>, you may not be interacting with <code>AgRuntime</code> directly, but it
+is still the object doing all the heavy lifting under the hood (and you will still need to assemble the runtime).</p>
+</div>
+<div class="paragraph">
+<p><code>AgRuntime</code> internally uses a lightweight dependency-injection container to assemble its services, and can be extended
+using "modules", as we&#8217;ll demonstrate shortly. Here is how you create a runtime:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">AgRuntime agRuntime = AgRuntime.builder().build();</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This was a bare-bone runtime. Usually you would add at least one backend provider (such as
+<a href="#cayenne-integration">Apache Cayenne</a>), and sometimes - your own extensions. All extensions are added via
+custom "modules":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">AgRuntime agRuntime = AgRuntime
+        .builder()
+        .module(b -&gt; b
+                .bindMap(JsonValueConverter.class)
+                .put(MoneyConverter.class.getName(), MoneyConverter.class)) <i class="conum" data-value="1"></i><b>(1)</b>
+        .build();</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Registering a module that adds support for a custom value type of <code>Money</code>, providing a converter for it to be read from
+JSON.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+To see what kinds of services and extensions are available, and how to use the Binder API within a module, you may
+check the source code of <code>io.agrest.runtime.AgCoreModule</code> on GitHub. This is the main module of Agrest, and defines the
+default behavior for the framework.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="auto-loadable-modules"><a class="anchor" href="#auto-loadable-modules"></a>3.1. Auto-loadable Modules</h3>
+<div class="paragraph">
+<p>For more complex extensions, that are packaged in their own <code>.jar</code> files, Agrest provides an auto-loading mechanism,
+that ensures they are automatically included in runtime if present on the classpath. To turn your code into an
+auto-loadable module, add a file called <code>META-INF/services/io.agrest.AgModuleProvider</code> to the classpath of your project
+(usually under <code>src/main/resources</code>), with a single line that is a fully-qualified class name of the <code>AgModuleProvider</code>
+implementor. E.g. the same extension as above can be made auto-loadable as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title">META-INF/services/io.agrest.AgModuleProvider</div>
+<div class="content">
+<pre class="highlight"><code>com.foo.MyModuleProvider</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyModuleProvider implements AgModuleProvider {
+
+    @Override
+    public Module module() {
+        return new MyModule();
+    }
+
+    @Override
+    public Class&lt;? extends Module&gt; moduleType() {
+        return MyModule.class;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyModule implements Module {
+
+    @Override
+    public void configure(Binder binder) {
+        binder
+                .bindMap(JsonValueConverter.class)
+                .put(MoneyConverter.class.getName(), MoneyConverter.class);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You may not be using this often in your own code, as it is much easier to create inline modules when assembling
+the runtime. But this is the mechanism used by all the Agrest extensions.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="get-requests"><a class="anchor" href="#get-requests"></a>4. GET requests</h2>
+<h2 id="jersey-integration"><a class="anchor" href="#jersey-integration"></a>4. Jersey Integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Jersey is the most common REST engine to run Agrest applications. Agrest supports either Jersey 2 (via <code>agrest-jaxrs2</code>)
+or the newer Jakarta-based Jersey 3 (via <code>agrest-jaxrs3</code>). Their main difference is the Java package naming (<code>javax.</code>
+vs <code>jakarta.</code>). We will provide examples from Jersey 3 here, but they should equally apply to Jersey 2.</p>
+</div>
+<div class="paragraph">
+<p>Jersey (until at least 3.1) doesn&#8217;t run standalone and will require some kind of Java "server" (Jetty,
+Spring Boot, Bootique, etc.). Some examples of server integration are provided in the links below, and we will instead
+focus on Agrest usage for the rest of this document:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://eclipse-ee4j.github.io/jersey.github.io/documentation/latest3x/index.html">Jersey 3 own docs</a></p>
+</li>
+<li>
+<p><a href="../getting-started/">Spring Boot 2.x Agrest tutorial</a> (Jersey 2 only)</p>
+</li>
+<li>
+<p><a href="https://github.com/bootique/bootique-jersey">Bootique Jersey</a>, or even better -
+<a href="https://github.com/bootique/bootique-agrest">Bootique Agrest</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+SpringBoot: SpringBoot 2.x supports Jersey 2, while SpringBoot 3.x will support Jersey 3
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Bootique Note: Bootique 2.x supports Jersey 2, while Bootique 3.x supports Jersey 2 and 3
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="dependencies-2"><a class="anchor" href="#dependencies-2"></a>4.1. Dependencies</h3>
+<div class="paragraph">
+<p>You may or may not need to explicitly import Jersey dependencies, depending on how you are planning to run it (see
+above). And you will need the following Agrest import:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+    &lt;artifactId&gt;agrest-jaxrs3&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="jersey-bootstrap"><a class="anchor" href="#jersey-bootstrap"></a>4.2. Jersey Bootstrap</h3>
+<div class="paragraph">
+<p>Jersey provides a convenience superclass called <code>ResourceConfig</code> that you can subclass and bootstrap your application
+in the constructor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class AgrestJerseyApp extends ResourceConfig { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    public AgrestJerseyApp() {
+
+        AgRuntime agRuntime = AgRuntime <i class="conum" data-value="2"></i><b>(2)</b>
+                .builder()
+                // add backend configurations and runtime extensions
+                // .module(...)
+                .build();
+
+        <i class="conum" data-value="3"></i><b>(3)</b>
+        super.register(AgJaxrsFeature.builder().runtime(agRuntime).build());
+
+        <i class="conum" data-value="4"></i><b>(4)</b>
+        super.register(AuthorApi.class);
+        super.register(BookApi.class);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The app class extending Jersey <code>ResourceConfig</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Create Agrest runtime, as described in the <a href="#runtime">Runtime</a> section</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Register Agrest runtime with Jersey / JAX-RS environment</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Register your app API endpoints with Jersey (we will see these endpoint classes shortly)</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="custom-extensions"><a class="anchor" href="#custom-extensions"></a>4.3. Custom Extensions</h3>
+<div class="paragraph">
+<p>TODO: JAX-RS extensions via <code>AgFeatureProvider</code></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="get-requests"><a class="anchor" href="#get-requests"></a>5. GET requests</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="server-side-request-shaping"><a class="anchor" href="#server-side-request-shaping"></a>5.1. Server-Side Request Shaping</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="post-requests"><a class="anchor" href="#post-requests"></a>6. POST requests</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="post-requests"><a class="anchor" href="#post-requests"></a>5. POST requests</h2>
+<h2 id="put-requests"><a class="anchor" href="#put-requests"></a>7. PUT requests</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="put-requests"><a class="anchor" href="#put-requests"></a>6. PUT requests</h2>
+<h2 id="delete-requests"><a class="anchor" href="#delete-requests"></a>8. DELETE requests</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="delete-requests"><a class="anchor" href="#delete-requests"></a>7. DELETE requests</h2>
+<h2 id="cayenne-integration"><a class="anchor" href="#cayenne-integration"></a>9. Cayenne Integration</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="cayenne-integration"><a class="anchor" href="#cayenne-integration"></a>8. Cayenne Integration</h2>
+<h2 id="schema"><a class="anchor" href="#schema"></a>10. Schema</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="schema"><a class="anchor" href="#schema"></a>9. Schema</h2>
+<h2 id="access-control"><a class="anchor" href="#access-control"></a>11. Access Control</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="access-control"><a class="anchor" href="#access-control"></a>10. Access Control</h2>
+<h2 id="custom-stages"><a class="anchor" href="#custom-stages"></a>12. Custom Stages</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="swagger-integration"><a class="anchor" href="#swagger-integration"></a>11. Swagger Integration</h2>
+<h2 id="swagger-integration"><a class="anchor" href="#swagger-integration"></a>13. Swagger Integration</h2>
 <div class="sectionbody">
 
 </div>
