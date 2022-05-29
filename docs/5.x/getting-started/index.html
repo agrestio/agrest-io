@@ -160,6 +160,16 @@ purpose of the tutorial. So we decided to use the following components:</p>
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
+        &lt;!-- Defines the versions of Agrest modules --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+            &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
+            &lt;!-- Replace with a specific 5.x version --&gt;
+            &lt;version&gt;${agrest.version}&lt;/version&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+        &lt;/dependency&gt;
+
         &lt;!-- Defines the versions of Spring Boot and its dependencies --&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
@@ -167,16 +177,6 @@ purpose of the tutorial. So we decided to use the following components:</p>
             &lt;version&gt;2.6.7&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
-        &lt;/dependency&gt;
-
-        &lt;!-- Defines the versions of Agrest modules --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;io.agrest&lt;/groupId&gt;
-            &lt;artifactId&gt;agrest-bom&lt;/artifactId&gt;
-            &lt;!-- Should be a specific 5.x version --&gt;
-            &lt;version&gt;${agrest.version}&lt;/version&gt;
-            &lt;scope&gt;import&lt;/scope&gt;
-            &lt;type&gt;pom&lt;/type&gt;
         &lt;/dependency&gt;
 
         &lt;!-- Defines the version of Derby DB --&gt;

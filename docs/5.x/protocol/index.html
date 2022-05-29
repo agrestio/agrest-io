@@ -108,7 +108,7 @@
   <li><a href="#protocol-conventions" class="nav-link">2. Protocol Conventions</a></li> 
   <li><a href="#json-documents" class="nav-link">3. JSON Documents</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#simple-response" class="nav-link">3.1. Simple Response</a></li> 
+    <li><a href="#message-response" class="nav-link">3.1. Message Response</a></li> 
     <li><a href="#collection-response" class="nav-link">3.2. Collection Response</a></li> 
     <li><a href="#update-request" class="nav-link">3.3. Update Request</a></li> 
    </ul> </li> 
@@ -209,7 +209,7 @@ to follow:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Content type of GET, POST, PUT responses serving <a href="#simple-response">simple documents</a> or
+<p>Content type of GET, POST, PUT responses serving <a href="#message-response">message documents</a> or
 <a href="#collection-response">collection documents</a> is <code>application/json</code></p>
 </li>
 <li>
@@ -236,7 +236,7 @@ to follow:</p>
 <h2 id="json-documents"><a class="anchor" href="#json-documents"></a>3. JSON Documents</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="simple-response"><a class="anchor" href="#simple-response"></a>3.1. Simple Response</h3>
+<h3 id="message-response"><a class="anchor" href="#message-response"></a>3.1. Message Response</h3>
 <div class="paragraph">
 <p>This document is used in response to POST, PUT or DELETE when no entity data is returned to the client.</p>
 </div>
@@ -248,7 +248,7 @@ to follow:</p>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Simple Response Document properties</caption>
+<caption class="title">Table 1. Message Response Document properties</caption>
 <colgroup>
 <col style="width: 1%;">
 <col style="width: 15%;">
@@ -266,8 +266,8 @@ to follow:</p>
 <div class="sect2">
 <h3 id="collection-response"><a class="anchor" href="#collection-response"></a>3.2. Collection Response</h3>
 <div class="paragraph">
-<p>This document is used in response to GET, POST or PUT to return data from the server. This is the main representation
-of data in Agrest.</p>
+<p>This document is used in response to GET, POST or PUT to return data from the server. This is the format used to
+return any kind of data to the client.</p>
 </div>
 <div class="listingblock">
 <div class="content">
