@@ -487,14 +487,17 @@ public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1">
     public AgrestApp() {
 
         <i class="conum" data-value="2"></i><b>(2)</b>
-        ServerRuntime cayenneRuntime = ServerRuntime.builder().addConfig("cayenne-project.xml").build();
+        ServerRuntime cayenneRuntime = ServerRuntime
+                .builder()
+                .addConfig("cayenne-project.xml")
+                .build();
 
         <i class="conum" data-value="3"></i><b>(3)</b>
         AgCayenneModule agCayenneBackend = AgCayenneBuilder.build(cayenneRuntime);
         AgRuntime agRuntime = AgRuntime.builder().module(agCayenneBackend).build();
 
         <i class="conum" data-value="4"></i><b>(4)</b>
-        AgJaxrsFeature agFeature = AgJaxrsFeature.builder().runtime(agRuntime).build();
+        AgJaxrsFeature agFeature = AgJaxrsFeature.build(agRuntime);
         register(agFeature);
 
         <i class="conum" data-value="5"></i><b>(5)</b>
