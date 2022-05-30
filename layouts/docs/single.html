@@ -9,12 +9,12 @@
             {{ partial "version_selector.gohtml" . }}
         <hr/>
 
-        <div class="row ">
+        <div class="row mx-0">
             <div id="docs-nav" class="col-12 col-lg-4 col-xl-3 nav  docs-nav">
                 {{ partial "sidebar-single.gohtml" . }}
             </div>
 
-            <div class="col-12 col-lg-8 col-xl-9  py-3 pl-lg-5">
+            <div class="col-12 col-lg-8 col-xl-9  pb-3 pt-0 pl-lg-3">
                 <article>
                     {{ .Content }}
                 </article>
