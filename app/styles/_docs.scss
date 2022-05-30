@@ -1,5 +1,4 @@
 .documentation-page {
-  font-size: .875rem;
 
   .toc {
     display: block !important; // overwrite docbook style
@@ -10,7 +9,7 @@
 
     .sectlevel2 {
         padding-left: 10px;
-        // font-size: $small-font-size;
+        font-size: $small-font-size;
     }
   }
 
@@ -23,7 +22,7 @@
   		// 0 level links
   		.cd-toc-link {
   			display: inline-block;
-  	        padding: .5rem 2rem .5rem 0;
+  	        padding: .5rem 2rem .5rem .5rem;
       		line-height: 1.1;
 
   			&.active {
@@ -33,9 +32,10 @@
 
   	    // Active states
   	    .nav-link {
-          // font-size: 0.95rem;
 
-          &.active {
+            font-size: 0.95rem;
+
+  		    &.active {
   		    	position: relative;
 
   		    	&:before {
@@ -69,7 +69,7 @@
 
   			// ul 1st level
   			.sectlevel1 {
-  				padding: 0 2rem 0 0;
+  				padding: 0 2rem 0 .75rem;
   				margin-bottom: 0;
   			}
 
@@ -182,9 +182,9 @@
 
     caption {
       color: #000;
-      font: italic 100%/1 arial, sans-serif;
+      font: italic 85%/1 arial, sans-serif;
       padding: 1em 0;
-      caption-side: top;
+      text-align: center;
     }
 
     td, th {
@@ -207,12 +207,6 @@
     tbody > tr:last-child > td {
       border-bottom-width: 0;
     }
-  }
-
-  .title {
-    color: #000;
-    font: italic 100%/1 arial, sans-serif;
-    padding: 1em 0 .75em;
   }
 }
 
@@ -308,8 +302,6 @@
     }
   }
 
-  
-
   h1 {
       text-align: center;
   }
@@ -343,22 +335,12 @@
 
   h2 {
     font-size:1.7rem;
-    margin-top: 0 !important;
-    margin-bottom: 0.5em !important;
-  }
-
-  * + .sect1 h2 {
-    margin-top: 3rem !important;
   }
 
   h3 {
     font-size: 1.4rem;
-    margin-top: 1rem !important;
-    margin-bottom: 1rem !important;
-  }
-  
-  .sect2:not(:first-child) h3 {
-    margin-top: 2rem !important;
+    margin-bottom: 1rem;
+    margin-top: 3rem;
   }
 
   h4 {
