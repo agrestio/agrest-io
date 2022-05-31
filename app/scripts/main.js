@@ -5,6 +5,9 @@ import 'bootstrap/js/dist/dropdown';
 
 import '../styles/main.scss';
 import { initYouTubeJSApi } from './youtube.js';
+// this is unsupported plugin from the highlight.js devs, to enable html blocks in the code samples
+// https://github.com/highlightjs/highlight.js/issues/2889
+import mergeHTMLPlugin from './hljs-html.js'
 
 // Highlight.js
 import hljs from 'highlight.js/lib/core';
@@ -23,6 +26,8 @@ function initHljs() {
       hljs.configure({
         ignoreUnescapedHTML: true
       });
+
+      hljs.addPlugin(mergeHTMLPlugin);
       hljs.highlightAll();
 }
 
