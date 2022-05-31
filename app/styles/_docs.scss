@@ -195,13 +195,14 @@
       padding: 0.5em 1em;
     }
 
-    td:first-child, th:first-child {
-      border-left-width: 0;
-    }
+    // td:first-child, th:first-child {
+    //   border-left-width: 0;
+    // }
 
     td {
       border-bottom: 1px solid #cbcbcb;
       background-color: transparent;
+      vertical-align: top;
     }
 
     tbody > tr:last-child > td {
@@ -213,6 +214,22 @@
     color: #000;
     font: italic 100%/1 arial, sans-serif;
     padding: 1em 0 .75em;
+  }
+
+  .admonitionblock {
+    // &.note {}
+    table {
+      width: 100%;
+
+      td {
+        padding: 0.75em 1em .5em;
+      }
+    }
+
+    td.icon {
+      width: 1%;
+    }
+    
   }
 }
 
@@ -306,9 +323,21 @@
     &.anchorjs-link {
         text-decoration: none;
     }
+  } 
+
+  // headings
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    position: relative;
+    display: inline-block;
   }
 
-  
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    > a[name] {
+        display: block;
+    }
+  }
 
   h1 {
       text-align: center;
@@ -329,22 +358,16 @@
     margin-top: 15px;
   }
 
-  h1, h2, h3, h4, h5, h6,
-  .h1, .h2, .h3, .h4, .h5, .h6 {
-    position: relative;
-  }
-
-  h1, h2, h3, h4, h5, h6,
-  .h1, .h2, .h3, .h4, .h5, .h6 {
-    > a[name] {
-        display: block;
-    }
-  }
 
   h2 {
     font-size:1.7rem;
     margin-top: 0 !important;
     margin-bottom: 0.5em !important;
+    
+    .anchor:before {
+      top: 0.563em;
+      transform: translateY(0);
+    }
   }
 
   * + .sect1 h2 {
@@ -355,6 +378,11 @@
     font-size: 1.4rem;
     margin-top: 1rem !important;
     margin-bottom: 1rem !important;
+
+    .anchor:before {
+      top: 0.375em;
+      transform: translateY(0);
+    }
   }
   
   .sect2:not(:first-child) h3 {
@@ -367,15 +395,10 @@
     margin-top: 2rem;
   }
 
-  .cd-content {
-      font-size: 0.95rem;
-  }
-
-  .imageblock img {
-    @extend .img-fluid;
-  }
-
+  
+  // anchors inheadeings
   .anchor {
+    // Agrest hedings>anchors
     position:absolute;
     left: 0;
     right: 0;
@@ -387,6 +410,7 @@
     display: inline-block;
     vertical-align: top;
     
+    // @extend .fas
     height: inherit;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
@@ -402,21 +426,36 @@
     line-height: 1;
     text-rendering: auto;
 
+    // @xtend .fa
     font-family: var(--fa-style-family,"Font Awesome 6 Free");
     font-weight: var(--fa-style,900);
-}
+    
+    &:before {
+      position:absolute;
+      left: calc(100% + .75em);
+      top: 50%;
+      transform: translateY(-45%);
+      font-size: 16px;
+      color: #707070;
+      content: "\f0c1";  // .fa-link
+      opacity: 0;
+      transition: all .2s linear;
+    }
 
-.anchor:hover:before {
-    opacity:1;
-}
+    &:hover:before {
+        opacity:1;
+    }
+  }
 
-.anchor:before {
-    position:absolute;
-    right: calc(100% + .75em);
-    top: 9px;
-    font-size: 16px;
-    color: #707070;
-    content: "\f0c1";
-    opacity: 0;
-    transition: all .2s linear;}
-} 
+
+  // content
+  .cd-content {
+      font-size: 0.95rem;
+  }
+
+
+  // images
+  .imageblock img {
+    @extend .img-fluid;
+  }
+}
