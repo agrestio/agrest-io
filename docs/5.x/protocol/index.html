@@ -21,7 +21,7 @@
     <title>agrest - Model-Driven REST Data Services</title>
     <link rel="canonical" href="http://agrest.io" />
 
-    <link href="" rel="stylesheet"><script src="/assets/app.js?e9a88e66e4cde5d6d1a3"></script>
+    <link href="" rel="stylesheet"><script src="/assets/app.js?3b7bba35face0b3774e6"></script>
 
 </head>
 
@@ -216,7 +216,10 @@ to follow:</p>
 <p>Content type of POST and PUT requests consuming <a href="#update-request">update documents</a> is <code>application/json</code></p>
 </li>
 <li>
-<p>Control parameters are passed as URL query parameters (e.g. <code>my?include=name</code>)</p>
+<p>Control parameters are passed as URL query parameters (e.g. <code>/my?include=name</code>)</p>
+</li>
+<li>
+<p>Values of control parameters may contain spaces, special chars and small chunks of JSON. So they need to be URL-encoded</p>
 </li>
 <li>
 <p>Individual object ids are passed as URL path components (e.g. <code>/my/5</code>)</p>
@@ -406,7 +409,7 @@ the request or, when an expression is used inside an <code>include</code>, a rel
 with <code>Author</code>, while <code>title</code> and <code>author.dateOfBirth</code> - with <code>Book</code>.</p>
 </li>
 <li>
-<p>Parameters always start with a "$" sign, regardless whether they are resolved by name or by position</p>
+<p>Parameters always start with a "$" sign, regardless of whether they are resolved by name or by position</p>
 </li>
 </ul>
 </div>
