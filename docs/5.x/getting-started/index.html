@@ -802,8 +802,8 @@ entities should be taken from Agrest instead of using reflection on the Java cla
 </table>
 </div>
 <div class="paragraph">
-<p>Now you can restart the application and go to <a href="http://127.0.0.1:8080/api/openapi.json" class="bare">http://127.0.0.1:8080/api/openapi.json</a> . You will see the app model in
-JSON format, including all the Agrest query parameters.</p>
+<p>Now you can restart the application and go to <a href="http://127.0.0.1:8080/api/openapi.json" class="bare">http://127.0.0.1:8080/api/openapi.json</a> in the browser. You will see the
+app model in JSON format, including all the Agrest query parameters.</p>
 </div>
 <div class="paragraph">
 <p>The next step is to add a Swagger UI browser for visual exploration of the documentation. We will use a Swagger
@@ -827,26 +827,17 @@ intergation library from <a href="https://springdoc.org/" class="bare">https://s
 </div>
 </div>
 <div class="paragraph">
-<p>Restart the application and go to <a href="http://127.0.0.1:8080/swagger-ui.html" class="bare">http://127.0.0.1:8080/swagger-ui.html</a> . You should see the navigable UI for your
-model similar to the one in this screenshot:</p>
+<p>Restart the application and open <a href="http://127.0.0.1:8080/swagger-ui.html" class="bare">http://127.0.0.1:8080/swagger-ui.html</a> in the browser You should see the navigable
+UI for your API docs similar to the one in this screenshot:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
 <img src="../img/getting-started/swagger-ui.png" alt="swagger ui">
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-You can use Swagger annotations (such as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc.) on <code>BookApi</code> and <code>AuthorApi</code>
-to provide extra information about the endpoints.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>You can make your model even more informative by annotating <code>BookApi</code> and <code>AuthorApi</code> with Swagger annotation
+(such as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc.). We&#8217;ll leave it as an exercise for the user.</p>
 </div>
 </div>
 </div>
