@@ -106,7 +106,8 @@
     <li><a href="#put-update-data" class="nav-link">3.5. PUT: Update Data</a></li> 
    </ul> </li> 
   <li><a href="#custom-property" class="nav-link">4. Custom Property</a></li> 
-  <li><a href="#conclusion" class="nav-link">5. Conclusion</a></li> 
+  <li><a href="#openapi-documentation" class="nav-link">5. OpenAPI Documentation</a></li> 
+  <li><a href="#conclusion" class="nav-link">6. Conclusion</a></li> 
  </ul> 
 </div></div>
         
@@ -197,13 +198,13 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
 <div class="content">
 <pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
 
-    &lt;!-- This adds Agrest integration for JAX-RS / Jersey 2  --&gt;
+    &lt;!-- Adds Agrest integration for JAX-RS / Jersey 2  --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;io.agrest&lt;/groupId&gt;
         &lt;artifactId&gt;agrest-jaxrs2&lt;/artifactId&gt;
     &lt;/dependency&gt;
 
-    &lt;!-- This adds an Agrest DB backend based on Cayenne ORM --&gt;
+    &lt;!-- Adds an Agrest DB backend based on Cayenne ORM --&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;io.agrest&lt;/groupId&gt;
         &lt;artifactId&gt;agrest-cayenne&lt;/artifactId&gt;
@@ -475,7 +476,8 @@ application called <code>AgrestApp</code> with some bootstrap code:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@SpringBootApplication
+<pre class="highlight"><code class="language-java" data-lang="java">@ApplicationPath("/api")
+@SpringBootApplication
 public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1"></i><b>(1)</b>
 
     public static void main(String[] args) {
@@ -493,12 +495,13 @@ public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1">
                 .build();
 
         <i class="conum" data-value="3"></i><b>(3)</b>
-        AgCayenneModule agCayenneBackend = AgCayenneBuilder.build(cayenneRuntime);
-        AgRuntime agRuntime = AgRuntime.builder().module(agCayenneBackend).build();
+        AgRuntime agRuntime = AgRuntime
+                .builder()
+                .module(AgCayenneModule.build(cayenneRuntime))
+                .build();
 
         <i class="conum" data-value="4"></i><b>(4)</b>
-        AgJaxrsFeature agFeature = AgJaxrsFeature.build(agRuntime);
-        register(agFeature);
+        register(AgJaxrsFeature.build(agRuntime));
 
         <i class="conum" data-value="5"></i><b>(5)</b>
         register(AuthorApi.class);
@@ -511,9 +514,8 @@ public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Our app class extends <code>ResourceConfig</code> coming from Jersey (our JAX-RS provider). Jersey configuration normally
-happens in the <code>ResourceConfig</code> constructor (as described below), and the <code>ResourceConfig</code> is then automatically loaded
-by SpringBoot on startup.</td>
+<td>Our app class extends <code>ResourceConfig</code> provided by Jersey (our JAX-RS provider). Configuration happens in the
+constructor below. <code>ResourceConfig</code> subclass is automatically loaded by SpringBoot on startup.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -544,7 +546,7 @@ by SpringBoot on startup.</td>
 <pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
   -d '{"name":"Ernest Hemingway","dateOfBirth":"1899-07-21"}' \
   -H 'Content-Type: application/json' \
-  http://localhost:8080/author</code></pre>
+  http://localhost:8080/api/author</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -571,7 +573,7 @@ Date: Sat, 14 May 2022 09:39:39 GMT</code></pre>
 <pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
   -d '[{"title":"A Farewell to Arms","author":1},{"title":"For Whom the Bell Tolls","author":1}]' \
   -H 'Content-Type: application/json' \
-  http://localhost:8080/book</code></pre>
+  http://localhost:8080/api/book</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -612,7 +614,7 @@ public DataResponse&lt;Book&gt; get(@Context UriInfo uriInfo) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:8080/book</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:8080/api/book</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -635,7 +637,7 @@ pass various Agrest protocol keys in the URL, to filter the result, resolve rela
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?exclude=id&amp;include=author.name'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name'</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -654,7 +656,7 @@ pass various Agrest protocol keys in the URL, to filter the result, resolve rela
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?include=title&amp;sort=title'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?include=title&amp;sort=title'</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -731,7 +733,7 @@ public int getAge() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/book?exclude=id&amp;include=author.name&amp;include=author.age'</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name&amp;include=author.age'</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -752,7 +754,100 @@ way to add custom properties, bit it is very handy for simple calculated propert
 </div>
 </div>
 <div class="sect1">
-<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>5. Conclusion</h2>
+<h2 id="openapi-documentation"><a class="anchor" href="#openapi-documentation"></a>5. OpenAPI Documentation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is a good practice to document your APIs for the benefit of consumers. The most popular format for REST API
+documentation is <a href="https://swagger.io/specification/">OpenAPI 3</a>. Agrest integrates with the Swagger library to expose
+its endpoints as OpenAPI model. Let&#8217;s include it in our tutorial.</p>
+</div>
+<div class="paragraph">
+<p>Start by adding <code>agrest-jaxrs2-openapi</code> dependency to the <code>pom.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;io.agrest&lt;/groupId&gt;
+    &lt;artifactId&gt;agrest-jaxrs2-openapi&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now add OpenAPI bootstrap code to <code>AgrestApp</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">AgRuntime agRuntime = AgRuntime
+        .builder()
+        .module(AgCayenneModule.build(cayenneRuntime))
+        .module(AgSwaggerModule.builder().entityPackage(Book.class.getPackage()).build()) <i class="conum" data-value="1"></i><b>(1)</b>
+        .build();
+register(OpenApiResource.class); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Adding this line to <code>AgRuntime</code> builder would indicate to Swagger that the API model for both Book and Author
+entities should be taken from Agrest instead of using reflection on the Java classes.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Add Swagger endpoint to the app.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now you can restart the application and go to <a href="http://127.0.0.1:8080/api/openapi.json" class="bare">http://127.0.0.1:8080/api/openapi.json</a> . You will see the app model in
+JSON format, including all the Agrest query parameters.</p>
+</div>
+<div class="paragraph">
+<p>The next step is to add a Swagger UI browser for visual exploration of the documentation. We will use a Swagger
+intergation library from <a href="https://springdoc.org/" class="bare">https://springdoc.org/</a> . Let&#8217;s add it as a dependency:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-ui&lt;/artifactId&gt;
+    &lt;version&gt;1.6.9&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and now create <code>src/main/resources/application.properties</code> and add configuration entry to it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>springdoc.swagger-ui.url=/api/openapi.json</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Restart the application and go to 127.0.0.1:8080/swagger-ui.html . You should see Swagger UI for your model:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="../img/getting-started/swagger-ui.png" alt="swagger ui">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can use Swagger annotations (such as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc.) on <code>BookApi</code> and <code>AuthorApi</code>
+to provide extra information about the endpoints.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>6. Conclusion</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This concludes our tutorial. From here you should check the <a href="../protocol">"Protocol" document</a> on how to interact
