@@ -792,7 +792,7 @@ register(OpenApiResource.class); <i class="conum" data-value="2"></i><b>(2)</b><
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Adding this line to <code>AgRuntime</code> builder would indicate to Swagger that the API model for both Book and Author
+<td>Adding this configuration to <code>AgRuntime</code> builder would indicate to Swagger that the API model for both Book and Author
 entities should be taken from Agrest instead of using reflection on the Java classes.</td>
 </tr>
 <tr>
@@ -807,7 +807,7 @@ app model in JSON format, including all the Agrest query parameters.</p>
 </div>
 <div class="paragraph">
 <p>The next step is to add a Swagger UI browser for visual exploration of the documentation. We will use a Swagger
-intergation library from <a href="https://springdoc.org/" class="bare">https://springdoc.org/</a> . Let&#8217;s add it as a dependency:</p>
+integration library from <a href="https://springdoc.org/" class="bare">https://springdoc.org/</a> . Let&#8217;s add it as a dependency:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -836,8 +836,8 @@ UI for your API docs similar to the one in this screenshot:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You can make your model even more informative by annotating <code>BookApi</code> and <code>AuthorApi</code> with Swagger annotation
-(such as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc.). We&#8217;ll leave it as an exercise for the user.</p>
+<p>You can make your model even more informative by annotating <code>BookApi</code> and <code>AuthorApi</code> with Swagger annotations, such
+as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc. We&#8217;ll leave it as an exercise for the user.</p>
 </div>
 </div>
 </div>
