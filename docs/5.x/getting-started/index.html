@@ -780,7 +780,10 @@ its endpoints as OpenAPI model. Let&#8217;s include it in our tutorial.</p>
 <pre class="highlight"><code class="language-java" data-lang="java">AgRuntime agRuntime = AgRuntime
         .builder()
         .module(AgCayenneModule.build(cayenneRuntime))
-        .module(AgSwaggerModule.builder().entityPackage(Book.class.getPackage()).build()) <i class="conum" data-value="1"></i><b>(1)</b>
+        .module(AgSwaggerModule
+                .builder()
+                .entityPackage(Book.class.getPackage())
+                .build()) <i class="conum" data-value="1"></i><b>(1)</b>
         .build();
 register(OpenApiResource.class); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
@@ -816,7 +819,7 @@ intergation library from <a href="https://springdoc.org/" class="bare">https://s
 </div>
 </div>
 <div class="paragraph">
-<p>and now create <code>src/main/resources/application.properties</code> and add configuration entry to it:</p>
+<p>And now create <code>src/main/resources/application.properties</code> file and add the following configuration entry in it:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -824,7 +827,8 @@ intergation library from <a href="https://springdoc.org/" class="bare">https://s
 </div>
 </div>
 <div class="paragraph">
-<p>Restart the application and go to 127.0.0.1:8080/swagger-ui.html . You should see Swagger UI for your model:</p>
+<p>Restart the application and go to <a href="http://127.0.0.1:8080/swagger-ui.html" class="bare">http://127.0.0.1:8080/swagger-ui.html</a> . You should see the navigable UI for your
+model similar to the one in this screenshot:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
