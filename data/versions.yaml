@@ -1,4 +1,4 @@
-DefaultVersionUrl: "4.x"
+DefaultVersionUrl: "5.x"
 
 ByUrl:
   "4.x":
@@ -7,4 +7,4 @@ ByUrl:
 
   "5.x":
     URL: "5.x"
-    Name: "5.x (development)"
+    Name: "5.x (alpha)"
