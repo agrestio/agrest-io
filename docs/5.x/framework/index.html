@@ -126,15 +126,19 @@
    </ul> </li> 
   <li><a href="#get-requests" class="nav-link">6. GET Requests</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#server-side-request-shaping" class="nav-link">6.1. Server-Side Request Shaping</a></li> 
+    <li><a href="#get-a-single-object" class="nav-link">6.1. GET a Single Object</a></li> 
+    <li><a href="#get-object-children" class="nav-link">6.2. GET Object Children</a></li> 
+    <li><a href="#explicit-protocol-parameters" class="nav-link">6.3. Explicit Protocol Parameters</a></li> 
+    <li><a href="#server-side-protocol-parameter" class="nav-link">6.4. Server-side Protocol Parameter</a></li> 
+    <li><a href="#customizing-request-entities" class="nav-link">6.5. Customizing Request Entities</a></li> 
+    <li><a href="#access-control" class="nav-link">6.6. Access Control</a></li> 
    </ul> </li> 
   <li><a href="#post-requests" class="nav-link">7. POST Requests</a></li> 
   <li><a href="#put-requests" class="nav-link">8. PUT Requests</a></li> 
   <li><a href="#delete-requests" class="nav-link">9. DELETE Requests</a></li> 
   <li><a href="#cayenne-integration" class="nav-link">10. Cayenne Integration</a></li> 
-  <li><a href="#access-control" class="nav-link">11. Access Control</a></li> 
-  <li><a href="#custom-stages" class="nav-link">12. Custom Stages</a></li> 
-  <li><a href="#swagger-integration" class="nav-link">13. Swagger Integration</a></li> 
+  <li><a href="#custom-stages" class="nav-link">11. Custom Stages</a></li> 
+  <li><a href="#swagger-integration" class="nav-link">12. Swagger Integration</a></li> 
  </ul> 
 </div></div>
         
@@ -578,8 +582,8 @@ case the request contains <code>include=author</code> control parameter.</p>
 <div class="paragraph">
 <p>Jersey is often used to run Agrest applications. It supports Java API for RESTful services (JAX-RS).
 Agrest works with either the legacy Jersey 2 (<code>agrest-jaxrs2</code> module) or the Jakarta-based Jersey 3 (<code>agrest-jaxrs3</code> module).
-Their main difference is JAX-RS package names (<code>javax.</code> vs <code>jakarta.</code>). We will provide Jersey 3 examples here, but
-they should equally apply to Jersey 2.</p>
+Their main difference is JAX-RS package names (<code>javax.</code> vs <code>jakarta.</code>). We will provide Jersey 3 examples below, but
+they should equally apply to Jersey 2, and for the most part work with other JAX-RS servers.</p>
 </div>
 <div class="paragraph">
 <p>Jersey doesn&#8217;t run standalone until at least version 3.1, and requires some kind of Java "server", such as Jetty,
@@ -755,8 +759,264 @@ within the endpoint you can execute any custom code.
 <div class="sect1">
 <h2 id="get-requests"><a class="anchor" href="#get-requests"></a>6. GET Requests</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Here is how you may program a GET request handler:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; get(@Context UriInfo uri) {
+    return AgJaxrs.select(Author.class, config) <i class="conum" data-value="1"></i><b>(1)</b>
+            .clientParams(uri.getQueryParameters()) <i class="conum" data-value="2"></i><b>(2)</b>
+            .get(); <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Start "select" operation builder</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Pass all request parameters from JAX-RS <code>UriInfo</code> object
+The framework will process those that are defined in the Agrest protocol (<code>exp</code>, <code>include</code>, etc.) and ignore the rest</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Execute the select operation</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="server-side-request-shaping"><a class="anchor" href="#server-side-request-shaping"></a>6.1. Server-Side Request Shaping</h3>
+<h3 id="get-a-single-object"><a class="anchor" href="#get-a-single-object"></a>6.1. GET a Single Object</h3>
+<div class="paragraph">
+<p>In the example above we returned a collection of objects in the form of <code>DataResponse</code>. Often REST API would only
+return a single object for a given <code>id</code>. Here is how to implement this in Agrest:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+@Path("{id}")
+public DataResponse&lt;Author&gt; getById(
+        @PathParam("id") long id,  <i class="conum" data-value="1"></i><b>(1)</b>
+        @Context UriInfo uri) {
+    return AgJaxrs.select(Author.class, config)
+            .byId(id) <i class="conum" data-value="2"></i><b>(2)</b>
+            .clientParams(uri.getQueryParameters())
+            .getOne(); <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>"id" may be modeled as a part of the URL path and injected via JAX-RS <code>@PathParam</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Here is how the "id" is passed to the Agrest operation builder</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Instead of <code>get()</code>, call <code>getOne()</code> to execute the operation. It still returns the same <code>DataResponse</code>, but
+will handle cases when there is no matching object found (<code>404</code> response status code instead of <code>200</code>) and also when
+more than one object is found (this will result in <code>500</code> status code).</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="get-object-children"><a class="anchor" href="#get-object-children"></a>6.2. GET Object Children</h3>
+<div class="paragraph">
+<p>Another  common pattern in the REST API design is retrieving "children" of a given "parent" object. E.g. the books of
+a single known author:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+@Path("{author_id}/books") <i class="conum" data-value="1"></i><b>(1)</b>
+public DataResponse&lt;Book&gt; booksForAuthor(
+        @PathParam("author_id") long authorId, <i class="conum" data-value="2"></i><b>(2)</b>
+        @Context UriInfo uri) {
+
+    return AgJaxrs.select(Book.class, config)
+            .parent(Author.class, authorId, "books") <i class="conum" data-value="3"></i><b>(3)</b>
+            .clientParams(uri.getQueryParameters())
+            .get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Define a URL path with author ID and relationship name</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Capture author ID as a <code>@PathParam</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Set the "parent" object of the request</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This is pure syntactic sugar for "pretty" URLs like <code>/author/576/books</code>. Similar functionality can be implemented
+as <code>/book?exp=author=576</code> or <code>/author/576?include=books</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="explicit-protocol-parameters"><a class="anchor" href="#explicit-protocol-parameters"></a>6.3. Explicit Protocol Parameters</h3>
+<div class="paragraph">
+<p>Not every endpoint has to support every single protocol parameter. Depending on the application needs (and backend
+capabilities), you may explicitly define which parameters are supported:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; getIncludeAndSort(
+        @QueryParam("include") List&lt;String&gt; includes,  <i class="conum" data-value="1"></i><b>(1)</b>
+        @QueryParam("sort") String sort,
+        @QueryParam("direction") String direction) {
+
+    AgRequest request = AgJaxrs.request(config) <i class="conum" data-value="2"></i><b>(2)</b>
+            .addIncludes(includes)
+            .addSort(sort, direction)
+            .build();
+
+    return AgJaxrs.select(Author.class, config)
+            .request(request) <i class="conum" data-value="3"></i><b>(3)</b>
+            .get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Instead of <code>UriInfo</code>, capture individual query parameters using <code>@QueryParam</code> annotation</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Build a <code>AgRequest</code> object with all the passed parameters</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Pass the <code>AgRequest</code> to the operation builder</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="server-side-protocol-parameter"><a class="anchor" href="#server-side-protocol-parameter"></a>6.4. Server-side Protocol Parameter</h3>
+<div class="paragraph">
+<p>The <code>AgRequest</code> object has another useful property. Unlike <code>UriInfo</code> that captures everything that was passed in the
+URL by the client, it is manually constructed <strong>on the server</strong>. So you can emulate parts of the Agrest protocol
+in your application code to limit what the client can do or to define the default data appearance, such as ordering:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; getModernAuthors(
+        @QueryParam("include") List&lt;String&gt; includes,
+        @QueryParam("exp") String urlExp) {
+
+    AgRequest request = AgJaxrs.request(config)
+            .addIncludes(includes)
+            .andExp(Exp.keyValue("dateOfBirth", "&gt;=", LocalDate.of(1970, 1, 1))) <i class="conum" data-value="1"></i><b>(1)</b>
+            .andExp(urlExp) <i class="conum" data-value="2"></i><b>(2)</b>
+            .addSort("name", "asc") <i class="conum" data-value="3"></i><b>(3)</b>
+            .build();
+
+    return AgJaxrs.select(Author.class, config)
+            .request(request)
+            .get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Pass an expression limiting the dataset. The client will not be able to override this filter, and can only narrow
+the dataset further by using the URL <code>exp</code> parameter (see the next item)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Combine the server-side expression with a client expression that came from the URL</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Define data ordering (and do not allow the client to change it)</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="customizing-request-entities"><a class="anchor" href="#customizing-request-entities"></a>6.5. Customizing Request Entities</h3>
+<div class="paragraph">
+<p>As already mentioned in the chapter on <a href="#entity-overlays">Entity Overlays</a>, you can redefine the shape of the entities,
+their retrieval strategies and access rules via per-request overlays:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; getWithOverlay(@Context UriInfo uri) {
+    AgEntityOverlay&lt;Book&gt; bookModelChanges = AgEntity.overlay(Book.class);
+
+    if (!isAdminRole()) {  <i class="conum" data-value="1"></i><b>(1)</b>
+        bookModelChanges.readablePropFilter(b -&gt; b.property("copiesSold", false));
+    }
+
+    return AgJaxrs.select(Author.class, config)
+            .clientParams(uri.getQueryParameters())
+            .entityOverlay(bookModelChanges) <i class="conum" data-value="2"></i><b>(2)</b>
+            .get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Conditionally define that some attributes are only visible to the app administrators</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Attach overlay to the request</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While the request is for the <code>Author</code> entity, overlays can be for any entity at all (including the <code>Author</code>). In our
+case the overlay is for the <code>Book</code>, meaning that it will be applied if the user runs a request like <code>/author?include=books</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="access-control"><a class="anchor" href="#access-control"></a>6.6. Access Control</h3>
 
 </div>
 </div>
@@ -786,19 +1046,13 @@ within the endpoint you can execute any custom code.
 </div>
 </div>
 <div class="sect1">
-<h2 id="access-control"><a class="anchor" href="#access-control"></a>11. Access Control</h2>
+<h2 id="custom-stages"><a class="anchor" href="#custom-stages"></a>11. Custom Stages</h2>
 <div class="sectionbody">
 
 </div>
 </div>
 <div class="sect1">
-<h2 id="custom-stages"><a class="anchor" href="#custom-stages"></a>12. Custom Stages</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="swagger-integration"><a class="anchor" href="#swagger-integration"></a>13. Swagger Integration</h2>
+<h2 id="swagger-integration"><a class="anchor" href="#swagger-integration"></a>12. Swagger Integration</h2>
 <div class="sectionbody">
 
 </div>
