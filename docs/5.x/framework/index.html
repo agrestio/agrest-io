@@ -767,7 +767,8 @@ within the endpoint you can execute any custom code.
 <h2 id="get-requests"><a class="anchor" href="#get-requests"></a>6. GET Requests</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Here is how you may program a GET request handler:</p>
+<p>With just a few lines of code, Agrest can process "GET" requests containing <a href="../protocol">Agrest protocol parameters</a>.
+Here is how you may program a GET request handler:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -787,8 +788,8 @@ public DataResponse&lt;Author&gt; get(@Context UriInfo uri) {
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pass all request parameters from JAX-RS <code>UriInfo</code> object
-The framework will process those that are defined in the Agrest protocol (<code>exp</code>, <code>include</code>, etc.) and ignore the rest</td>
+<td>Pass all request parameters from JAX-RS <code>UriInfo</code> object. The framework will process those that are defined in the
+Agrest protocol (<code>exp</code>, <code>include</code>, etc.) and ignore the rest</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -1029,9 +1030,8 @@ case the overlay is for the <code>Book</code>, meaning that it will be applied i
 <div class="sect2">
 <h3 id="property-visibility"><a class="anchor" href="#property-visibility"></a>6.6. Property Visibility</h3>
 <div class="paragraph">
-<p>There&#8217;s a more direct API to implement per-request property visibility rules. Internally it is implemented as an overlay,
-similar to the previous example, but is less verbose for the user. It can also be applied to any entity, not just the
-root request entity:</p>
+<p>There&#8217;s a more direct API to implement per-request property visibility rules. It can also be applied to any entity in
+the request graph, not just the root entity:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1058,12 +1058,16 @@ public DataResponse&lt;Author&gt; getWithPropFilter(@Context UriInfo uri) {
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Internally property filter is implemented as an overlay, similar to the previous example, but from the user perspective
+the filter API is less verbose.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="object-visibility"><a class="anchor" href="#object-visibility"></a>6.7. Object Visibility</h3>
 <div class="paragraph">
-<p>The previous examples shows how you can hide certain entity properties based on per-request custom logic. Similarly,
-you can exclude certain <em>objects</em> from the response based on some rules using the <code>ReadFilter</code> API:</p>
+<p>The previous examples shows how you can hide certain <em>properties</em> based on per-request custom logic. Similarly,
+you can exclude certain <em>objects</em> from the response with custom "read filters":</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1087,8 +1091,8 @@ public DataResponse&lt;Author&gt; getWithReadFilter(@Context UriInfo uri) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>If only modern authors are requested, apply a special "read filter". The filter method must return "true" for
-those objects that pass the check and should be included in the response.</td>
+<td>If only modern authors are requested, apply a "read filter" to exclude older authors. The filter lambda must
+return "true" for the objects that pass the check and should be included in the response.</td>
 </tr>
 </table>
 </div>
@@ -1100,7 +1104,7 @@ those objects that pass the check and should be included in the response.</td>
 </td>
 <td class="content">
 If custom object filtering rules can be written as an <code>Exp</code> on the root entity, consider doing that instead of
-using a <code>ReadFilter</code>. It would move the filtering logic to the data store and out of your code, potentially
+using a read filter. It would move the filtering logic to the data store and out of your code, potentially
 optimizing the processing. You can refer to an example above from the <a href="#server-side-protocol-parameters">Server-Side Protocol Parameters</a> chapter.
 </td>
 </tr>
