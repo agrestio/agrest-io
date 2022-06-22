@@ -129,9 +129,10 @@
     <li><a href="#get-a-single-object" class="nav-link">6.1. GET a Single Object</a></li> 
     <li><a href="#get-object-children" class="nav-link">6.2. GET Object Children</a></li> 
     <li><a href="#explicit-protocol-parameters" class="nav-link">6.3. Explicit Protocol Parameters</a></li> 
-    <li><a href="#server-side-protocol-parameter" class="nav-link">6.4. Server-side Protocol Parameter</a></li> 
-    <li><a href="#customizing-request-entities" class="nav-link">6.5. Customizing Request Entities</a></li> 
-    <li><a href="#access-control" class="nav-link">6.6. Access Control</a></li> 
+    <li><a href="#server-side-protocol-parameters" class="nav-link">6.4. Server-Side Protocol Parameters</a></li> 
+    <li><a href="#customizing-entities" class="nav-link">6.5. Customizing Entities</a></li> 
+    <li><a href="#property-visibility" class="nav-link">6.6. Property Visibility</a></li> 
+    <li><a href="#object-visibility" class="nav-link">6.7. Object Visibility</a></li> 
    </ul> </li> 
   <li><a href="#post-requests" class="nav-link">7. POST Requests</a></li> 
   <li><a href="#put-requests" class="nav-link">8. PUT Requests</a></li> 
@@ -406,6 +407,7 @@ in the default Agrest model. They are applied to "getter" methods of Java classe
 
     private long id;
     private String title;
+    private String publishStatus;
     private Author author;
 
     @AgId <i class="conum" data-value="1"></i><b>(1)</b>
@@ -435,6 +437,11 @@ in the default Agrest model. They are applied to "getter" methods of Java classe
 
     public Book setAuthor(Author author) {
         this.author = author;
+        return this;
+    }
+
+    public Book setPublishStatus(String publishStatus) {
+        this.publishStatus = publishStatus;
         return this;
     }
 }</code></pre>
@@ -566,7 +573,7 @@ also be applied per-request:</p>
 </div>
 <div class="paragraph">
 <p>This way dynamically-generated overlays can shape the entities based on some request data, such as user permissions.
-And indeed, per-request Agrest <a href="#access-control">access control</a> methods are internally implemented as entity overlays.</p>
+And indeed, per-request Agrest <a href="#Access Control">access control</a> methods are internally implemented as entity overlays.</p>
 </div>
 <div class="paragraph">
 <p>Another thing to notice here, is that overlay doesn&#8217;t need to be of the same type as the root
@@ -792,8 +799,7 @@ The framework will process those that are defined in the Agrest protocol (<code>
 <div class="sect2">
 <h3 id="get-a-single-object"><a class="anchor" href="#get-a-single-object"></a>6.1. GET a Single Object</h3>
 <div class="paragraph">
-<p>In the example above we returned a collection of objects in the form of <code>DataResponse</code>. Often REST API would only
-return a single object for a given <code>id</code>. Here is how to implement this in Agrest:</p>
+<p>Often a REST API would only return a single object matching a given <code>id</code>. Here is how this can be implemented in Agrest:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -831,8 +837,8 @@ more than one object is found (this will result in <code>500</code> status code)
 <div class="sect2">
 <h3 id="get-object-children"><a class="anchor" href="#get-object-children"></a>6.2. GET Object Children</h3>
 <div class="paragraph">
-<p>Another  common pattern in the REST API design is retrieving "children" of a given "parent" object. E.g. the books of
-a single known author:</p>
+<p>Another common pattern in a REST API design is hierarchical resource URLs used to retrieve "children" of a given
+"parent" object. E.g. the books of a single known author:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -872,8 +878,8 @@ public DataResponse&lt;Book&gt; booksForAuthor(
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This is pure syntactic sugar for "pretty" URLs like <code>/author/576/books</code>. Similar functionality can be implemented
-as <code>/book?exp=author=576</code> or <code>/author/576?include=books</code>.
+"Parent" API is just syntactic sugar to support hierarchical resource URLs like <code>/author/576/books</code>. Similar
+functionality can also be implemented as <code>/book?exp=author=576</code> or <code>/author/576?include=books</code>.
 </td>
 </tr>
 </table>
@@ -922,11 +928,11 @@ public DataResponse&lt;Author&gt; getIncludeAndSort(
 </div>
 </div>
 <div class="sect2">
-<h3 id="server-side-protocol-parameter"><a class="anchor" href="#server-side-protocol-parameter"></a>6.4. Server-side Protocol Parameter</h3>
+<h3 id="server-side-protocol-parameters"><a class="anchor" href="#server-side-protocol-parameters"></a>6.4. Server-Side Protocol Parameters</h3>
 <div class="paragraph">
 <p>The <code>AgRequest</code> object has another useful property. Unlike <code>UriInfo</code> that captures everything that was passed in the
-URL by the client, it is manually constructed <strong>on the server</strong>. So you can emulate parts of the Agrest protocol
-in your application code to limit what the client can do or to define the default data appearance, such as ordering:</p>
+URL by the client, it is manually constructed <strong>on the server</strong>. So you can amend the request object in your application
+code to limit what the client can do or to define the default data appearance:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -967,25 +973,30 @@ the dataset further by using the URL <code>exp</code> parameter (see the next it
 </div>
 </div>
 <div class="sect2">
-<h3 id="customizing-request-entities"><a class="anchor" href="#customizing-request-entities"></a>6.5. Customizing Request Entities</h3>
+<h3 id="customizing-entities"><a class="anchor" href="#customizing-entities"></a>6.5. Customizing Entities</h3>
 <div class="paragraph">
-<p>As already mentioned in the chapter on <a href="#entity-overlays">Entity Overlays</a>, you can redefine the shape of the entities,
+<p>As already mentioned in the chapter on <a href="#entity-overlays">Entity Overlays</a>, you can redefine the shape of entities,
 their retrieval strategies and access rules via per-request overlays:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@GET
 public DataResponse&lt;Author&gt; getWithOverlay(@Context UriInfo uri) {
-    AgEntityOverlay&lt;Book&gt; bookModelChanges = AgEntity.overlay(Book.class);
+
+    SelectBuilder&lt;Author&gt; builder = AgJaxrs
+            .select(Author.class, config)
+            .clientParams(uri.getQueryParameters());
 
     if (!isAdminRole()) {  <i class="conum" data-value="1"></i><b>(1)</b>
-        bookModelChanges.readablePropFilter(b -&gt; b.property("copiesSold", false));
+
+        AgEntityOverlay&lt;Book&gt; bookModelChanges = AgEntity
+                .overlay(Book.class)
+                .readablePropFilter(b -&gt; b.property("copiesSold", false));
+
+        builder.entityOverlay(bookModelChanges); <i class="conum" data-value="2"></i><b>(2)</b>
     }
 
-    return AgJaxrs.select(Author.class, config)
-            .clientParams(uri.getQueryParameters())
-            .entityOverlay(bookModelChanges) <i class="conum" data-value="2"></i><b>(2)</b>
-            .get();
+    return builder.get();
 }</code></pre>
 </div>
 </div>
@@ -993,11 +1004,11 @@ public DataResponse&lt;Author&gt; getWithOverlay(@Context UriInfo uri) {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Conditionally define that some attributes are only visible to the app administrators</td>
+<td>Hide an attribute using an overlay if the request user is not an administrator</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Attach overlay to the request</td>
+<td>Apply the overlay to the request</td>
 </tr>
 </table>
 </div>
@@ -1016,8 +1027,85 @@ case the overlay is for the <code>Book</code>, meaning that it will be applied i
 </div>
 </div>
 <div class="sect2">
-<h3 id="access-control"><a class="anchor" href="#access-control"></a>6.6. Access Control</h3>
+<h3 id="property-visibility"><a class="anchor" href="#property-visibility"></a>6.6. Property Visibility</h3>
+<div class="paragraph">
+<p>There&#8217;s a more direct API to implement per-request property visibility rules. Internally it is implemented as an overlay,
+similar to the previous example, but is less verbose for the user. It can also be applied to any entity, not just the
+root request entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; getWithPropFilter(@Context UriInfo uri) {
 
+    SelectBuilder&lt;Author&gt; builder = AgJaxrs
+            .select(Author.class, config)
+            .clientParams(uri.getQueryParameters());
+
+    if (!isAdminRole()) {
+        builder.propFilter(Book.class, pfb -&gt; pfb.property("copiesSold", false)); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    return builder.get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Apply "property filter" for non-admin users to the Book entity, hiding "copiesSold" property from the response objects</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="object-visibility"><a class="anchor" href="#object-visibility"></a>6.7. Object Visibility</h3>
+<div class="paragraph">
+<p>The previous examples shows how you can hide certain entity properties based on per-request custom logic. Similarly,
+you can exclude certain <em>objects</em> from the response based on some rules using the <code>ReadFilter</code> API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@GET
+public DataResponse&lt;Author&gt; getWithReadFilter(@Context UriInfo uri) {
+
+    SelectBuilder&lt;Author&gt; builder = AgJaxrs
+            .select(Author.class, config)
+            .clientParams(uri.getQueryParameters());
+
+    if (isModernAuthorsOnly()) {
+        LocalDate threshold = LocalDate.of(1970, 1, 1);
+        builder.filter(Author.class, a -&gt; a.getDateOfBirth().isAfter(threshold) ); <i class="conum" data-value="1"></i><b>(1)</b>
+    }
+
+    return builder.get();
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>If only modern authors are requested, apply a special "read filter". The filter method must return "true" for
+those objects that pass the check and should be included in the response.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If custom object filtering rules can be written as an <code>Exp</code> on the root entity, consider doing that instead of
+using a <code>ReadFilter</code>. It would move the filtering logic to the data store and out of your code, potentially
+optimizing the processing. You can refer to an example above from the <a href="#server-side-protocol-parameters">Server-Side Protocol Parameters</a> chapter.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>
