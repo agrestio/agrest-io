@@ -1011,9 +1011,9 @@ capabilities), you may explicitly define which parameters are supported:</p>
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@GET
 public DataResponse&lt;Author&gt; getIncludeAndSort(
-        @QueryParam("include") List&lt;String&gt; includes,  <i class="conum" data-value="1"></i><b>(1)</b>
-        @QueryParam("sort") String sort,
-        @QueryParam("direction") String direction) {
+        @QueryParam(ControlParams.INCLUDE) List&lt;String&gt; includes,  <i class="conum" data-value="1"></i><b>(1)</b>
+        @QueryParam(ControlParams.SORT) String sort,
+        @QueryParam(ControlParams.DIRECTION) String direction) {
 
     AgRequest request = AgJaxrs.request(config) <i class="conum" data-value="2"></i><b>(2)</b>
             .addIncludes(includes)
@@ -1054,8 +1054,8 @@ code to limit what the client can do or to define the default data appearance:</
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@GET
 public DataResponse&lt;Author&gt; getModernAuthors(
-        @QueryParam("include") List&lt;String&gt; includes,
-        @QueryParam("exp") String urlExp) {
+        @QueryParam(ControlParams.INCLUDE) List&lt;String&gt; includes,
+        @QueryParam(ControlParams.EXP) String urlExp) {
 
     AgRequest request = AgJaxrs.request(config)
             .addIncludes(includes)
