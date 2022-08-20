@@ -328,6 +328,43 @@ properties) :</p>
 ]</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While collection response documents can contain object trees with an unlimited depth (entities with their related
+entities, with their own related entities and so on), update documents can only have properties of a single entity.
+It can still have references to the related entities as described below, but no entity nesting.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="updating-to-one-relationships"><a class="anchor" href="#updating-to-one-relationships"></a>3.3.1. Updating To-One Relationships</h4>
+<div class="paragraph">
+<p>To set a to-one relationship of an updated entity, use a pair "propertyName" : "related_id" in the update request document:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 5, "related": 10 }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="updating-to-many-relationships"><a class="anchor" href="#updating-to-many-relationships"></a>3.3.2. Updating To-Many Relationships</h4>
+<div class="paragraph">
+<p>To set a to-many relationship of an updated entity, pass a collection of ids for the relationship property in the
+update request document:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">{ "id" : 5, "related": [101, 2, 305] }</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
