@@ -1065,7 +1065,7 @@ public DataResponse&lt;Author&gt; getModernAuthors(
 
     AgRequest request = AgJaxrs.request(config)
             .addIncludes(includes)
-            .andExp(Exp.keyValue("dateOfBirth", "&gt;=", LocalDate.of(1970, 1, 1))) <i class="conum" data-value="1"></i><b>(1)</b>
+            .andExp(Exp.greaterOrEqual("dateOfBirth", LocalDate.of(1970, 1, 1))) <i class="conum" data-value="1"></i><b>(1)</b>
             .andExp(urlExp) <i class="conum" data-value="2"></i><b>(2)</b>
             .addSort("name", "asc") <i class="conum" data-value="3"></i><b>(3)</b>
             .build();
