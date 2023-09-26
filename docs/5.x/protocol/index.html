@@ -932,14 +932,15 @@ FALSE</code></pre>
 <pre class="highlight"><code>'abc'
 "abc"
 
-// if quotes are present in strings, either use non-conflicting quote symbols, or escape them
+// if quotes are present in strings, either use non-conflicting quote symbols,
+// or escape them explicitly
 'a"c'
 "a'c"
 "a\"c"</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Date / time components should follow ISO 8601 format, though syntactically they just quoted strings:</p>
+<p>Date / time components are regular quoted strings that follow ISO 8601 format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -978,7 +979,7 @@ books+.library.name</code></pre>
 <div class="sect2">
 <h3 id="parameters"><a class="anchor" href="#parameters"></a>5.3. Parameters</h3>
 <div class="paragraph">
-<p>Parameters represent placeholders in expressions that are replaced with scalar values when the expression is
+<p>Parameters are placeholders in expressions that are replaced with scalar values when the expression is
 evaluated on the server. Parameters are unquoted strings that start with a dollar sign:</p>
 </div>
 <div class="listingblock">
