@@ -122,9 +122,9 @@
    </ul> </li> 
   <li><a href="#expression-syntax" class="nav-link">5. Expression Syntax</a> 
    <ul class="sectlevel2 nav"> 
-    <li><a href="#path-expressions" class="nav-link">5.1. Path Expressions</a></li> 
-    <li><a href="#scalars" class="nav-link">5.2. Scalars</a></li> 
-    <li><a href="#named-parameters" class="nav-link">5.3. Named Parameters</a></li> 
+    <li><a href="#literals" class="nav-link">5.1. Literals</a></li> 
+    <li><a href="#paths" class="nav-link">5.2. Paths</a></li> 
+    <li><a href="#parameters" class="nav-link">5.3. Parameters</a></li> 
     <li><a href="#arithmetic-expressions" class="nav-link">5.4. Arithmetic Expressions</a></li> 
     <li><a href="#bitwise-expressions" class="nav-link">5.5. Bitwise Expressions</a></li> 
     <li><a href="#functions" class="nav-link">5.6. Functions</a></li> 
@@ -417,8 +417,8 @@ exp={"exp"="&lt;exp_string&gt;", "params":{ "param1" : "value1", "param2", "valu
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>An expression with parameter resolution <em>by position</em> is represented as a JSON list, where the expression string is the first
-element, and all subsequent elements are positional parameters</td>
+<td>An expression with parameter resolution <em>by position</em> is represented as a JSON list, where the expression string
+is the first element, and all subsequent elements are positional parameters</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -437,7 +437,7 @@ by most programmers.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The full syntax of <code>exp_string</code> is described in the <a href="#expression-syntax">Expression Syntax</a> chapter, but
+The full syntax of <code>exp_string</code> is described in the <a href="#expression-syntax">Expression Syntax</a> chapter
 </td>
 </tr>
 </table>
@@ -877,14 +877,86 @@ the root request entity (in the former case), or a nested entity (in the latter 
 the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). Here we will focus on the syntax of the expression itself.</p>
 </div>
 <div class="sect2">
-<h3 id="path-expressions"><a class="anchor" href="#path-expressions"></a>5.1. Path Expressions</h3>
+<h3 id="literals"><a class="anchor" href="#literals"></a>5.1. Literals</h3>
 <div class="paragraph">
-<p>An important building block of expressions is a property path. It is a dot-separated String of property names
-implicitly rooted in some entity:</p>
+<p>There are a few kinds of literals that denote various constant scalar values in expressions - numbers, strings, dates, etc.</p>
+</div>
+<div class="paragraph">
+<p>Null is a literal that indicates an absent value. Can be either lower or upper case:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>// Entity id. Most Agrest entities have the property called "id"
+<pre class="highlight"><code>null
+NULL</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Boolean literals can be either true or false. Also both lower or upper case are valid:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>true
+TRUE
+false
+FALSE</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A variety of number literals are supported - positive / negative, whole / decimal, etc.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>// positive int
+1
+
+// negative int
+-2
+
+// long
+3147483647L
+
+// double
+2.1
+
+// big decimal
+2.1001234065B
+
+// TODO: hex types, etc.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>String literals contain arbitrary sequences of characters, and are enclosed in either single or double quotes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>'abc'
+"abc"
+
+// if quotes are present in strings, either use non-conflicting quote symbols, or escape them
+'a"c'
+"a'c"
+"a\"c"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Date / time components should follow ISO 8601 format, though syntactically they just quoted strings:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>"2023-09-11"
+"2023-09-11T00:00:01"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="paths"><a class="anchor" href="#paths"></a>5.2. Paths</h3>
+<div class="paragraph">
+<p>Important building blocks of expressions are property paths. They are dot-separated unquoted strings that point to
+property names of some entity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>// Entity id. Most Agrest entities have it
 id
 
 // Entity attribute name (a "simple" or "value" property)
@@ -904,83 +976,25 @@ books+.library.name</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="scalars"><a class="anchor" href="#scalars"></a>5.2. Scalars</h3>
+<h3 id="parameters"><a class="anchor" href="#parameters"></a>5.3. Parameters</h3>
 <div class="paragraph">
-<p>Another type of expression components is "scalars" or value "literals". There are three types of scalars - booleans,
-numbers and strings. Booleans are just true or false, in upper or lower case:</p>
+<p>Parameters represent placeholders in expressions that are replaced with scalar values when the expression is
+evaluated on the server. Parameters are unquoted strings that start with a dollar sign:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>true
-TRUE
-false
-FALSE</code></pre>
+<pre class="highlight"><code>// must start with a dollar sign,
+// followed by a sequence of letters, digits or underscores
+$myVar
+$1
+$_myVar</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A variety of number formats are supported - positive / negative, whole / decimal:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>// positive int
-1
-
-// negative int
--2
-
-// long
-3147483647L
-
-// double
-2.1
-
-// big decimal
-2.1001234065B</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Strings are included in single or double quotes:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Unquoted strings are generally treated as property paths
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>'abc'
-"abc"
-
-// if quotes are present in strings, either use non-conflicting quote symbols,
-// or escape the quotes
-'a"c'
-"a'c"
-"a\"c"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Agrest backend framework would also recognize Strings representing date / time components in ISO8601 format,
-and can convert them to the corresponding classes based on the expression context. From the expressions perspective
-those are just Strings:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>"2023-09-11"
-"2023-09-11T00:00:01"</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="named-parameters"><a class="anchor" href="#named-parameters"></a>5.3. Named Parameters</h3>
-<div class="paragraph">
-<p>TODO &#8230;&#8203;</p>
+<p>As described in the previous chapter, parameters can be resolved either by name (the name is the part of the string
+that follows the dollar sign), or by position in the expression. Parameter naming syntax for both styles is the
+same (e.g. there&#8217;s no special significance to using a number as the param name, like <code>$15</code>. It is simply a parameter
+called "15").</p>
 </div>
 </div>
 <div class="sect2">
