@@ -959,17 +959,17 @@ property names of some entity:</p>
 <pre class="highlight"><code>// Entity id. Most Agrest entities have it
 id
 
-// Entity attribute name (a "simple" or "value" property)
+// Entity attribute (a "simple" or "value" property)
 dateOfBirth
 
-// Entity relationship name
+// Entity relationship
 books
 
-// Dot-separated paths that span multiple entities
+// Dot-separated path spanning multiple entities
 books.id
 books.library.name
 
-// Adding "+" to a relationship would indicate "left join" semantics
+// Adding "+" to a relationship indicates "left join" semantics
 // for the backend resolving the path
 books+.library.name</code></pre>
 </div>
