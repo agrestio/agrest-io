@@ -120,7 +120,7 @@
     <li><a href="#mapby" class="nav-link">4.4. mapBy</a></li> 
     <li><a href="#include-exclude" class="nav-link">4.5. include / exclude</a></li> 
    </ul> </li> 
-  <li><a href="#exp-syntax" class="nav-link">5. Exp syntax</a> 
+  <li><a href="#expression-syntax" class="nav-link">5. Expression Syntax</a> 
    <ul class="sectlevel2 nav"> 
     <li><a href="#path-expressions" class="nav-link">5.1. Path Expressions</a></li> 
     <li><a href="#scalars" class="nav-link">5.2. Scalars</a></li> 
@@ -428,7 +428,22 @@ element, and all subsequent elements are positional parameters</td>
 </div>
 <div class="paragraph">
 <p><code>exp_string</code> is a conditional expression based on Agrest expression syntax, that should be intuitively understood
-by most programmers. The full expression syntax is described in the next chapter, but here are some examples:</p>
+by most programmers.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The full syntax of <code>exp_string</code> is described in the <a href="#expression-syntax">Expression Syntax</a> chapter, but
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Below are some examples:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -854,12 +869,12 @@ a shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are us
 </div>
 </div>
 <div class="sect1">
-<h2 id="exp-syntax"><a class="anchor" href="#exp-syntax"></a>5. Exp syntax</h2>
+<h2 id="expression-syntax"><a class="anchor" href="#expression-syntax"></a>5. Expression Syntax</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Expressions passed via <code>exp</code> control parameter or inside the JSON <code>include</code> are conditions evaluated in the context of
-the root request entity (in the former case), or a specific nested entity (in the latter case). We&#8217;ve already discussed
-the URL syntax and how to bind parameters to expressions. Here we will focus on the syntax of the expression String.</p>
+the root request entity (in the former case), or a nested entity (in the latter case). We&#8217;ve already discussed
+the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). Here we will focus on the syntax of the expression itself.</p>
 </div>
 <div class="sect2">
 <h3 id="path-expressions"><a class="anchor" href="#path-expressions"></a>5.1. Path Expressions</h3>
@@ -880,18 +895,19 @@ books
 
 // Dot-separated paths that span multiple entities
 books.id
-books.library.name</code></pre>
+books.library.name
+
+// Adding "+" to a relationship would indicate "left join" semantics
+// for the backend resolving the path
+books+.library.name</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="scalars"><a class="anchor" href="#scalars"></a>5.2. Scalars</h3>
 <div class="paragraph">
-<p>Scalars (or simple value constants) can be used in expressions. There are three types of scalar literals - booleans,
-numbers and strings.</p>
-</div>
-<div class="paragraph">
-<p>Booleans are just true or false, either in upper or lower case:</p>
+<p>Another type of expression components is "scalars" or value "literals". There are three types of scalars - booleans,
+numbers and strings. Booleans are just true or false, in upper or lower case:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -902,7 +918,7 @@ FALSE</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A variety of numbers are supported - positive / negative, whole / decimal:</p>
+<p>A variety of number formats are supported - positive / negative, whole / decimal:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -932,7 +948,7 @@ FALSE</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-unquoted strings are treated as property paths.
+Unquoted strings are generally treated as property paths
 </td>
 </tr>
 </table>
@@ -956,8 +972,8 @@ those are just Strings:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>2023-09-11
-2023-09-11T00:00:01</code></pre>
+<pre class="highlight"><code>"2023-09-11"
+"2023-09-11T00:00:01"</code></pre>
 </div>
 </div>
 </div>
@@ -987,9 +1003,8 @@ b.c / d</code></pre>
 <div class="sect2">
 <h3 id="functions"><a class="anchor" href="#functions"></a>5.6. Functions</h3>
 <div class="paragraph">
-<p>Functions produce scalar values from some expressions passed to them. Depending on their nature, functions can take
-zero or more arguments. Paths, scalars, arithmetic and bitwise expressions can be function arguments were appropriate.
-Supported functions:</p>
+<p>Agrest supports a number of scalar functions. Functions can take zero or more arguments. Paths, scalars, arithmetic
+and bitwise expressions can be function arguments were appropriate. Supported functions:</p>
 </div>
 <div class="listingblock">
 <div class="content">
