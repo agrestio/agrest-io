@@ -874,7 +874,22 @@ a shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are us
 <div class="paragraph">
 <p>Expressions passed via an <code>exp</code> control parameter or inside a JSON <code>include</code> are conditions evaluated in the context of
 the root request entity (in the former case), or a nested entity (in the latter case). We&#8217;ve already discussed
-the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). Here we will focus on the syntax of the expression itself.</p>
+the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). Here we will focus on the syntax of the expression
+itself.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The expression syntax presented here is a part of the Agrest protocol. Some Agrest backends may not be able to
+support every single expression described here, but most should work with a reasonable subset. And the default Java
+server shipped with Agrest (that works on top of relational databases) supports the syntax in its entirety.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="literals"><a class="anchor" href="#literals"></a>5.1. Literals</h3>
@@ -882,23 +897,20 @@ the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). 
 <p>There are a few kinds of literals that denote various constant scalar values in expressions - numbers, strings, dates, etc.</p>
 </div>
 <div class="paragraph">
-<p>Null is a literal that indicates an absent value. Can be either lower or upper case:</p>
+<p>Null is a literal that indicates an absent value:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>null
-NULL</code></pre>
+<pre class="highlight"><code>null</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Boolean literals can be either true or false. Also both lower or upper case are valid:</p>
+<p>Boolean literals are either true or false:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>true
-TRUE
-false
-FALSE</code></pre>
+false</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -970,8 +982,9 @@ books
 books.id
 books.library.name
 
-// Adding "+" to a relationship indicates "left join" semantics
-// for the backend resolving the path
+// Adding "+" to a relationship name anywhere in the path indicates "optional" semantics.
+// This is a hint to the server evaluating the expression. E.g. if the expression is
+// translated to SQL, LEFT JOIN will be used for optional expressions
 books+.library.name</code></pre>
 </div>
 </div>
@@ -1031,8 +1044,8 @@ b.c / d</code></pre>
 <div class="sect2">
 <h3 id="functions"><a class="anchor" href="#functions"></a>5.6. Functions</h3>
 <div class="paragraph">
-<p>Agrest supports a number of scalar functions. Functions can take zero or more arguments. Paths, scalars, arithmetic
-and bitwise expressions can be function arguments were appropriate. Supported functions:</p>
+<p>Agrest supports a number of scalar functions. Function names are case-sensitive. Functions can take zero or more
+arguments that can be paths, scalars, arithmetic and bitwise expressions. Supported functions:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1070,7 +1083,45 @@ upper(exp)</code></pre>
 <div class="sect2">
 <h3 id="simple-conditions"><a class="anchor" href="#simple-conditions"></a>5.7. Simple Conditions</h3>
 <div class="paragraph">
-<p>TODO &#8230;&#8203;</p>
+<p>"Simple" conditional expressions are built from paths and literals and a variety of comparison operators:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>name = 'Joe'
+name != 'Alice'
+name &lt;&gt; 'Alice'
+
+salary &lt; 50000
+salary &lt;= 50000
+age &gt; 16
+age &gt;= 21
+
+salary between 50000 and 150000
+salary not between 50000 and 150000
+
+color in ('blue', 'red', 'green')
+color not in ('blue', 'red', 'green')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A special kind of comparison is SQL-style pattern matching with "like" operatior: <code>a like '&lt;pattern&gt;'</code>. In the pattern
+string, a few characters have special meanings as "wildcards": <code>%</code> stands for any sequence of characters, while <code><em></code>
+stands for any single character. If you want <code>%</code> or <code></em></code> to be treated as a regular character, not a wildcard, you
+should prefix it with an arbitrary escape character, as shown in the examples below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>name like 'A%'
+name like 'A_C_'
+name like 'Ax_C_' escape 'x'
+
+// case-insensitive matching
+name likeIgnoreCase 'a%'
+
+// not like
+name not like 'A%'
+name not likeIgnoreCase 'A%'</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
