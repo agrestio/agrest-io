@@ -130,7 +130,7 @@
     <li><a href="#bitwise-expressions" class="nav-link">5.5. Bitwise Expressions</a></li> 
     <li><a href="#functions" class="nav-link">5.6. Functions</a></li> 
     <li><a href="#simple-conditions" class="nav-link">5.7. Simple Conditions</a></li> 
-    <li><a href="#chained-conditions" class="nav-link">5.8. Chained Conditions</a></li> 
+    <li><a href="#composite-conditions" class="nav-link">5.8. Composite Conditions</a></li> 
    </ul> </li> 
  </ul> 
 </div></div>
@@ -874,7 +874,7 @@ a shortcut - instead of <code>{"path":"books","include":[..]}}</code>, we are us
 <div class="sectionbody">
 <div class="paragraph">
 <p>Expressions passed via an <code>exp</code> control parameter or inside a JSON <code>include</code> are conditions evaluated in the context of
-the root request entity (in the former case), or a nested entity (in the latter case). We&#8217;ve already discussed
+the root request entity (in the former case), or a nested entity (in the latter case). We&#8217;ve already shown
 the URL parameter structure for <code>exp</code> (e.g. how to pass parameters). Here we will focus on the syntax of the expression
 itself.</p>
 </div>
@@ -885,9 +885,9 @@ itself.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The expression syntax presented here is a part of the Agrest protocol. Some Agrest backends may not be able to
-support every single expression described here, but most should work with a reasonable subset. And the default Java
-server shipped with Agrest (that works on top of relational databases) supports the syntax in its entirety.
+The syntax presented here is a part of the Agrest protocol. Though some Agrest backends may not be able to
+support every single expression described here, but most should work with a reasonable subset. The Java server framework
+shipped by the Agrest project supports the syntax in its entirety.
 </td>
 </tr>
 </table>
@@ -931,7 +931,7 @@ false</code></pre>
 // double
 2.1
 
-// big decimal
+// big decimal (arbitrary size and precision)
 2.1001234065B
 
 // TODO: hex types, etc.</code></pre>
@@ -945,7 +945,7 @@ false</code></pre>
 <pre class="highlight"><code>'abc'
 "abc"
 
-// if quotes are present in strings, either use non-conflicting quote symbols,
+// if quotes are present in a string, either use non-conflicting quote symbols,
 // or escape them explicitly
 'a"c'
 "a'c"
@@ -953,7 +953,7 @@ false</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Date / time components are regular quoted strings that follow ISO 8601 format:</p>
+<p>Date / time components are just strings that follow ISO 8601 format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -981,12 +981,7 @@ books
 
 // Dot-separated path spanning multiple entities
 books.id
-books.library.name
-
-// Adding "+" to a relationship name anywhere in the path indicates "optional" semantics.
-// This is a hint to the server evaluating the expression. E.g. if the expression is
-// translated to SQL, LEFT JOIN will be used for optional expressions
-books+.library.name</code></pre>
+books.library.name</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1001,6 +996,19 @@ Paths are used not only in expressions, but also in a variety of other control p
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>There are a few advanced features that allow to specify special behavior of the relationship path components:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>// "Optional" semantics
+
+// Adding "+" to a relationship anywhere in the path indicates optional" semantics.
+// This is a hint to the server evaluating the expression. E.g. if the expression is
+// translated to SQL, LEFT JOIN will be used for optional expressions
+books+.library.name</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1128,9 +1136,25 @@ name not likeIgnoreCase 'A%'</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="chained-conditions"><a class="anchor" href="#chained-conditions"></a>5.8. Chained Conditions</h3>
+<h3 id="composite-conditions"><a class="anchor" href="#composite-conditions"></a>5.8. Composite Conditions</h3>
 <div class="paragraph">
-<p>TODO &#8230;&#8203;</p>
+<p>Conditions can be joined together using <code>and</code>, <code>or</code> or negated with <code>not</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>name like 'A%' and salary &lt; 100000
+name = 'Joe' or name = 'Ann'
+not name like 'A%' // same as "name not like 'A%'"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Operator precedence (in decreasing order) goes like : <code>not</code>, <code>and</code>, <code>or</code>. Parenthesis can be used to specify an
+explicit order of execution that is different from the default:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>(salary &lt; 100000 or age &gt; 40) and name like 'A%'</code></pre>
+</div>
 </div>
 </div>
 </div>
