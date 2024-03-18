@@ -2,7 +2,15 @@ baseURL: "https://agrest.io/"
 languageCode: "en-us"
 title: "Agrest - Model-Driven REST Data Services"
 
-disableKinds: ['RSS', 'taxonomy', 'term']
+disableKinds:
+  - RSS
+  - taxonomy
+  - term
+
+enableRobotsTXT: true
+
+outputs:
+  - html
 
 permalinks:
   page: ":filename/"

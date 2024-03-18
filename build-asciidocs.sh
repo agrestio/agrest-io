@@ -63,7 +63,7 @@ do
       echo "Syncing asciidoc content for ${d}"
       ASCII_DOC_DIR_VERSION="$ASCII_DOC_DIR/$GIT_TAG"
       checkAndCreateDir "$ASCII_DOC_DIR_VERSION"
-      cp -R "./${d}target/site/." "$ASCII_DOC_DIR_VERSION/"
+      cp -R "./${d}target/site/." "$ASCII_DOC_DIR_VERSION/" || exit 2
   done
 
   # create _index.html for list.html

@@ -7,7 +7,7 @@
 
 ## Run in dev mode
 
-1. Setup env: npm, Java 11, Hugo 0.92.2, Node 8.9.4
+1. Setup env: npm, Java 17, Hugo 0.92.2, Node 8.9.4
 
 2. Run npm to generate JS/CSS assets:
 

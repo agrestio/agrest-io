@@ -8,7 +8,7 @@
     </script>
 
     <meta charset="utf-8">
-    <title>{{ .Site.Title }}</title>
+    <title>{{ with .Title }}{{ . | plainify }}{{ else }}{{ .Site.Title }}{{ end }}</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-config" content=" {{ "images/fav/browserconfig.xml" | relURL }}">
     <meta name="theme-color" content="#ffffff">
-    <title>agrest - Model-Driven REST Data Services</title>
+
     <link rel="canonical" href="https://agrest.io{{ .RelPermalink }}" />
 
     {{ partial "assets.html" . }}
