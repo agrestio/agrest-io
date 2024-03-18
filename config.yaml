@@ -9,9 +9,6 @@ disableKinds:
 
 enableRobotsTXT: true
 
-outputs:
-  - html
-
 permalinks:
   page: ":filename/"
 
