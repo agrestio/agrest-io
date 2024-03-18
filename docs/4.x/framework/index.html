@@ -279,7 +279,7 @@ public SimpleResponse create(String data) {
 <p>Here we&#8217;ve built a very simple "create chain" using Agrest fluent API. It starts with a
 static "create" method on Agrest class, taking a type of entity to create (Domain) and
 previously injected Configuration. Finally it calls "sync" method to execute the
-request. "data" String is expected to be an "Update Document" (see <a href="/protocol#request-update-document">Request: Update Document</a>), i.e. a single object or an array of objects.
+request. "data" String is expected to be an "Update Document" (see <a href="/docs/4.x/protocol#update-document">Update Document</a>), i.e. a single object or an array of objects.
 Now if you compile your app and deploy it in a web container (e.g. Tomcat), you may call
 this endpoint to create new Domain objects:</p>
 </div>
@@ -351,7 +351,7 @@ Content-Type: application/json
 </div>
 <div class="paragraph">
 <p>Since select chain above incorporates UriInfo, it will recognize Agrest control
-parameters passed from the client (see <a href="/protocol#control-parameters">Control Parameters</a>). Let&#8217;s try using "exp" filter and "include":</p>
+parameters passed from the client (see <a href="/docs/4.x/protocol#control-parameters">Control Parameters</a>). Let&#8217;s try using "exp" filter and "include":</p>
 </div>
 <div class="paragraph">
 <p><code>curl -i -X GET 'http://example.org/myapp/domain?exp=vhost="mysite1.example.org"&amp;include=id'</code></p>
@@ -500,7 +500,7 @@ Ag.metadata(SomeEntity.class, config)...</code></pre>
 <div class="sect2">
 <h3 id="strategies-for-object-matching"><a class="anchor" href="#strategies-for-object-matching"></a>4.2. Strategies for Object Matching</h3>
 <div class="paragraph">
-<p>Many of the updating chains need to match objects coming as Update Documents (see <a href="/protocol#request-update-document">Request: Update Document</a>) against
+<p>Many of the updating chains need to match objects coming as Update Documents (see <a href="/docs/4.x/protocol#update-document">Update Document</a>) against
 objects in the database. E.g. "createOrUpdate" needs to know whether a JSON object is new (and needs to be created)
 or it already exists (and needs to be updated). By default Agrest would attempt to match each JSON
 "id" attribute with a DB record primary key. This is a reasonable and useful strategy. Its
