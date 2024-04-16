@@ -3,7 +3,7 @@
     <div class="navbar-overlay"><!-- v --></div>
     <div class="documentation-page container content docbook">
         <h1>
-            Agrest {{ .Title }}
+            Agrest {{ with .Params.docTitle }}{{ . }}{{ else }}{{ .Title }}{{ end }}
         </h1>
 
             {{ partial "version_selector.gohtml" . }}

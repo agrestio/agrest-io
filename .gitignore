@@ -12,3 +12,5 @@ target/
 static/assets/
 layouts/partials/assets.html
 public/
+content/docs/**
+!docs/**/_index.html

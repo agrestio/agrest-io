@@ -1,6 +1,9 @@
 baseURL: "https://agrest.io/"
 languageCode: "en-us"
-title: "Agrest - Model-Driven REST Data Services"
+title: "Agrest: Java REST API Framework | Official Website"
+
+params:
+  description: Explore Agrest, a Java REST API framework for efficient data services. Supports CRUD, JAX-RS, Cayenne ORM, and provides fine-grained security over HTTP/JSON.
 
 disableKinds:
   - RSS

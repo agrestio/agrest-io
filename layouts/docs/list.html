@@ -5,7 +5,7 @@
     <div class="navbar-overlay"><!-- v --></div>
     <div class="documentation-page container content docbook">
         <h1>
-            Agrest Documentation
+            Agrest {{ with .Params.docTitle }}{{ . }}{{ else }}{{ with .Title }}{{ . }}{{ else }}Documentation{{ end }}{{ end }}
         </h1>
 
         {{- if ne (index (split .RelPermalink "/") 2) "" -}}
@@ -20,14 +20,12 @@
                     <ul>
                         <!-- Ranges through content/posts/*.md -->
                         {{ range .Pages.ByParam "weight" }}
+                        {{- if (isset .Params "title") -}}
                         <li class="mt-2">
-                            {{- if (isset .Params "title") -}}
-                            <a href="{{ .Permalink }}">{{.Params.title}}</a> - {{.Params.description}}
-                            {{- else -}}
-                            {{- $UrlComponentsCur := split .RelPermalink "/" -}}
-                            <a href="{{ .Permalink }}">Documentation for Agrest {{ index $UrlComponentsCur 2 }}</a>
-                            {{- end -}}
+                            <a href="{{ .Permalink }}">{{ with .Params.docTitle }}{{ . }}{{ else }}{{ .Params.title }}{{ end }}</a>
+                            - {{ with .Params.docDescription }}{{ . }}{{ else }}{{ .Params.description }}{{ end }}
                         </li>
+                        {{- end -}}
                         {{ end }}
                     </ul>
                 </article>

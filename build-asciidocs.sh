@@ -1,18 +1,28 @@
 #!/usr/bin/env bash
 
-function checkAndCreateDir() {
-    if [ ! -d "$1" ]; then
-        echo "Creating doc dir: $1"
-        mkdir -p "$1"
-    fi
+function clearDir() {
+  if [ -d "$1" ]; then
+    echo "Clearing dir: $1"
+    # shellcheck disable=SC2115
+    rm -rf "$1/"
+  fi
 }
 
-function clearDir() {
-    if [ -d "$1" ]; then
-        echo "Clearing dir: $1"
-        # shellcheck disable=SC2115
-        rm -rf "$1/"
-    fi
+function cleanDocsDir() {
+  if [ -d "$1" ]; then
+    echo "Clearing docs dir: $1"
+    find "$1" ! -name '_index.html' -type f -exec rm -f {} +
+  else
+    echo "Creating doc dir: $1"
+    mkdir -p "$1"
+  fi
+}
+
+function createIndex() {
+  cd "$1" || exit 2;
+  if [ ! -f "_index.html" ]; then
+    echo $'---\n---' > _index.html
+  fi
 }
 
 # get script arguments
@@ -37,8 +47,7 @@ AGREST_TMP_DIR="$BASE_DIR/target/tmp"           # tmp directory to checkout Agre
 
 # prepare all directories
 clearDir          "$AGREST_TMP_DIR"
-clearDir          "$ASCII_DOC_DIR"
-checkAndCreateDir "$ASCII_DOC_DIR"
+cleanDocsDir      "$ASCII_DOC_DIR"
 
 for git_tag in ${args[@]}
 do
@@ -67,12 +76,10 @@ do
   done
 
   # create _index.html for list.html
-  cd $ASCII_DOC_DIR_VERSION || exit 2
-  echo $'---\n---' > _index.html
+  createIndex "$ASCII_DOC_DIR_VERSION"
 done
 
 # create _index.html for list.html
-cd $ASCII_DOC_DIR || exit 2
-echo $'---\n---' > _index.html
+createIndex "$ASCII_DOC_DIR"
 
 
