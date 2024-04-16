@@ -11,12 +11,12 @@
     </script>
 
     <meta charset="utf-8">
-    <title>Getting Started</title>
+    <title>Getting Started with Agrest 5.x Alpha | REST API Framework</title>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Open source protocol and Java framework for model-driven REST data services. Works on top of JAX RS and integrates with various backends, such as Apache Cayenne.">
+    <meta name="description" content="Start building RESTful services with Agrest version 5.x. This guide covers project setup, ORM mapping with Apache Cayenne, creating REST endpoints, and more. ">
     <link rel="apple-touch-icon" sizes="180x180" href="/images/fav/apple-touch-icon.png">
     <link rel="icon" type="images/png" sizes="32x32" href=" /images/fav/favicon-32x32.png">
     <link rel="icon" type="images/png" sizes="16x16" href=" /images/fav/favicon-16x16.png">
@@ -99,25 +99,25 @@
             <div id="docs-nav" class="col-12 col-lg-4 col-xl-3 nav  docs-nav">
                 <div class="tab-content" id="cd-docs-nav">
         <div class="cd-toc-item">
-                                <span class="cd-toc-link active">Table of Contents</span><div id="toc" class="toc toc-side"> 
+                                <span class="cd-toc-link active">Table of Contents</span><div id="toc" class="toc toc-side">
  <div id="toctitle">
   Table of Contents
- </div> 
- <ul class="sectlevel1 nav"> 
-  <li><a href="#project-setup" class="nav-link">1. Project Setup</a></li> 
-  <li><a href="#orm-mapping" class="nav-link">2. ORM Mapping</a></li> 
-  <li><a href="#rest-endpoints" class="nav-link">3. REST Endpoints</a> 
-   <ul class="sectlevel2 nav"> 
-    <li><a href="#post-create-data" class="nav-link">3.1. POST: Create data</a></li> 
-    <li><a href="#rest-app-class" class="nav-link">3.2. REST App Class</a></li> 
-    <li><a href="#run-the-app-and-create-data" class="nav-link">3.3. Run the App and Create Data</a></li> 
-    <li><a href="#get-select-data" class="nav-link">3.4. GET: Select Data</a></li> 
-    <li><a href="#put-update-data" class="nav-link">3.5. PUT: Update Data</a></li> 
-   </ul> </li> 
-  <li><a href="#custom-property" class="nav-link">4. Custom Property</a></li> 
-  <li><a href="#openapi-documentation" class="nav-link">5. OpenAPI Documentation</a></li> 
-  <li><a href="#conclusion" class="nav-link">6. Conclusion</a></li> 
- </ul> 
+ </div>
+ <ul class="sectlevel1 nav">
+  <li><a href="#project-setup" class="nav-link">1. Project Setup</a></li>
+  <li><a href="#orm-mapping" class="nav-link">2. ORM Mapping</a></li>
+  <li><a href="#rest-endpoints" class="nav-link">3. REST Endpoints</a>
+   <ul class="sectlevel2 nav">
+    <li><a href="#post-create-data" class="nav-link">3.1. POST: Create data</a></li>
+    <li><a href="#rest-app-class" class="nav-link">3.2. REST App Class</a></li>
+    <li><a href="#run-the-app-and-create-data" class="nav-link">3.3. Run the App and Create Data</a></li>
+    <li><a href="#get-select-data" class="nav-link">3.4. GET: Select Data</a></li>
+    <li><a href="#put-update-data" class="nav-link">3.5. PUT: Update Data</a></li>
+   </ul></li>
+  <li><a href="#custom-property" class="nav-link">4. Custom Property</a></li>
+  <li><a href="#openapi-documentation" class="nav-link">5. OpenAPI Documentation</a></li>
+  <li><a href="#conclusion" class="nav-link">6. Conclusion</a></li>
+ </ul>
 </div></div>
         
         
@@ -130,45 +130,15 @@
 
             <div class="col-12 col-lg-8 col-xl-9  pb-3 pt-0 pl-lg-3">
                 <article>
-                    <div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>Through this tutorial we will be building a simple Bookstore REST application using Agrest and a relational database.
-Agrest can work with various Java REST API stacks and backends. So there are some choices to make for the
-purpose of the tutorial. So we decided to use the following components:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SpringBoot / Jersey</p>
-</li>
-<li>
-<p>Derby database</p>
-</li>
-<li>
-<p>Apache Cayenne ORM backend</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>We&#8217;ll be using Maven and Java 17 to build and run the project. If you prefer Gradle, it should work as well of course.</p>
-</div>
-<div class="paragraph">
-<p><em>The full code of the tutorial is available
-<a href="https://github.com/agrestio/agrest-docs/tree/5.x/agrest-docs-get-started-cayenne-sb">on Github</a>.</em></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="project-setup"><a class="anchor" href="#project-setup"></a>1. Project Setup</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a <code>pom.xml</code> file, add a
-<code>&lt;dependencyManagement/&gt;</code> section with "BOM" ("Bill of Materials") declarations for Spring Boot and Agrest:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencyManagement&gt;
+                    <div class="sect1">
+ <h2 id="project-setup"><a class="anchor" href="#project-setup"></a>1. Project Setup</h2>
+ <div class="sectionbody">
+  <div class="paragraph">
+   <p>Let’s start with a new Java Maven project created in your favorite IDE. Once you have a <code>pom.xml</code> file, add a <code>&lt;dependencyManagement/&gt;</code> section with "BOM" ("Bill of Materials") declarations for Spring Boot and Agrest:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;dependencyManagement&gt;
     &lt;dependencies&gt;
         &lt;!-- Defines the versions of Agrest modules --&gt;
         &lt;dependency&gt;
@@ -197,15 +167,14 @@ purpose of the tutorial. So we decided to use the following components:</p>
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will allow the following <code>&lt;dependencies/&gt;</code> section to include Agrest, Spring and other modules and not
-worry about their individual versions. Now let&#8217;s set up the <code>&lt;dependencies/&gt;</code> section:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>This will allow the following <code>&lt;dependencies/&gt;</code> section to include Agrest, Spring and other modules and not worry about their individual versions. Now let’s set up the <code>&lt;dependencies/&gt;</code> section:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;dependencies&gt;
 
     &lt;!-- Adds Agrest integration for JAX-RS / Jersey 2  --&gt;
     &lt;dependency&gt;
@@ -231,43 +200,38 @@ worry about their individual versions. Now let&#8217;s set up the <code>&lt;depe
         &lt;artifactId&gt;derby&lt;/artifactId&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The first two dependencies are Agrest-related, others are SpringBoot and Derby.</p>
-</div>
-</div>
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>The first two dependencies are Agrest-related, others are SpringBoot and Derby.</p>
+  </div>
+ </div>
 </div>
 <div class="sect1">
-<h2 id="orm-mapping"><a class="anchor" href="#orm-mapping"></a>2. ORM Mapping</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Apache Cayenne is a powerful ORM, fully integrated with Agrest. To makes things easier for this tutorial, we will
-provide ready-to-use Cayenne ORM model files. And you will generate persistent Java classes from the model with
-the CayenneModeler GUI tool.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you want to learn more about Cayenne,
-<a href="https://cayenne.apache.org/docs/4.2/getting-started-guide/">here is a link</a> to get started.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The following 2 XML files comprise Cayenne mapping project. Copy both of them to the <code>src/main/resources</code> folder:</p>
-</div>
-<div class="paragraph">
-<p>Model file 1: <code>src/main/resources/cayenne-project.xml</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+ <h2 id="orm-mapping"><a class="anchor" href="#orm-mapping"></a>2. ORM Mapping</h2>
+ <div class="sectionbody">
+  <div class="paragraph">
+   <p>Apache Cayenne is a powerful ORM, fully integrated with Agrest. To makes things easier for this tutorial, we will provide ready-to-use Cayenne ORM model files. And you will generate persistent Java classes from the model with the CayenneModeler GUI tool.</p>
+  </div>
+  <div class="admonitionblock note">
+   <table>
+    <tbody>
+     <tr>
+      <td class="icon"><i class="fa icon-note" title="Note"></i></td>
+      <td class="content">If you want to learn more about Cayenne, <a href="https://cayenne.apache.org/docs/4.2/getting-started-guide/">here is a link</a> to get started.</td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="paragraph">
+   <p>The following 2 XML files comprise Cayenne mapping project. Copy both of them to the <code>src/main/resources</code> folder:</p>
+  </div>
+  <div class="paragraph">
+   <p>Model file 1: <code>src/main/resources/cayenne-project.xml</code></p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;domain xmlns="http://cayenne.apache.org/schema/10/domain"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/domain https://cayenne.apache.org/schema/10/domain.xsd"
@@ -285,14 +249,14 @@ If you want to learn more about Cayenne,
 		&lt;/data-source&gt;
 	&lt;/node&gt;
 &lt;/domain&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Model file 2: <code>src/main/resources/datamap.map.xml</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>Model file 2: <code>src/main/resources/datamap.map.xml</code></p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;data-map xmlns="http://cayenne.apache.org/schema/10/modelMap"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://cayenne.apache.org/schema/10/modelMap https://cayenne.apache.org/schema/10/modelMap.xsd"
@@ -344,72 +308,59 @@ If you want to learn more about Cayenne,
 		&lt;client&gt;false&lt;/client&gt;
 	&lt;/cgen&gt;
 &lt;/data-map&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now let&#8217;s generate persistent Java classes from the ORM model:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://cayenne.apache.org/docs/4.2/cayenne-guide/#runModeler">Download CayenneModeler GUI and open it on your computer</a>.
-For this tutorial you will need the latest version of the Modeler <code>4.2</code>.</p>
-</li>
-<li>
-<p>Open <code>cayenne-project.xml</code> in the Modeler.</p>
-</li>
-<li>
-<p>Expand the project tree on the left, navigating to <code>project</code> &gt; <code>datamap</code>, and select <code>Class Generation</code> tab on the
-right:</p>
-</li>
-</ul>
-</div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="../img/getting-started/cgen.png" alt="cgen">
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Make sure the <code>Output Directory</code> field points to your <code>src/main/java</code> folder, and then click the <code>Generate</code> button.</p>
-</li>
-<li>
-<p>If everything went well, you should see 4 Java classes generated under <code>src/main/java/io/agrest/tutorial/sb/persistence</code>,
-that represent our persistent entities:</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>auto/_Author.java</code></p>
-</li>
-<li>
-<p><code>auto/_Book.java</code></p>
-</li>
-<li>
-<p><code>Author.java</code></p>
-</li>
-<li>
-<p><code>Book.java</code></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>Now let’s generate persistent Java classes from the ORM model:</p>
+  </div>
+  <div class="ulist">
+   <ul>
+    <li>
+     <p><a href="https://cayenne.apache.org/docs/4.2/cayenne-guide/#runModeler">Download CayenneModeler GUI and open it on your computer</a>. For this tutorial you will need the latest version of the Modeler <code>4.2</code>.</p></li>
+    <li>
+     <p>Open <code>cayenne-project.xml</code> in the Modeler.</p></li>
+    <li>
+     <p>Expand the project tree on the left, navigating to <code>project</code> &gt; <code>datamap</code>, and select <code>Class Generation</code> tab on the right:</p></li>
+   </ul>
+  </div>
+  <div class="imageblock text-center">
+   <div class="content">
+    <img src="../img/getting-started/cgen.png" alt="cgen">
+   </div>
+  </div>
+  <div class="ulist">
+   <ul>
+    <li>
+     <p>Make sure the <code>Output Directory</code> field points to your <code>src/main/java</code> folder, and then click the <code>Generate</code> button.</p></li>
+    <li>
+     <p>If everything went well, you should see 4 Java classes generated under <code>src/main/java/io/agrest/tutorial/sb/persistence</code>, that represent our persistent entities:</p>
+     <div class="ulist">
+      <ul>
+       <li>
+        <p><code>auto/_Author.java</code></p></li>
+       <li>
+        <p><code>auto/_Book.java</code></p></li>
+       <li>
+        <p><code>Author.java</code></p></li>
+       <li>
+        <p><code>Book.java</code></p></li>
+      </ul>
+     </div></li>
+   </ul>
+  </div>
+ </div>
 </div>
 <div class="sect1">
-<h2 id="rest-endpoints"><a class="anchor" href="#rest-endpoints"></a>3. REST Endpoints</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="post-create-data"><a class="anchor" href="#post-create-data"></a>3.1. POST: Create data</h3>
-<div class="paragraph">
-<p>Let&#8217;s write a couple of POST endpoints to allow users to create Authors and Books. We&#8217;ll start by creating Java classes
-<code>AuthorApi</code> and <code>BookApi</code>, placing a few JAX-RS annotations on them, and injecting JAX-RS <code>Configuration</code> object:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Path("author")
+ <h2 id="rest-endpoints"><a class="anchor" href="#rest-endpoints"></a>3. REST Endpoints</h2>
+ <div class="sectionbody">
+  <div class="sect2">
+   <h3 id="post-create-data"><a class="anchor" href="#post-create-data"></a>3.1. POST: Create data</h3>
+   <div class="paragraph">
+    <p>Let’s write a couple of POST endpoints to allow users to create Authors and Books. We’ll start by creating Java classes <code>AuthorApi</code> and <code>BookApi</code>, placing a few JAX-RS annotations on them, and injecting JAX-RS <code>Configuration</code> object:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@Path("author")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthorApi {
@@ -417,11 +368,11 @@ public class AuthorApi {
     @Context
     private Configuration config;
 }</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Path("book")
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@Path("book")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class BookApi {
@@ -429,63 +380,62 @@ public class BookApi {
     @Context
     private Configuration config;
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now let&#8217;s create POST methods in both classes. In <code>AuthorApi</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@POST
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Now let’s create POST methods in both classes. In <code>AuthorApi</code>:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@POST
 public DataResponse&lt;Author&gt; create(@Context UriInfo uri, String data) {
     return AgJaxrs.create(Author.class, config) <i class="conum" data-value="1"></i><b>(1)</b>
             .clientParams(uri.getQueryParameters()) <i class="conum" data-value="2"></i><b>(2)</b>
             .syncAndSelect(data); <i class="conum" data-value="3"></i><b>(3)</b>
 }</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Start a builder for "create" operation. <code>config</code> parameter passed to <code>create(..)</code>, contains Agrest runtime</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Pass URL parameters. This will control the shape of the response</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Execute create operation and return created Author to the client</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>In <code>BookApi</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@POST
+    </div>
+   </div>
+   <div class="colist arabic">
+    <table>
+     <tbody>
+      <tr>
+       <td><i class="conum" data-value="1"></i><b>1</b></td>
+       <td>Start a builder for "create" operation. <code>config</code> parameter passed to <code>create(..)</code>, contains Agrest runtime</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="2"></i><b>2</b></td>
+       <td>Pass URL parameters. This will control the shape of the response</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="3"></i><b>3</b></td>
+       <td>Execute create operation and return created Author to the client</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="paragraph">
+    <p>In <code>BookApi</code></p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@POST
 public SimpleResponse create(String data) {
     return AgJaxrs.create(Book.class, config).sync(data);
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Notice the difference between Author and Book POST methods. In the former case, after creating an object
-Agrest returns <code>DataResponse&lt;Author&gt;</code>, allowing the client to inspect the result of the operation (e.g. obtain the
-Author&#8217;s ID generated by the server). In the latter case, it returns <code>SimpleResponse</code> that does not contain any data.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="rest-app-class"><a class="anchor" href="#rest-app-class"></a>3.2. REST App Class</h3>
-<div class="paragraph">
-<p>Now that we have a few endpoint, how do we integrate them in our app? Let&#8217;s create a main class of our SpringBoot
-application called <code>AgrestApp</code> with some bootstrap code:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ApplicationPath("/api")
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Notice the difference between Author and Book POST methods. In the former case, after creating an object Agrest returns <code>DataResponse&lt;Author&gt;</code>, allowing the client to inspect the result of the operation (e.g. obtain the Author’s ID generated by the server). In the latter case, it returns <code>SimpleResponse</code> that does not contain any data.</p>
+   </div>
+  </div>
+  <div class="sect2">
+   <h3 id="rest-app-class"><a class="anchor" href="#rest-app-class"></a>3.2. REST App Class</h3>
+   <div class="paragraph">
+    <p>Now that we have a few endpoint, how do we integrate them in our app? Let’s create a main class of our SpringBoot application called <code>AgrestApp</code> with some bootstrap code:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@ApplicationPath("/api")
 @SpringBootApplication
 public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1"></i><b>(1)</b>
 
@@ -517,276 +467,257 @@ public class AgrestApp extends ResourceConfig { <i class="conum" data-value="1">
         register(BookApi.class);
     }
 }</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Our app class extends <code>ResourceConfig</code> provided by Jersey (our JAX-RS provider). Configuration happens in the
-constructor below. <code>ResourceConfig</code> subclass is automatically loaded by SpringBoot on startup.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Create Cayenne runtime</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Create Agrest runtime with Cayenne backend</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Register Agrest runtime with Jersey / JAX-RS environment</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Register API endpoints with Jersey</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="run-the-app-and-create-data"><a class="anchor" href="#run-the-app-and-create-data"></a>3.3. Run the App and Create Data</h3>
-<div class="paragraph">
-<p>Now we can run the main class in the IDE, and use <code>curl</code> or a similar HTTP client to create some data:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
+    </div>
+   </div>
+   <div class="colist arabic">
+    <table>
+     <tbody>
+      <tr>
+       <td><i class="conum" data-value="1"></i><b>1</b></td>
+       <td>Our app class extends <code>ResourceConfig</code> provided by Jersey (our JAX-RS provider). Configuration happens in the constructor below. <code>ResourceConfig</code> subclass is automatically loaded by SpringBoot on startup.</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="2"></i><b>2</b></td>
+       <td>Create Cayenne runtime</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="3"></i><b>3</b></td>
+       <td>Create Agrest runtime with Cayenne backend</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="4"></i><b>4</b></td>
+       <td>Register Agrest runtime with Jersey / JAX-RS environment</td>
+      </tr>
+      <tr>
+       <td><i class="conum" data-value="5"></i><b>5</b></td>
+       <td>Register API endpoints with Jersey</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <div class="sect2">
+   <h3 id="run-the-app-and-create-data"><a class="anchor" href="#run-the-app-and-create-data"></a>3.3. Run the App and Create Data</h3>
+   <div class="paragraph">
+    <p>Now we can run the main class in the IDE, and use <code>curl</code> or a similar HTTP client to create some data:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl -X POST -i \
   -d '{"name":"Ernest Hemingway","dateOfBirth":"1899-07-21"}' \
   -H 'Content-Type: application/json' \
   http://localhost:8080/api/author</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The response might look like this (note the id value, we&#8217;ll need it to create Books) :</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>HTTP/1.1 201
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>The response might look like this (note the id value, we’ll need it to create Books) :</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code>HTTP/1.1 201
 Content-Type: application/json
 Content-Length: 55
 Date: Sat, 14 May 2022 09:39:39 GMT</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{"data":[{"id":1,"dateOfBirth":"1899-07-21","name":"Ernest Hemingway"}],"total":1}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now let&#8217;s create a <code>Book</code>. In the following POST request, use the ID of the author from the previous call:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl -X POST -i \
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-json json" data-lang="json">{"data":[{"id":1,"dateOfBirth":"1899-07-21","name":"Ernest Hemingway"}],"total":1}</code></pre>
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Now let’s create a <code>Book</code>. In the following POST request, use the ID of the author from the previous call:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl -X POST -i \
   -d '[{"title":"A Farewell to Arms","author":1},{"title":"For Whom the Bell Tolls","author":1}]' \
   -H 'Content-Type: application/json' \
   http://localhost:8080/api/book</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Since <code>BookApi</code> used <code>SimpleResponse</code>, the JSON returned will be just an acknowledgement of success:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>HTTP/1.1 201
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Since <code>BookApi</code> used <code>SimpleResponse</code>, the JSON returned will be just an acknowledgement of success:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code>HTTP/1.1 201
 Content-Type: application/json
 Content-Length: 16
 Date: Sat, 14 May 2022 09:43:01 GMT</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="get-select-data"><a class="anchor" href="#get-select-data"></a>3.4. GET: Select Data</h3>
-<div class="paragraph">
-<p>Now that we have some data in the DB, let&#8217;s build an endpoint to retrieve it via <code>GET</code> requests. In <code>BookApi</code> add
-the following method:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@GET
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-json json" data-lang="json">{}</code></pre>
+    </div>
+   </div>
+  </div>
+  <div class="sect2">
+   <h3 id="get-select-data"><a class="anchor" href="#get-select-data"></a>3.4. GET: Select Data</h3>
+   <div class="paragraph">
+    <p>Now that we have some data in the DB, let’s build an endpoint to retrieve it via <code>GET</code> requests. In <code>BookApi</code> add the following method:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-java java" data-lang="java">@GET
 public DataResponse&lt;Book&gt; get(@Context UriInfo uriInfo) {
     return AgJaxrs.select(Book.class, config)
             .clientParams(uriInfo.getQueryParameters())
             .get();
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now you can restart the app, and run the  following request:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl http://localhost:8080/api/book</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Now you can restart the app, and run the following request:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl http://localhost:8080/api/book</code></pre>
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-json json" data-lang="json">{
   "data":[
     {"id":1,"title":"A Farewell to Arms"},
     {"id":2,"title":"For Whom the Bell Tolls"}
   ],
   "total":2
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Since we passed all URL parameters directly to Agrest (via <code>clientParams(uriInfo.getQueryParameters())</code>), we can
-pass various Agrest protocol keys in the URL, to filter the result, resolve related objects, etc. Some examples:</p>
-</div>
-<div class="paragraph">
-<p>Include Author in the response, and exclude ids:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Since we passed all URL parameters directly to Agrest (via <code>clientParams(uriInfo.getQueryParameters())</code>), we can pass various Agrest protocol keys in the URL, to filter the result, resolve related objects, etc. Some examples:</p>
+   </div>
+   <div class="paragraph">
+    <p>Include Author in the response, and exclude ids:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name'</code></pre>
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-json json" data-lang="json">{
   "data":[
     {"author":{"name":"Ernest Hemingway"},"title":"For Whom the Bell Tolls"},
     {"author":{"name":"Ernest Hemingway"},"title":"A Farewell to Arms"}
   ],
   "total":2
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Sort by title:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?include=title&amp;sort=title'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+    </div>
+   </div>
+   <div class="paragraph">
+    <p>Sort by title:</p>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl 'http://localhost:8080/api/book?include=title&amp;sort=title'</code></pre>
+    </div>
+   </div>
+   <div class="listingblock">
+    <div class="content">
+     <pre class="highlight"><code class="language-json json" data-lang="json">{
   "data":[
     {"title":"A Farewell to Arms"},
     {"title":"For Whom the Bell Tolls"}
   ],
   "total":2}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="put-update-data"><a class="anchor" href="#put-update-data"></a>3.5. PUT: Update Data</h3>
-<div class="paragraph">
-<p>Similar to how we implemented <code>POST</code>, you can also write <code>PUT</code> endpoints. We are leaving it as an exercise for the
-reader, but here are some hints:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>PUT</code> requires an <code>id</code> attribute to be present for each object in the request payload.</p>
-</li>
-<li>
-<p>You would need to use <code>AgJaxrs.update(..)</code> method to process the request.</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-PUT can be used not only for updates, but also for "create-or-update" operations. Agrest has
-special methods for those: <code>AgJaxrs.createOrUpdate(..)</code>, <code>AgJaxrs.idempotentCreateOrUpdate(..)</code>, etc. Those work with objects
-that have <a href="https://en.wikipedia.org/wiki/Natural_key">natural keys</a> understood by the client. This is not directly
-applicable to our Book and Author entities, though with a bit of a stretch we can use <code>Author.name</code> property as
-a natural key.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
+    </div>
+   </div>
+  </div>
+  <div class="sect2">
+   <h3 id="put-update-data"><a class="anchor" href="#put-update-data"></a>3.5. PUT: Update Data</h3>
+   <div class="paragraph">
+    <p>Similar to how we implemented <code>POST</code>, you can also write <code>PUT</code> endpoints. We are leaving it as an exercise for the reader, but here are some hints:</p>
+   </div>
+   <div class="ulist">
+    <ul>
+     <li>
+      <p><code>PUT</code> requires an <code>id</code> attribute to be present for each object in the request payload.</p></li>
+     <li>
+      <p>You would need to use <code>AgJaxrs.update(..)</code> method to process the request.</p></li>
+    </ul>
+   </div>
+   <div class="admonitionblock note">
+    <table>
+     <tbody>
+      <tr>
+       <td class="icon"><i class="fa icon-note" title="Note"></i></td>
+       <td class="content">PUT can be used not only for updates, but also for "create-or-update" operations. Agrest has special methods for those: <code>AgJaxrs.createOrUpdate(..)</code>, <code>AgJaxrs.idempotentCreateOrUpdate(..)</code>, etc. Those work with objects that have <a href="https://en.wikipedia.org/wiki/Natural_key">natural keys</a> understood by the client. This is not directly applicable to our Book and Author entities, though with a bit of a stretch we can use <code>Author.name</code> property as a natural key.</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </div>
 </div>
 <div class="sect1">
-<h2 id="custom-property"><a class="anchor" href="#custom-property"></a>4. Custom Property</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Agrest has a powerful API for building REST entity schemas, but so far we didn&#8217;t have to interact with it.
-Agrest simply took the existing model from Cayenne and exposed each ORM entity as a REST entity. In reality, REST
-entities often look very different from persistent objects, and there are various mechanisms to define their structure
-and retrieval strategy. Here we will show the simplest way to define a new property in an existing entity.</p>
-</div>
-<div class="paragraph">
-<p>Let&#8217;s imagine we would like to add the <code>age</code> property to the <code>Author</code> object. This is not a persistent property, and
-is not known to Cayenne. Yet, it is rather easy to calculate from the current date and the <code>Author.dateOfBirth</code>
-property. So we can write a getter method on the Author that performs such calculation. We will use a special
-<code>@AgAttribute</code> annotation to tell Agrest that the new property is a part of the REST model:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AgAttribute
+ <h2 id="custom-property"><a class="anchor" href="#custom-property"></a>4. Custom Property</h2>
+ <div class="sectionbody">
+  <div class="paragraph">
+   <p>Agrest has a powerful API for building REST entity schemas, but so far we didn’t have to interact with it. Agrest simply took the existing model from Cayenne and exposed each ORM entity as a REST entity. In reality, REST entities often look very different from persistent objects, and there are various mechanisms to define their structure and retrieval strategy. Here we will show the simplest way to define a new property in an existing entity.</p>
+  </div>
+  <div class="paragraph">
+   <p>Let’s imagine we would like to add the <code>age</code> property to the <code>Author</code> object. This is not a persistent property, and is not known to Cayenne. Yet, it is rather easy to calculate from the current date and the <code>Author.dateOfBirth</code> property. So we can write a getter method on the Author that performs such calculation. We will use a special <code>@AgAttribute</code> annotation to tell Agrest that the new property is a part of the REST model:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-java java" data-lang="java">@AgAttribute
 public int getAge() {
     return Period.between(getDateOfBirth(), LocalDate.now()).getYears();
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now let&#8217;s restart the app, and run the following request for books with authors and their ages:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name&amp;include=author.age'</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-json" data-lang="json">{
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>Now let’s restart the app, and run the following request for books with authors and their ages:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-bash bash" data-lang="bash">curl 'http://localhost:8080/api/book?exclude=id&amp;include=author.name&amp;include=author.age'</code></pre>
+   </div>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-json json" data-lang="json">{
   "data":[
     {"author":{"age":122,"name":"Ernest Hemingway"},"title":"For Whom the Bell Tolls"},
     {"author":{"age":122,"name":"Ernest Hemingway"},"title":"A Farewell to Arms"}
   ],
   "total":2
 }</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>We can see that as of this writing, Hemingway was 122 years old. <code>@AgAttribute</code> on getters is not the only
-way to add custom properties, bit it is very handy for simple calculated properties like our example.</p>
-</div>
-</div>
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>We can see that as of this writing, Hemingway was 122 years old. <code>@AgAttribute</code> on getters is not the only way to add custom properties, bit it is very handy for simple calculated properties like our example.</p>
+  </div>
+ </div>
 </div>
 <div class="sect1">
-<h2 id="openapi-documentation"><a class="anchor" href="#openapi-documentation"></a>5. OpenAPI Documentation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>It is a good practice to document your APIs for the benefit of consumers. The most popular format for REST API
-documentation is <a href="https://swagger.io/specification/">OpenAPI 3</a>. Agrest integrates with the Swagger library to expose
-its endpoints as OpenAPI model. Let&#8217;s include it in our tutorial.</p>
-</div>
-<div class="paragraph">
-<p>Start by adding <code>agrest-jaxrs2-openapi</code> dependency to the <code>pom.xml</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+ <h2 id="openapi-documentation"><a class="anchor" href="#openapi-documentation"></a>5. OpenAPI Documentation</h2>
+ <div class="sectionbody">
+  <div class="paragraph">
+   <p>It is a good practice to document your APIs for the benefit of consumers. The most popular format for REST API documentation is <a href="https://swagger.io/specification/">OpenAPI 3</a>. Agrest integrates with the Swagger library to expose its endpoints as OpenAPI model. Let’s include it in our tutorial.</p>
+  </div>
+  <div class="paragraph">
+   <p>Start by adding <code>agrest-jaxrs2-openapi</code> dependency to the <code>pom.xml</code>:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;io.agrest&lt;/groupId&gt;
     &lt;artifactId&gt;agrest-jaxrs2-openapi&lt;/artifactId&gt;
 &lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now add OpenAPI bootstrap code to <code>AgrestApp</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">AgRuntime agRuntime = AgRuntime
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>Now add OpenAPI bootstrap code to <code>AgrestApp</code>:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-java java" data-lang="java">AgRuntime agRuntime = AgRuntime
         .builder()
         .module(AgCayenneModule.build(cayenneRuntime))
         .module(AgSwaggerModule
@@ -795,70 +726,65 @@ its endpoints as OpenAPI model. Let&#8217;s include it in our tutorial.</p>
                 .build()) <i class="conum" data-value="1"></i><b>(1)</b>
         .build();
 register(OpenApiResource.class); <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Adding this configuration to <code>AgRuntime</code> builder would indicate to Swagger that the API model for both Book and Author
-entities should be taken from Agrest instead of using reflection on the Java classes.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Add Swagger endpoint to the app.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Now you can restart the application and go to <a href="http://127.0.0.1:8080/api/openapi.json" class="bare">http://127.0.0.1:8080/api/openapi.json</a> in the browser. You will see the
-app model in JSON format, including all the Agrest query parameters.</p>
-</div>
-<div class="paragraph">
-<p>The next step is to add a Swagger UI browser for visual exploration of the documentation. We will use a Swagger
-integration library from <a href="https://springdoc.org/" class="bare">https://springdoc.org/</a> . Let&#8217;s add it as a dependency:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+   </div>
+  </div>
+  <div class="colist arabic">
+   <table>
+    <tbody>
+     <tr>
+      <td><i class="conum" data-value="1"></i><b>1</b></td>
+      <td>Adding this configuration to <code>AgRuntime</code> builder would indicate to Swagger that the API model for both Book and Author entities should be taken from Agrest instead of using reflection on the Java classes.</td>
+     </tr>
+     <tr>
+      <td><i class="conum" data-value="2"></i><b>2</b></td>
+      <td>Add Swagger endpoint to the app.</td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="paragraph">
+   <p>Now you can restart the application and go to <a href="http://127.0.0.1:8080/api/openapi.json" class="bare">http://127.0.0.1:8080/api/openapi.json</a> in the browser. You will see the app model in JSON format, including all the Agrest query parameters.</p>
+  </div>
+  <div class="paragraph">
+   <p>The next step is to add a Swagger UI browser for visual exploration of the documentation. We will use a Swagger integration library from <a href="https://springdoc.org/" class="bare">https://springdoc.org/</a> . Let’s add it as a dependency:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code class="language-xml xml" data-lang="xml">&lt;dependency&gt;
     &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
     &lt;artifactId&gt;springdoc-openapi-ui&lt;/artifactId&gt;
     &lt;version&gt;1.6.9&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>And now create <code>src/main/resources/application.properties</code> file and add the following configuration entry in it:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>springdoc.swagger-ui.url=/api/openapi.json</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Restart the application and open <a href="http://127.0.0.1:8080/swagger-ui.html" class="bare">http://127.0.0.1:8080/swagger-ui.html</a> in the browser You should see the navigable
-UI for your API docs similar to the one in this screenshot:</p>
-</div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="../img/getting-started/swagger-ui.png" alt="swagger ui">
-</div>
-</div>
-<div class="paragraph">
-<p>You can make your model even more informative by annotating <code>BookApi</code> and <code>AuthorApi</code> with Swagger annotations, such
-as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc. We&#8217;ll leave it as an exercise for the user.</p>
-</div>
-</div>
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>And now create <code>src/main/resources/application.properties</code> file and add the following configuration entry in it:</p>
+  </div>
+  <div class="listingblock">
+   <div class="content">
+    <pre class="highlight"><code>springdoc.swagger-ui.url=/api/openapi.json</code></pre>
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>Restart the application and open <a href="http://127.0.0.1:8080/swagger-ui.html" class="bare">http://127.0.0.1:8080/swagger-ui.html</a> in the browser You should see the navigable UI for your API docs similar to the one in this screenshot:</p>
+  </div>
+  <div class="imageblock text-center">
+   <div class="content">
+    <img src="../img/getting-started/swagger-ui.png" alt="swagger ui">
+   </div>
+  </div>
+  <div class="paragraph">
+   <p>You can make your model even more informative by annotating <code>BookApi</code> and <code>AuthorApi</code> with Swagger annotations, such as <code>@OpenAPIDefinition</code>, <code>@Operation</code>, etc. We’ll leave it as an exercise for the user.</p>
+  </div>
+ </div>
 </div>
 <div class="sect1">
-<h2 id="conclusion"><a class="anchor" href="#conclusion"></a>6. Conclusion</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This concludes our tutorial. From here you should check the <a href="../protocol">"Protocol" document</a> on how to interact
-with Agrest from the client, and the <a href="../framework">"Server Framework" document</a> for an in-depth discussion of how
-to write model-driven endpoints with user-specific schemas, security controls, a variety of backends, etc.</p>
-</div>
-</div>
+ <h2 id="conclusion"><a class="anchor" href="#conclusion"></a>6. Conclusion</h2>
+ <div class="sectionbody">
+  <div class="paragraph">
+   <p>This concludes our tutorial. From here you should check the <a href="../protocol">"Protocol" document</a> on how to interact with Agrest from the client, and the <a href="../framework">"Server Framework" document</a> for an in-depth discussion of how to write model-driven endpoints with user-specific schemas, security controls, a variety of backends, etc.</p>
+  </div>
+ </div>
 </div>
                 </article>
             </div>
