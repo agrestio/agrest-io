@@ -31,6 +31,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 17
+          distribution: 'temurin'
 
       - name: Set up NodeJS 16...
         uses: actions/setup-node@v4
