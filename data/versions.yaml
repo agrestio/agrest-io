@@ -3,8 +3,8 @@ DefaultVersionUrl: "5.x"
 ByUrl:
   "4.x":
     URL: "4.x"
-    Name: "4.x (stable)"
+    Name: "4.x (legacy)"
 
   "5.x":
     URL: "5.x"
-    Name: "5.x (alpha)"
+    Name: "5.x (stable)"
